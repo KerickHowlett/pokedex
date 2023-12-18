@@ -1,3 +1,3 @@
-module github.com/KerickHowlett/pokedex
+module github.com/KerickHowlett/pokedexcli
 
 go 1.21.5
