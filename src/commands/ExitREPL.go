@@ -1,5 +1,5 @@
 package commands
 
-func ExitRepl() error {
+func ExitREPL() error {
 	return nil
 }

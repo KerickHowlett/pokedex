@@ -1,7 +1,7 @@
 package commands
 
-type CLICommand struct {
+type Command struct {
 	Name        string
 	Description string
-	Callback    func() error
+	Execute     func() error
 }
