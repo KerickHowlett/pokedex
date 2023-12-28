@@ -12,16 +12,16 @@ import (
 func RunREPL(execute func(string) error) {
 	PrintPrompt()
 
-	cli := bufio.NewScanner(os.Stdin)
-	for cli.Scan() {
-		userInput := parseInput(cli)
+	scanner := bufio.NewScanner(os.Stdin)
+	for scanner.Scan() {
+		userInput := parseInput(scanner)
 		execute(userInput)
 		PrintPrompt()
 	}
 }
 
-func parseInput(cli *bufio.Scanner) string {
-	rawInput := cli.Text()
+func parseInput(scanner *bufio.Scanner) string {
+	rawInput := scanner.Text()
 
 	return SanitizeInput(rawInput)
 }
