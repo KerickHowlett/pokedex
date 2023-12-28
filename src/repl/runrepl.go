@@ -5,9 +5,7 @@ import (
 	"os"
 )
 
-type CommandDelegate = func(...string) error
-
-func RunREPL(execute CommandDelegate) {
+func RunREPL(execute func(...string) error) {
 	PrintPrompt()
 
 	cli := bufio.NewScanner(os.Stdin)
