@@ -3,17 +3,17 @@ package repl
 import (
 	"bufio"
 	"os"
-
-	"github.com/KerickHowlett/pokedexcli/src/commands"
 )
 
-func RunREPL() {
+type CommandDelegate = func(...string) error
+
+func RunREPL(execute CommandDelegate) {
 	PrintPrompt()
 
 	cli := bufio.NewScanner(os.Stdin)
 	for cli.Scan() {
 		userInput := parseInput(cli)
-		commands.RunCommand(userInput)
+		execute(userInput)
 
 		PrintPrompt()
 	}
