@@ -14,7 +14,8 @@ func RunREPL(execute func(string) error) {
 
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
-		userInput := SanitizeInput(scanner.Text())
+		userInput := SanitizeInput(scanner.Text())[0]
+
 		execute(userInput)
 		PrintPrompt()
 	}
