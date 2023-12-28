@@ -2,10 +2,11 @@ package commands
 
 type Commands = map[string]Command
 
-// GetCommands returns a map of commands available in the CLI.
+// A map of available commands is returned.
+//
 // Each command is represented by a key-value pair, where the key is the command
 // name and the value is a Command struct containing the command's name,
-// description, and execute function.
+// description, and function to be executed.
 func GetCommands() Commands {
 	return Commands{
 		"exit": {
