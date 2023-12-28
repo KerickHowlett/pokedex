@@ -2,6 +2,9 @@ package commands
 
 import "fmt"
 
+// Executes the requested command.
+//
+// If the requested command is not found, it returns an error.
 func RunCommand(command string) error {
 	selectedCommand, commandFound := GetCommands()[command]
 
