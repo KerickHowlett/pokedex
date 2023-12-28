@@ -2,6 +2,8 @@ package commands
 
 type Commands = map[string]Command
 
+// @TODO: Find a way to not need this function.
+
 // A map of available commands is returned.
 //
 // Each command is represented by a key-value pair, where the key is the command
