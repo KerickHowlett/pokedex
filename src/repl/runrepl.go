@@ -21,7 +21,7 @@ func RunREPL(execute func(string) error) {
 }
 
 func parseInput(cli *bufio.Scanner) string {
-	userInput := cli.Text()
+	rawInput := cli.Text()
 
-	return SanitizeInput(userInput)
+	return SanitizeInput(rawInput)
 }
