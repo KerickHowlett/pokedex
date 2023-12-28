@@ -12,7 +12,6 @@ func RunREPL(execute func(...string) error) {
 	for cli.Scan() {
 		userInput := parseInput(cli)
 		execute(userInput)
-
 		PrintPrompt()
 	}
 }
