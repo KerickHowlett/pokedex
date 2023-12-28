@@ -16,6 +16,10 @@ func RunREPL(execute func(string) error) {
 	for scanner.Scan() {
 		userInput := SanitizeInput(scanner.Text())[0]
 
+		if len(userInput) == 0 {
+			continue
+		}
+
 		execute(userInput)
 		PrintPrompt()
 	}
