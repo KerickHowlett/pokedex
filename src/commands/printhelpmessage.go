@@ -1,21 +1,24 @@
 package commands
 
-import (
-	"fmt"
-)
+import "fmt"
 
-// PrintHelpMessage prints the help message for all commands.
-// It iterates over the list of commands obtained from GetCommands()
-// and calls printCommandHelp() to print the help message for each command.
-// It returns an error if there is any issue while printing the help message.
+// Prints the help message for the Pokedex CLI application.
+//
+// It displays the welcome message and usage instructions, and it prints the
+// help information for each command.
 func PrintHelpMessage() error {
-	for _, command := range GetCommands() {
-		printCommandHelp(&command)
-	}
+	fmt.Println("Welcome to the Pokedex!")
+	fmt.Println("Usage:")
+	fmt.Println() // Empty Line
+
+	commands := GetCommands()
+	printCommandsHelp(commands)
 
 	return nil
 }
 
-func printCommandHelp(command *Command) {
-	fmt.Printf("%s: %s\n", command.Name, command.Description)
+func printCommandsHelp(commands Commands) {
+	for _, command := range commands {
+		fmt.Printf("%s: %s\n", command.Name, command.Description)
+	}
 }
