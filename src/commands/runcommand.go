@@ -10,11 +10,9 @@ func RunCommand(command string) error {
 		return nil
 	}
 
-	selectedCommand, commandFound := GetCommands()[command]
-
-	if !commandFound {
-		return fmt.Errorf("Command not found: %s", command)
+	if selectedCommand, commandFound := GetCommands()[command]; commandFound {
+		return selectedCommand.Execute()
 	}
 
-	return selectedCommand.Execute()
+	return fmt.Errorf("Command not found: %s", command)
 }
