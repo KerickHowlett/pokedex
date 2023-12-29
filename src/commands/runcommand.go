@@ -6,6 +6,10 @@ import "fmt"
 //
 // If the requested command is not found, it returns an error.
 func RunCommand(command string) error {
+	if len(command) == 0 {
+		return nil
+	}
+
 	selectedCommand, commandFound := GetCommands()[command]
 
 	if !commandFound {
