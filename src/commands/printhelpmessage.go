@@ -8,8 +8,9 @@ import "fmt"
 // help information for each command.
 func PrintHelpMessage() error {
 	fmt.Println("Welcome to the Pokedex!")
-	fmt.Println("Usage:")
 	fmt.Println() // Empty Line
+
+	fmt.Println("Pokedex Commands")
 
 	commands := GetCommands()
 	printCommandsHelp(commands)
