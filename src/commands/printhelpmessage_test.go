@@ -21,7 +21,10 @@ func TestPrintHelpMessage(t *testing.T) {
 
 // @TODO: Mock `GetCommands()` to completely isolate this unit test.
 func getExpectedOutputFixture() string {
-	expected := "Welcome to the Pokedex!\nUsage:\n\n"
+	expected := "Welcome to the Pokedex!\n"
+	expected += "\n" // Empty Line
+
+	expected += "Pokedex Commands\n"
 
 	for _, command := range GetCommands() {
 		expected += fmt.Sprintf("%s: %s\n", command.Name, command.Description)
