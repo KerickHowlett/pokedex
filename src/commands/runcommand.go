@@ -16,13 +16,5 @@ func RunCommand(command string) error {
 		return fmt.Errorf("Command not found: %s", command)
 	}
 
-	return printPaddingWhenRunning(selectedCommand)
-}
-
-func printPaddingWhenRunning(command Command) error {
-	fmt.Println() // Empty Line
-	response := command.Execute()
-	fmt.Println() // Empty Line
-
-	return response
+	return selectedCommand.Execute()
 }
