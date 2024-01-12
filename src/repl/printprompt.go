@@ -4,7 +4,7 @@ import "fmt"
 
 // Prints the prompt for the PokedexCLI REPL.
 func PrintPrompt() {
-	const prompt = "pokedex > "
+	const PROMPT = "pokedex > "
 
-	fmt.Print(prompt)
+	fmt.Print(PROMPT)
 }
