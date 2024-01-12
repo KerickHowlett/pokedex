@@ -21,7 +21,7 @@ func TestHelpCommandIsDefined(t *testing.T) {
 }
 
 func assertCommandIsDefined(t *testing.T, commands Commands, commandName string) {
-	fmt.Printf("Create() should possess the '%s' command.", commandName)
+	fmt.Printf("Create() should possess the '%s' command.\n", commandName)
 
 	if _, ok := commands[commandName]; !ok {
 		t.Errorf("Expected command '%s' to be present, but it is not", commandName)
