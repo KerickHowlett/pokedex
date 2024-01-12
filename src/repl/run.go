@@ -7,6 +7,7 @@ import (
 )
 
 // @TODO: Make this function pure.
+// @TODO: Make `execute` a more generic type.
 
 // Starts a Read-Eval-Print Loop (REPL) for executing commands.
 //
