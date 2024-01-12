@@ -13,7 +13,7 @@ import (
 func TestPrintHelpMessage(t *testing.T) {
 	fmt.Println("Given a list of commands, PrintHelpMessage() should print out the help message.")
 
-	output := setupTestBed(PrintMessageCommandsFixture, t)
+	output := setupPrintHelpMessageTestBed(PrintMessageCommandsFixture, t)
 	expected := getExpectedOutputFixture(PrintMessageCommandsFixture)
 
 	if output != expected {
@@ -43,7 +43,7 @@ func getExpectedOutputFixture(commands Commands) string {
 	return expected
 }
 
-func setupTestBed(commands Commands, t *testing.T) string {
+func setupPrintHelpMessageTestBed(commands Commands, t *testing.T) string {
 	// Capture stdout from IO Pipe.
 	read, write, _ := os.Pipe()
 	originalStdout := os.Stdout
