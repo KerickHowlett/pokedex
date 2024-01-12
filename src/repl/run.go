@@ -6,12 +6,15 @@ import (
 	"os"
 )
 
+// @TODO: Make this function pure.
+
 // Starts a Read-Eval-Print Loop (REPL) for executing commands.
 //
 // It takes a function 'execute' as a parameter, which is responsible for
 // executing the user input.
 func Run(execute func(string) error) {
-	PrintPrompt()
+	const PROMPT = "pokedex > "
+	fmt.Print(PROMPT)
 
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
@@ -21,6 +24,6 @@ func Run(execute func(string) error) {
 		execute(userInput)
 
 		fmt.Println() // Empty Line
-		PrintPrompt()
+		fmt.Print(PROMPT)
 	}
 }
