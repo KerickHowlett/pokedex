@@ -6,5 +6,10 @@ import (
 )
 
 func main() {
-	repl.RunREPL(commands.RunCommand)
+	cmds := commands.Create()
+	commandRunner := func(selection string) error {
+		return commands.Run(selection, cmds)
+	}
+
+	repl.RunREPL(commandRunner)
 }
