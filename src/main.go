@@ -11,5 +11,5 @@ func main() {
 		return commands.Run(selection, cmds)
 	}
 
-	repl.RunREPL(commandRunner)
+	repl.Run(commandRunner)
 }

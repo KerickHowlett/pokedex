@@ -10,7 +10,7 @@ import (
 //
 // It takes a function 'execute' as a parameter, which is responsible for
 // executing the user input.
-func RunREPL(execute func(string) error) {
+func Run(execute func(string) error) {
 	PrintPrompt()
 
 	scanner := bufio.NewScanner(os.Stdin)
