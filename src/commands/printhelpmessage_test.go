@@ -8,69 +8,58 @@ import (
 	"testing"
 )
 
+// @SECTION: Unit Test Cases
+
 func TestPrintHelpMessage(t *testing.T) {
-	output := setupTestBed(t)
-	expected := getExpectedOutputFixture()
+	fmt.Println("Given a list of commands, PrintHelpMessage() should print out the help message.")
+
+	output := setupTestBed(PrintMessageCommandsFixture, t)
+	expected := getExpectedOutputFixture(PrintMessageCommandsFixture)
 
 	if output != expected {
 		t.Errorf("PrintHelpMessage() = %q, want %q", output, expected)
 	}
 }
 
-// @SECTION: Helper Functions
+// @SECTION: Helper Fixtures & Functions
 
-// @TODO: Mock `GetCommands()` to completely isolate this unit test.
-func getExpectedOutputFixture() string {
+var PrintMessageCommandsFixture Commands = Commands{
+	"test": {
+		Name:        "test",
+		Description: "This is a fake command.",
+		Execute:     func() error { return nil },
+	},
+}
+
+func getExpectedOutputFixture(commands Commands) string {
 	expected := "Welcome to the Pokedex!\n"
 	expected += "\n" // Empty Line
-
 	expected += "Pokedex Commands\n"
 
-	for _, command := range GetCommands() {
+	for _, command := range commands {
 		expected += fmt.Sprintf("%s: %s\n", command.Name, command.Description)
 	}
 
 	return expected
 }
 
-func getResponseFromPipe(readPipe, writePipe *os.File) string {
-	if writePipe != nil {
-		writePipe.Close()
-	}
+func setupTestBed(commands Commands, t *testing.T) string {
+	// Capture stdout from IO Pipe.
+	read, write, _ := os.Pipe()
+	originalStdout := os.Stdout
+	os.Stdout = write
+	defer func() { os.Stdout = originalStdout }()
 
-	var buf bytes.Buffer
-	io.Copy(&buf, readPipe)
-
-	return buf.String()
-}
-
-func mockStdout(writePipe *os.File) (savedOriginalStdOut *os.File) {
-	savedOriginalStdOut = os.Stdout
-
-	os.Stdout = writePipe // Override stdout with custom write pipe.
-
-	return savedOriginalStdOut
-}
-
-func performTest(t *testing.T) {
-	if err := PrintHelpMessage(); err != nil {
+	// Perform the test.
+	if err := PrintHelpMessage(commands); err != nil {
 		t.Errorf("PrintHelpMessage() returned an error: %v", err)
 	}
-}
 
-func restoreMockedStdout(originalStdout *os.File) {
-	os.Stdout = originalStdout
-}
-
-func setupTestBed(t *testing.T) string {
-	read, write, _ := os.Pipe()
-
-	originalStdout := mockStdout(write)
-	defer restoreMockedStdout(originalStdout)
-
-	performTest(t)
-
-	response := getResponseFromPipe(read, write)
+	// Copy captured value to set as the `response`.
+	write.Close()
+	var buf bytes.Buffer
+	io.Copy(&buf, read)
+	response := buf.String()
 
 	return response
 }
