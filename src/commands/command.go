@@ -10,9 +10,9 @@ type Command struct {
 
 type ICommand interface {
 	Execute() error
-	PrintCommandHelp()
+	PrintHelp()
 }
 
-func (c Command) PrintCommandHelp() {
+func (c Command) PrintHelp() {
 	fmt.Printf("%s: %s\n", c.Name, c.Description)
 }
