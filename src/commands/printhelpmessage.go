@@ -6,19 +6,15 @@ import "fmt"
 //
 // It displays the welcome message and usage instructions, and it prints the
 // help information for each command.
-func PrintHelpMessage(commands Commands) error {
+func (t Toolchain) PrintHelpMessage() {
 	fmt.Println("Welcome to the Pokedex!")
 	fmt.Println() // Empty Line
 
 	fmt.Println("Pokedex Commands")
+	fmt.Println("----------------")
+	fmt.Println() // Empty Line
 
-	printCommandManuals(commands)
-
-	return nil
-}
-
-func printCommandManuals(commands Commands) {
-	for _, command := range commands {
-		fmt.Printf("%s: %s\n", command.Name, command.Description)
+	for _, command := range *t.commands {
+		command.PrintHelp()
 	}
 }

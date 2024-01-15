@@ -13,8 +13,18 @@ import (
 func TestPrintHelpMessage(t *testing.T) {
 	fmt.Println("Given a list of commands, PrintHelpMessage() should print out the help message.")
 
-	output := setupPrintHelpMessageTestBed(PrintMessageCommandsFixture, t)
-	expected := getExpectedOutputFixture(PrintMessageCommandsFixture)
+	toolchainFixture := Toolchain{
+		commands: &Commands{
+			"test": {
+				Name:        "test",
+				Description: "This is a fake command.",
+				Execute:     func() error { return nil },
+			},
+		},
+	}
+
+	output := performPrintHelpMessageTest(toolchainFixture, t)
+	expected := getExpectedPrintHelpMessage(toolchainFixture)
 
 	if output != expected {
 		t.Errorf("PrintHelpMessage() = %q, want %q", output, expected)
@@ -23,27 +33,22 @@ func TestPrintHelpMessage(t *testing.T) {
 
 // @SECTION: Helper Fixtures & Functions
 
-var PrintMessageCommandsFixture Commands = Commands{
-	"test": {
-		Name:        "test",
-		Description: "This is a fake command.",
-		Execute:     func() error { return nil },
-	},
-}
-
-func getExpectedOutputFixture(commands Commands) string {
+func getExpectedPrintHelpMessage(tool Toolchain) string {
 	expected := "Welcome to the Pokedex!\n"
 	expected += "\n" // Empty Line
-	expected += "Pokedex Commands\n"
 
-	for _, command := range commands {
+	expected += "Pokedex Commands\n"
+	expected += "----------------\n"
+	expected += "\n" // Empty Line
+
+	for _, command := range *tool.commands {
 		expected += fmt.Sprintf("%s: %s\n", command.Name, command.Description)
 	}
 
 	return expected
 }
 
-func setupPrintHelpMessageTestBed(commands Commands, t *testing.T) string {
+func performPrintHelpMessageTest(tool IToolchain, t *testing.T) string {
 	// Capture stdout from IO Pipe.
 	read, write, _ := os.Pipe()
 	originalStdout := os.Stdout
@@ -51,9 +56,7 @@ func setupPrintHelpMessageTestBed(commands Commands, t *testing.T) string {
 	defer func() { os.Stdout = originalStdout }()
 
 	// Perform the test.
-	if err := PrintHelpMessage(commands); err != nil {
-		t.Errorf("PrintHelpMessage() returned an error: %v", err)
-	}
+	tool.PrintHelpMessage()
 
 	// Copy captured value to set as the `response`.
 	write.Close()
