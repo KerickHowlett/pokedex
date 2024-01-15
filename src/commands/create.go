@@ -8,7 +8,7 @@ type Commands = map[string]Command
 // name and the value is a Command struct containing the command's name,
 // description, and function to be executed.
 func Create() Commands {
-	cmds := Commands{
+	return Commands{
 		"exit": {
 			Name:        "exit",
 			Description: "Exits the REPL",
@@ -20,16 +20,12 @@ func Create() Commands {
 			Execute:     func() error { return nil },
 		},
 	}
+}
 
-	// @NOTE: This is a minor hack to get around the fact Go doesn't allow cmds
-	//        to "pass itself" as an argument to `PrintHelpMessage` before being
-	//        declared.
-	helpCommand := cmds["help"]
-	helpCommand.Execute = func() error {
-		return PrintHelpMessage(cmds)
+func NewCommand(name string, description string, execute func() error) *Command {
+	return &Command{
+		Name:        name,
+		Description: description,
+		Execute:     execute,
 	}
-
-	cmds["help"] = helpCommand
-
-	return cmds
 }
