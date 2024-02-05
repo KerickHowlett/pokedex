@@ -2,6 +2,7 @@ package parser
 
 import (
 	"fmt"
+	"reflect"
 	"strings"
 	"testing"
 )
@@ -10,38 +11,30 @@ func TestDefaultNewSanitizer(t *testing.T) {
 	fmt.Println("NewSanitizer should return a Sanitizer with default values")
 	sanitizer := NewParser()
 
-	expectedFunction(t, sanitizer.Fields, strings.Fields, "Expected Fields to be set with strings.Fields, but found nil\n.")
-	expectedFunction(t, sanitizer.ToLower, strings.ToLower, "Expected ToLower to be set with strings.Fields, but found nil\n.")
-	expectedFunction(t, sanitizer.TrimSpace, strings.TrimSpace, "Expected TrimSpace to be set with strings.Fields, but found nil\n.")
+	expectSameEntity(t, sanitizer.Fields, strings.Fields, "Fields")
+	expectSameEntity(t, sanitizer.ToLower, strings.ToLower, "ToLower")
+	expectSameEntity(t, sanitizer.TrimSpace, strings.TrimSpace, "TrimSpace")
 }
 
 func TestWithFields(t *testing.T) {
 	fmt.Println("WithFields should set the Fields field of the Sanitizer struct")
 	sanitizer := NewParser(WithFields(stringSliceReturnMock))
 
-	if fmt.Sprintf("%p", sanitizer.Fields) != fmt.Sprintf("%p", stringSliceReturnMock) {
-		t.Errorf("Expected Fields to be set, got nil")
-	}
+	expectSameEntity(t, sanitizer.Fields, stringSliceReturnMock, "Fields")
 }
-
-type FuncMock func(argument string) string
 
 func TestWithToLower(t *testing.T) {
 	fmt.Println("WithToLower should set the ToLower field of the Sanitizer struct")
 	sanitizer := NewParser(WithToLower(stringReturnMock))
 
-	if fmt.Sprintf("%p", sanitizer.ToLower) != fmt.Sprintf("%p", stringReturnMock) {
-		t.Errorf("Expected toLowerMock to be set, got nil")
-	}
+	expectSameEntity(t, sanitizer.ToLower, stringReturnMock, "ToLower")
 }
 
 func TestWithTrimSpace(t *testing.T) {
 	fmt.Println("WithTrimSpace should set the TrimSpace field of the Sanitizer struct")
-	actual := NewParser(WithTrimSpace(stringReturnMock)).TrimSpace
+	sanitizer := NewParser(WithTrimSpace(stringReturnMock))
 
-	if fmt.Sprintf("%p", actual) != fmt.Sprintf("%p", stringReturnMock) {
-		t.Errorf("Expected trimSpace to be set, got nil")
-	}
+	expectSameEntity(t, sanitizer.TrimSpace, stringReturnMock, "TrimSpace")
 }
 
 func TestParseInput(t *testing.T) {
@@ -53,7 +46,7 @@ func TestParseInput(t *testing.T) {
 	response := sanitizer.ParseInput("  Hello World  ")
 
 	if response == nil || response[0] != expected {
-		t.Errorf("Expected %s, got %s\n", expected, response)
+		t.Errorf("Expected %s, but instead got %s\n", expected, response)
 	}
 }
 
@@ -69,8 +62,8 @@ func stringReturnMock(argument string) string {
 
 // @SECTION: ASSERTERS
 
-func expectedFunction(t *testing.T, actual interface{}, expected interface{}, message string) {
-	if fmt.Sprintf("%p", actual) != fmt.Sprintf("%p", expected) {
-		t.Errorf(message)
+func expectSameEntity(t *testing.T, actual any, expected any, fieldName string) {
+	if reflect.ValueOf(actual).Pointer() == reflect.ValueOf(expected).Pointer() {
+		t.Errorf("Expected %s to be set with the argued function, but instead got %v\n", fieldName, actual)
 	}
 }
