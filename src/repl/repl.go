@@ -20,14 +20,14 @@ import (
 // The Scanner field is an interface that is used to read user input during the
 // REPL session.
 //
-// The SanitizeInput field is a function that is called to sanitize the user
+// The ParseInput field is a function that is called to sanitize the user
 // input before processing it in the REPL.
 type REPL struct {
-	PrintPrompt     func()
-	PrintNewLine    func()
 	CommandExecutor func(...string) error
+	ParseInput      func(string) []string
+	PrintNewLine    func()
+	PrintPrompt     func()
 	Scanner         Scanner
-	SanitizeInput   func(string) []string
 }
 
 // REPLOption is a function type that represents options for configuring a REPL.
@@ -65,10 +65,10 @@ type Scanner interface {
 // Now the repl can be used to start the REPL.
 func NewREPL(options ...REPLOption) *REPL {
 	repl := &REPL{
-		PrintPrompt:   func() { fmt.Print("pokedex > ") },
-		PrintNewLine:  func() { fmt.Println() },
-		Scanner:       bufio.NewScanner(os.Stdin),
-		SanitizeInput: NewSanitizer().SanitizeInput,
+		ParseInput:   defaultParseInput,
+		PrintNewLine: printNewLine,
+		PrintPrompt:  printPrompt,
+		Scanner:      scanner,
 	}
 
 	for _, option := range options {
@@ -80,6 +80,49 @@ func NewREPL(options ...REPLOption) *REPL {
 	}
 
 	return repl
+}
+
+// defaultParseInput is the default ParseInput function for the REPL.
+func defaultParseInput(input string) []string {
+	return []string{input}
+}
+
+// printNewLine is the default PrintNewLine function for the REPL.
+func printNewLine() {
+	fmt.Println()
+}
+
+// printPrompt is the default PrintPrompt function for the REPL.
+func printPrompt() {
+	fmt.Print("pokedex > ")
+}
+
+var scanner Scanner = bufio.NewScanner(os.Stdin)
+
+// StartREPL starts the Read-Eval-Print Loop (REPL) for the REPL struct.
+// It continuously prompts the user for input, sanitizes the input, executes the
+// command, and prints the result. The loop continues until the user exits the
+// REPL.
+//
+// Example usage:
+//
+//	repl := NewREPL(WithCommandExecutor(commandExecutor))
+//	repl.StartREPL()
+//
+// The StartREPL method is used to start the REPL.
+func (r *REPL) StartREPL() {
+	r.PrintPrompt()
+
+	for r.Scanner.Scan() {
+		userInput := r.Scanner.Text()
+		commands := r.ParseInput(userInput)
+
+		r.PrintNewLine()
+		r.CommandExecutor(commands[0])
+
+		r.PrintNewLine()
+		r.PrintPrompt()
+	}
 }
 
 // WithCommandExecutor is a function that sets the command executor for the REPL.
@@ -166,32 +209,32 @@ func WithPrintPrompt(printPrompt func()) REPLOption {
 	}
 }
 
-// WithSanitizeInput is a REPLOption function that sets the sanitizeInput
+// WithParseInput is a REPLOption function that sets the ParseInput
 // function for the REPL.
 //
-// The sanitizeInput function takes a string as input and returns a slice of
+// The ParseInput function takes a string as input and returns a slice of
 // strings after sanitizing the input.
 //
 // It is used to sanitize the user input before processing it in the REPL.
 //
 // Parameters:
-//   - sanitizeInput: The sanitizeInput function to be set for the REPL.
+//   - ParseInput: The ParseInput function to be set for the REPL.
 //
 // Returns:
-//   - An option function that sets the sanitizeInput function for the REPL.
+//   - An option function that sets the ParseInput function for the REPL.
 //
 // Example usage:
 //
-//	sanitizeInput := func(input string) []string {
+//	ParseInput := func(input string) []string {
 //		return strings.Fields(input)
 //	}
-//	repl := NewREPL(WithSanitizeInput(sanitizeInput))
+//	repl := NewREPL(WithParseInput(ParseInput))
 //
-// Now the sanitizeInput function will be used to sanitize user input during the
+// Now the ParseInput function will be used to sanitize user input during the
 // REPL session.
-func WithSanitizeInput(sanitizeInput func(string) []string) REPLOption {
+func WithParseInput(ParseInput func(string) []string) REPLOption {
 	return func(r *REPL) {
-		r.SanitizeInput = sanitizeInput
+		r.ParseInput = ParseInput
 	}
 }
 
@@ -214,31 +257,5 @@ func WithSanitizeInput(sanitizeInput func(string) []string) REPLOption {
 func WithScanner(scanner Scanner) REPLOption {
 	return func(r *REPL) {
 		r.Scanner = scanner
-	}
-}
-
-// StartREPL starts the Read-Eval-Print Loop (REPL) for the REPL struct.
-// It continuously prompts the user for input, sanitizes the input, executes the
-// command, and prints the result. The loop continues until the user exits the
-// REPL.
-//
-// Example usage:
-//
-//	repl := NewREPL(WithCommandExecutor(commandExecutor))
-//	repl.StartREPL()
-//
-// The StartREPL method is used to start the REPL.
-func (r *REPL) StartREPL() {
-	r.PrintPrompt()
-
-	for r.Scanner.Scan() {
-		userInput := r.Scanner.Text()
-		command := r.SanitizeInput(userInput)[0]
-
-		r.PrintNewLine()
-		r.CommandExecutor(command)
-
-		r.PrintNewLine()
-		r.PrintPrompt()
 	}
 }
