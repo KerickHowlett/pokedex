@@ -1,4 +1,4 @@
-package commands
+package command
 
 import (
 	"fmt"
@@ -27,8 +27,9 @@ func TestExitProcess(t *testing.T) {
 // so the test case(s) doesn't exit prematurely.
 func setupExitCommandTestBed() error {
 	if os.Getenv("BE_CRASHER") == "1" {
-		ExitProcess()
-		return nil
+		command := ExitCommand{}
+
+		return command.Execute()
 	}
 
 	cmd := exec.Command(os.Args[0], "-test.run=TestExitProcess")
