@@ -1,9 +1,9 @@
 package main
 
 import (
+	c "github.com/KerickHowlett/pokedexcli/src/command"
 	r "github.com/KerickHowlett/pokedexcli/src/repl"
 	t "github.com/KerickHowlett/pokedexcli/src/toolchain"
-	c "github.com/KerickHowlett/pokedexcli/src/toolchain/command"
 )
 
 func main() {
