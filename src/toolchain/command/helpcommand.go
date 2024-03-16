@@ -17,3 +17,7 @@ func (c *HelpCommand) GetName() string {
 func (c *HelpCommand) PrintHelp() {
 	printSingleCommandHelp(c)
 }
+
+func NewHelpCommand() *HelpCommand {
+	return &HelpCommand{}
+}

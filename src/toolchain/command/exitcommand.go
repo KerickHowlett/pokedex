@@ -22,3 +22,7 @@ func (c *ExitCommand) GetName() string {
 func (c *ExitCommand) PrintHelp() {
 	printSingleCommandHelp(c)
 }
+
+func NewExitCommand() *ExitCommand {
+	return &ExitCommand{}
+}
