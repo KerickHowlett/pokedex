@@ -27,22 +27,37 @@ type REPL struct {
 	ParseInput      func(string) []string
 	PrintNewLine    func()
 	PrintPrompt     func()
-	Scanner         Scanner
+	Scanner         scanner
 }
 
 // REPLOption is a function type that represents options for configuring a REPL.
 type REPLOption func(*REPL)
 
-// Scanner is an interface that defines the behavior of a scanner.
+// scanner is an interface that defines the behavior of a scanner.
 //
 // It is used to read user input during the REPL session.
 //
 // The Scan method is used to read the next token from the input.
 //
 // The Text method is used to return the most recent token read from the input.
-type Scanner interface {
+type scanner interface {
 	Scan() bool
 	Text() string
+}
+
+// defaultParseInput is the default ParseInput function for the REPL.
+func defaultParseInput(input string) []string {
+	return []string{input}
+}
+
+// printNewLine is the default PrintNewLine function for the REPL.
+func printNewLine() {
+	fmt.Println()
+}
+
+// printPrompt is the default PrintPrompt function for the REPL.
+func printPrompt() {
+	fmt.Print("pokedex > ")
 }
 
 // NewREPL creates a new instance of the REPL struct with the provided options.
@@ -68,7 +83,7 @@ func NewREPL(options ...REPLOption) *REPL {
 		ParseInput:   defaultParseInput,
 		PrintNewLine: printNewLine,
 		PrintPrompt:  printPrompt,
-		Scanner:      scanner,
+		Scanner:      bufio.NewScanner(os.Stdin),
 	}
 
 	for _, option := range options {
@@ -80,49 +95,6 @@ func NewREPL(options ...REPLOption) *REPL {
 	}
 
 	return repl
-}
-
-// defaultParseInput is the default ParseInput function for the REPL.
-func defaultParseInput(input string) []string {
-	return []string{input}
-}
-
-// printNewLine is the default PrintNewLine function for the REPL.
-func printNewLine() {
-	fmt.Println()
-}
-
-// printPrompt is the default PrintPrompt function for the REPL.
-func printPrompt() {
-	fmt.Print("pokedex > ")
-}
-
-var scanner Scanner = bufio.NewScanner(os.Stdin)
-
-// StartREPL starts the Read-Eval-Print Loop (REPL) for the REPL struct.
-// It continuously prompts the user for input, sanitizes the input, executes the
-// command, and prints the result. The loop continues until the user exits the
-// REPL.
-//
-// Example usage:
-//
-//	repl := NewREPL(WithCommandExecutor(commandExecutor))
-//	repl.StartREPL()
-//
-// The StartREPL method is used to start the REPL.
-func (r *REPL) StartREPL() {
-	r.PrintPrompt()
-
-	for r.Scanner.Scan() {
-		userInput := r.Scanner.Text()
-		commands := r.ParseInput(userInput)
-
-		r.PrintNewLine()
-		r.CommandExecutor(commands[0])
-
-		r.PrintNewLine()
-		r.PrintPrompt()
-	}
 }
 
 // WithCommandExecutor is a function that sets the command executor for the REPL.
@@ -154,6 +126,35 @@ func (r *REPL) StartREPL() {
 func WithCommandExecutor(commandExecutor func(...string) error) REPLOption {
 	return func(r *REPL) {
 		r.CommandExecutor = commandExecutor
+	}
+}
+
+// WithParseInput is a REPLOption function that sets the ParseInput
+// function for the REPL.
+//
+// The ParseInput function takes a string as input and returns a slice of
+// strings after sanitizing the input.
+//
+// It is used to sanitize the user input before processing it in the REPL.
+//
+// Parameters:
+//   - ParseInput: The ParseInput function to be set for the REPL.
+//
+// Returns:
+//   - An option function that sets the ParseInput function for the REPL.
+//
+// Example usage:
+//
+//	ParseInput := func(input string) []string {
+//		return strings.Fields(input)
+//	}
+//	repl := NewREPL(WithParseInput(ParseInput))
+//
+// Now the ParseInput function will be used to sanitize user input during the
+// REPL session.
+func WithParseInput(ParseInput func(string) []string) REPLOption {
+	return func(r *REPL) {
+		r.ParseInput = ParseInput
 	}
 }
 
@@ -209,35 +210,6 @@ func WithPrintPrompt(printPrompt func()) REPLOption {
 	}
 }
 
-// WithParseInput is a REPLOption function that sets the ParseInput
-// function for the REPL.
-//
-// The ParseInput function takes a string as input and returns a slice of
-// strings after sanitizing the input.
-//
-// It is used to sanitize the user input before processing it in the REPL.
-//
-// Parameters:
-//   - ParseInput: The ParseInput function to be set for the REPL.
-//
-// Returns:
-//   - An option function that sets the ParseInput function for the REPL.
-//
-// Example usage:
-//
-//	ParseInput := func(input string) []string {
-//		return strings.Fields(input)
-//	}
-//	repl := NewREPL(WithParseInput(ParseInput))
-//
-// Now the ParseInput function will be used to sanitize user input during the
-// REPL session.
-func WithParseInput(ParseInput func(string) []string) REPLOption {
-	return func(r *REPL) {
-		r.ParseInput = ParseInput
-	}
-}
-
 // WithScanner sets the scanner for the REPL.
 // It is an option function that can be used when creating a new REPL instance.
 // The scanner is responsible for reading user input during the REPL session.
@@ -254,7 +226,7 @@ func WithParseInput(ParseInput func(string) []string) REPLOption {
 //	repl := NewREPL(WithScanner(scanner))
 //
 // Now the scanner will be used to read user input during the REPL session.
-func WithScanner(scanner Scanner) REPLOption {
+func WithScanner(scanner scanner) REPLOption {
 	return func(r *REPL) {
 		r.Scanner = scanner
 	}

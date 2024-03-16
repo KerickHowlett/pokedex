@@ -1,7 +1,9 @@
 package repl
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 	"reflect"
 	"testing"
 )
@@ -17,7 +19,7 @@ func TestDefaultNewREPL(t *testing.T) {
 	expectSameEntity(t, repl.CommandExecutor, commandExecutorMock, "CommandExecutor")
 	expectSameEntity(t, repl.PrintNewLine, printNewLine, "PrintNewLine")
 	expectSameEntity(t, repl.PrintPrompt, printPrompt, "PrintPrompt")
-	expectSameEntity(t, repl.Scanner, scanner, "Scanner")
+	expectSameEntity(t, repl.Scanner, bufio.NewScanner(os.Stdin), "Scanner")
 }
 
 func TestNewREPL_PanicIfCommandExecutorNotSet(t *testing.T) {
@@ -29,34 +31,6 @@ func TestNewREPL_PanicIfCommandExecutorNotSet(t *testing.T) {
 	}()
 
 	NewREPL()
-}
-
-func TestStartREPL(t *testing.T) {
-	fmt.Println("StartREPL should execute command and prompt for input until user exits")
-
-	scannerMock := &ScannerMock{isEnabled: mockedScannerEnabledStatus, userInput: "exit"}
-
-	executedCommand := ""
-	mockedCommandExecutor := func(args ...string) error {
-		executedCommand = args[0]
-		defer func() { scannerMock.isEnabled = false }()
-		return nil
-	}
-
-	repl := NewREPL(
-		WithCommandExecutor(mockedCommandExecutor),
-		WithPrintPrompt(emptyFunctionMock),
-		WithScanner(scannerMock),
-		WithParseInput(parserMock),
-		WithPrintNewLine(emptyFunctionMock),
-	)
-
-	repl.StartREPL()
-
-	expectedCommand := scannerMock.userInput
-	if !reflect.DeepEqual(executedCommand, expectedCommand) {
-		t.Errorf("Expected executed commands to be %v, but got %v", expectedCommand, executedCommand)
-	}
 }
 
 func TestWithCommandExecutor(t *testing.T) {
