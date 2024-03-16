@@ -23,7 +23,7 @@ import (
 // The ParseInput field is a function that is called to sanitize the user
 // input before processing it in the REPL.
 type REPL struct {
-	CommandExecutor func(...string) error
+	CommandExecutor func(string) error
 	ParseInput      func(string) []string
 	PrintNewLine    func()
 	PrintPrompt     func()
@@ -123,7 +123,7 @@ func NewREPL(options ...REPLOption) *REPL {
 //	repl := NewREPL(WithCommandExecutor(commandExecutor))
 //
 // Now the commandExecutor function will be used to execute commands in the REPL.
-func WithCommandExecutor(commandExecutor func(...string) error) REPLOption {
+func WithCommandExecutor(commandExecutor func(string) error) REPLOption {
 	return func(r *REPL) {
 		r.CommandExecutor = commandExecutor
 	}

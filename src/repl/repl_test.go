@@ -79,7 +79,7 @@ func expectSameEntity(t *testing.T, actual any, expected any, fieldName string) 
 
 // @SECTION: MOCKS
 
-func commandExecutorMock(args ...string) error {
+func commandExecutorMock(args string) error {
 	return nil
 }
 
