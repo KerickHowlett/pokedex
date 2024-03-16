@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	utils "github.com/KerickHowlett/pokedexcli/testing_utils"
+	utils "github.com/KerickHowlett/pokedexcli/src/testing_utils"
 )
 
 func TestPrintSingleCommandHelp(t *testing.T) {
