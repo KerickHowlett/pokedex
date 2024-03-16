@@ -12,8 +12,8 @@ func TestStartREPL(t *testing.T) {
 	scannerMock := &ScannerMock{isEnabled: mockedScannerEnabledStatus, userInput: "exit"}
 
 	executedCommand := ""
-	mockedCommandExecutor := func(args ...string) error {
-		executedCommand = args[0]
+	mockedCommandExecutor := func(args string) error {
+		executedCommand = args
 		defer func() { scannerMock.isEnabled = false }()
 		return nil
 	}
