@@ -1,0 +1,13 @@
+{
+    "go.buildOnSave": "workspace",
+    "go.useLanguageServer": true,
+    "cSpell.words": [
+        "cmds",
+        "exitrepl",
+        "getcommands",
+        "IREPL",
+        "pokedex",
+        "pokedexcli",
+        "printhelpmessage"
+    ]
+}
