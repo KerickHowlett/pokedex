@@ -1,7 +1,7 @@
 package toolchain
 
 import (
-	c "github.com/KerickHowlett/pokedexcli/src/command"
+	c "github.com/KerickHowlett/pokedexcli/internal/command"
 )
 
 type IToolchain interface {
