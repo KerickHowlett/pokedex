@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"testing"
 
-	c "github.com/KerickHowlett/pokedexcli/src/command"
-	utils "github.com/KerickHowlett/pokedexcli/src/testing_utils"
+	c "github.com/KerickHowlett/pokedexcli/internal/command"
+	utils "github.com/KerickHowlett/pokedexcli/internal/testing_utils"
 )
 
 // @SECTION: Unit Test Cases
