@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"testing"
 
-	c "github.com/KerickHowlett/pokedexcli/internal/command"
-	utils "github.com/KerickHowlett/pokedexcli/internal/testing_utils"
+	"github.com/KerickHowlett/pokedexcli/tests/mocks"
+	"github.com/KerickHowlett/pokedexcli/tests/utils"
 )
 
 // @SECTION: Unit Test Cases
@@ -13,8 +13,8 @@ import (
 func TestPrintHelpMessage(t *testing.T) {
 	printout := utils.PrintStorage{}
 
-	command1 := &c.MockCommand{Name: "Command 1", Description: "Command 1 help message."}
-	command2 := &c.MockCommand{Name: "Command 2", Description: "Command 2 help message."}
+	command1 := &mocks.MockCommand{Name: "Command 1", Description: "Command 1 help message."}
+	command2 := &mocks.MockCommand{Name: "Command 2", Description: "Command 2 help message."}
 	toolchain := NewToolchain(WithCommand(command1), WithCommand(command2))
 
 	expectedOutput := createExpectedPrintHelpMessageOutput(toolchain)

@@ -1,4 +1,6 @@
-package command
+package mocks
+
+import "fmt"
 
 type MockCommand struct {
 	Name        string
@@ -18,5 +20,8 @@ func (c *MockCommand) Execute() error {
 }
 
 func (c *MockCommand) PrintHelp() {
-	printSingleCommandHelp(c)
+	name := c.GetName()
+	description := c.GetDescription()
+
+	fmt.Printf("%s: %s\n", name, description)
 }
