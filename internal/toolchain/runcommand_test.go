@@ -4,11 +4,9 @@ import (
 	"fmt"
 	"testing"
 
-	c "github.com/KerickHowlett/pokedexcli/internal/command"
-	utils "github.com/KerickHowlett/pokedexcli/internal/testing_utils"
+	"github.com/KerickHowlett/pokedexcli/tests/mocks"
+	"github.com/KerickHowlett/pokedexcli/tests/utils"
 )
-
-// @SECTION: Unit Test Cases
 
 func TestRunCommand_PrintHelpMessage(t *testing.T) {
 	printout := utils.PrintStorage{}
@@ -25,7 +23,7 @@ func TestRunCommand_PrintHelpMessage(t *testing.T) {
 }
 
 func TestRunCommand_ExecuteSelectedCommand(t *testing.T) {
-	mockCommand := &c.MockCommand{Name: "Command 1", Description: "Command 1 help message."}
+	mockCommand := &mocks.MockCommand{Name: "Command 1", Description: "Command 1 help message."}
 	toolchain := NewToolchain(WithCommand(mockCommand))
 
 	err := toolchain.RunCommand("Command 1")
