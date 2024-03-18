@@ -8,11 +8,19 @@ type MockCommand struct {
 }
 
 func (c *MockCommand) GetName() string {
-	return "mock"
+	return c.Name
+}
+
+func (c *MockCommand) SetName(name string) {
+	c.Name = name
 }
 
 func (c *MockCommand) GetDescription() string {
-	return "This is a mocked command."
+	return c.Description
+}
+
+func (c *MockCommand) SetDescription(description string) {
+	c.Description = description
 }
 
 func (c *MockCommand) Execute() error {
@@ -24,4 +32,11 @@ func (c *MockCommand) PrintHelp() {
 	description := c.GetDescription()
 
 	fmt.Printf("%s: %s\n", name, description)
+}
+
+func NewMockCommand() *MockCommand {
+	return &MockCommand{
+		Name:        "mock",
+		Description: "This is a mocked command.",
+	}
 }
