@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	utils "github.com/KerickHowlett/pokedexcli/tests/utils"
+	utils "github.com/KerickHowlett/pokedexcli/internal/tests/utils"
 )
 
 // @SECTION: TEST CASES

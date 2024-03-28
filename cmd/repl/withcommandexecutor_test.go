@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/KerickHowlett/pokedexcli/tests/utils"
+	"github.com/KerickHowlett/pokedexcli/internal/tests/utils"
 )
 
 func TestWithCommandExecutor(t *testing.T) {
