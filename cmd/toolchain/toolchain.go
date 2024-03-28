@@ -1,6 +1,6 @@
 package toolchain
 
-import c "github.com/KerickHowlett/pokedexcli/internal/command"
+import c "github.com/KerickHowlett/pokedexcli/cmd/command"
 
 type IToolchain interface {
 	PrintHelpMessage()

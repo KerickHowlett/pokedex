@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	c "github.com/KerickHowlett/pokedexcli/internal/command"
+	c "github.com/KerickHowlett/pokedexcli/cmd/command"
 )
 
 func TestWithCommand(t *testing.T) {
