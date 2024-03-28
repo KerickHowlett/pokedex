@@ -50,13 +50,13 @@ func defaultParseInput(input string) []string {
 	return []string{input}
 }
 
-// printNewLine is the default PrintNewLine function for the REPL.
-func printNewLine() {
+// defaultPrintNewLine is the default PrintNewLine function for the REPL.
+func defaultPrintNewLine() {
 	fmt.Println()
 }
 
-// printPrompt is the default PrintPrompt function for the REPL.
-func printPrompt() {
+// defaultPrintPrompt is the default PrintPrompt function for the REPL.
+func defaultPrintPrompt() {
 	fmt.Print("pokedex > ")
 }
 
@@ -81,8 +81,8 @@ func printPrompt() {
 func NewREPL(options ...REPLOption) *REPL {
 	repl := &REPL{
 		ParseInput:   defaultParseInput,
-		PrintNewLine: printNewLine,
-		PrintPrompt:  printPrompt,
+		PrintNewLine: defaultPrintNewLine,
+		PrintPrompt:  defaultPrintPrompt,
 		Scanner:      bufio.NewScanner(os.Stdin),
 	}
 
@@ -95,139 +95,4 @@ func NewREPL(options ...REPLOption) *REPL {
 	}
 
 	return repl
-}
-
-// WithCommandExecutor is a function that sets the command executor for the REPL.
-//
-// The command executor is responsible for executing commands in the REPL.
-//
-// It takes a variadic argument of strings representing the command and returns
-// an error if any.
-//
-// This function is used as an option in the REPL constructor to customize the
-// behavior of the REPL.
-//
-// Parameters:
-//   - commandExecutor: The function to be called for executing commands in the
-//     REPL.
-//
-// Returns:
-//   - An option function that sets the commandExecutor function for the REPL.
-//
-// Example usage:
-//
-//	commandExecutor := func(args ...string) error {
-//		fmt.Println("Executing command:", args)
-//		return nil
-//	}
-//	repl := NewREPL(WithCommandExecutor(commandExecutor))
-//
-// Now the commandExecutor function will be used to execute commands in the REPL.
-func WithCommandExecutor(commandExecutor func(string) error) REPLOption {
-	return func(r *REPL) {
-		r.CommandExecutor = commandExecutor
-	}
-}
-
-// WithParseInput is a REPLOption function that sets the ParseInput
-// function for the REPL.
-//
-// The ParseInput function takes a string as input and returns a slice of
-// strings after sanitizing the input.
-//
-// It is used to sanitize the user input before processing it in the REPL.
-//
-// Parameters:
-//   - ParseInput: The ParseInput function to be set for the REPL.
-//
-// Returns:
-//   - An option function that sets the ParseInput function for the REPL.
-//
-// Example usage:
-//
-//	ParseInput := func(input string) []string {
-//		return strings.Fields(input)
-//	}
-//	repl := NewREPL(WithParseInput(ParseInput))
-//
-// Now the ParseInput function will be used to sanitize user input during the
-// REPL session.
-func WithParseInput(ParseInput func(string) []string) REPLOption {
-	return func(r *REPL) {
-		r.ParseInput = ParseInput
-	}
-}
-
-// WithPrintNewLine is a REPLOption function that sets the PrintNewLine function
-// of the REPL.
-//
-// The PrintNewLine function is called to print an empty line in the REPL.
-//
-// It takes a printEmptyLine function as a parameter and assigns it to the
-// PrintNewLine field of the REPL.
-//
-// Parameters:
-//   - printEmptyLine: The function to be called for printing an empty line.
-//
-// Returns:
-//   - An option function that sets the printEmptyLine function for the REPL.
-//
-// Example usage:
-//
-//	printEmptyLine := func() {
-//		fmt.Println()
-//	}
-//	repl := NewREPL(WithPrintNewLine(printEmptyLine))
-//
-// Now the printEmptyLine function will be used to print an empty line in the
-// REPL.
-func WithPrintNewLine(printEmptyLine func()) REPLOption {
-	return func(r *REPL) {
-		r.PrintNewLine = printEmptyLine
-	}
-}
-
-// WithPrintPrompt sets the function to be called for printing the REPL prompt.
-// It is an option function that can be used with the REPL struct.
-//
-// Parameters:
-//   - printPrompt: The function to be called for printing the REPL prompt.
-//
-// Returns:
-//   - An option function that sets the printPrompt function for the REPL.
-//
-// Example usage:
-//
-//	printPrompt := func() {
-//		fmt.Print("pokedex > ")
-//	}
-//	repl := NewREPL(WithPrintPrompt(printPrompt))
-//
-// Now the printPrompt function will be used to print the REPL prompt.
-func WithPrintPrompt(printPrompt func()) REPLOption {
-	return func(r *REPL) {
-		r.PrintPrompt = printPrompt
-	}
-}
-
-// WithScanner sets the scanner for the REPL.
-// It is an option function that can be used when creating a new REPL instance.
-// The scanner is responsible for reading user input during the REPL session.
-//
-// Parameters:
-//   - scanner: The scanner to be set for the REPL.
-//
-// Returns:
-//   - An option function that sets the scanner for the REPL.
-//
-// Example usage:
-//
-//	scanner := bufio.NewScanner(os.Stdin)
-//	repl := NewREPL(WithScanner(scanner))
-//
-// Now the scanner will be used to read user input during the REPL session.
-func WithScanner(scanner scanner) REPLOption {
-	return func(r *REPL) {
-		r.Scanner = scanner
-	}
 }
