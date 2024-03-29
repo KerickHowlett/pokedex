@@ -4,14 +4,14 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/KerickHowlett/pokedexcli/internal/tests/mocks"
-	"github.com/KerickHowlett/pokedexcli/internal/tests/utils"
+	"internal/tests/mocks"
+	"internal/tests/utils"
 )
 
 func TestRunCommand_PrintHelpMessage(t *testing.T) {
-	printout := utils.PrintStorage{}
-	toolchain := NewToolchain()
+	toolchain := createMockToolchain()
 
+	printout := utils.NewPrintStorage()
 	printout.Capture(toolchain.PrintHelpMessage)
 
 	expectedOutput := createExpectedPrintHelpMessageOutput(toolchain)
@@ -23,10 +23,9 @@ func TestRunCommand_PrintHelpMessage(t *testing.T) {
 }
 
 func TestRunCommand_ExecuteSelectedCommand(t *testing.T) {
-	mockCommand := &mocks.MockCommand{Name: "Command 1", Description: "Command 1 help message."}
-	toolchain := NewToolchain(WithCommand(mockCommand))
+	toolchain := createMockToolchain()
 
-	err := toolchain.RunCommand("Command 1")
+	err := toolchain.RunCommand("mock")
 
 	if err != nil {
 		t.Errorf("Expected no error, but got: %v", err)
@@ -34,7 +33,7 @@ func TestRunCommand_ExecuteSelectedCommand(t *testing.T) {
 }
 
 func TestRunCommand_InvalidCommand(t *testing.T) {
-	toolchain := NewToolchain()
+	toolchain := createMockToolchain()
 
 	err := toolchain.RunCommand("InvalidCommand")
 
@@ -45,11 +44,16 @@ func TestRunCommand_InvalidCommand(t *testing.T) {
 }
 
 func TestRunCommand_EmptySelection(t *testing.T) {
-	toolchain := NewToolchain()
+	toolchain := createMockToolchain()
 
 	err := toolchain.RunCommand("")
 
 	if err != nil {
 		t.Errorf("Expected no error, but got: %v", err)
 	}
+}
+
+func createMockToolchain() *Toolchain {
+	command := mocks.NewMockCommand()
+	return NewToolchain(WithCommand(command))
 }

@@ -4,15 +4,16 @@ import (
 	"fmt"
 	"testing"
 
-	m "github.com/KerickHowlett/pokedexcli/internal/tests/mocks"
-	"github.com/KerickHowlett/pokedexcli/internal/tests/utils"
+	m "internal/tests/mocks"
 )
 
 func TestStartREPL(t *testing.T) {
 	fmt.Println("StartREPL should execute command and prompt for input until user exits")
 	executedCommand, expectedCommand := setupStartREPLTest()
 
-	utils.ExpectSameEntity(t, *executedCommand, expectedCommand, "executedCommand")
+	if *executedCommand != expectedCommand {
+		t.Errorf("Executed command does not match expected command. Got: %s, Expected: %s", *executedCommand, expectedCommand)
+	}
 }
 
 func setupStartREPLTest() (executedCommand *string, userInput string) {

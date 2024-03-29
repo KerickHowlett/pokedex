@@ -20,8 +20,16 @@ import (
 // Example usage:
 // utils.ExpectSameEntity(t, actualScanner, expectedScanner, "Scanner")
 func ExpectSameEntity(t *testing.T, actual any, expected any, fieldName string) {
-	if reflect.DeepEqual(actual, expected) {
+	// argsType := reflect.TypeOf(actual).Kind()
+	// if argsType == reflect.Func && reflect.ValueOf(actual).Pointer() == reflect.ValueOf(expected).Pointer() {
+
+	// } else if argsType == reflect.Struct && actual == expected {
+
+	// } else {
+
+	// }
+	if reflect.ValueOf(actual).Pointer() == reflect.ValueOf(expected).Pointer() {
 		return
 	}
-	t.Errorf("Expected %s to be set with the argued function, but instead got %v\n", fieldName, actual)
+	t.Errorf("Expected %s to be set with the argued function, %v, but instead got %v\n", fieldName, expected, actual)
 }

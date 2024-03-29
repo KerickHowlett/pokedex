@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"testing"
 
-	m "github.com/KerickHowlett/pokedexcli/internal/tests/mocks"
-	"github.com/KerickHowlett/pokedexcli/internal/tests/utils"
+	m "internal/tests/mocks"
+	"internal/tests/utils"
 )
 
 func TestPrintSingleCommandHelp(t *testing.T) {
-	printout := utils.PrintStorage{}
+	printout := utils.NewPrintStorage()
 
 	command := &m.MockCommand{Name: "mock", Description: "This is a mocked command."}
 	expectedOutput := fmt.Sprintf("%s: %s\n", command.GetName(), command.GetDescription())

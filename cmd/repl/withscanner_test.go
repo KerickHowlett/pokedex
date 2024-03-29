@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"testing"
 
-	m "github.com/KerickHowlett/pokedexcli/internal/tests/mocks"
-	"github.com/KerickHowlett/pokedexcli/internal/tests/utils"
+	m "internal/tests/mocks"
+	u "internal/tests/utils"
 )
 
 func TestWithScanner(t *testing.T) {
@@ -14,5 +14,5 @@ func TestWithScanner(t *testing.T) {
 	scanner := m.NewScannerMock()
 	repl := setupREPLOptionTest(WithScanner(scanner))
 
-	utils.ExpectSameEntity(t, repl.Scanner, scanner, "Scanner")
+	u.ExpectSameEntity(t, repl.Scanner, scanner, "Scanner")
 }

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	m "github.com/KerickHowlett/pokedexcli/internal/tests/mocks"
+	m "internal/tests/mocks"
 )
 
 const defaultCommandName string = "mock1"
