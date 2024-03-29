@@ -14,7 +14,7 @@ func main() {
 		t.WithCommand(c.NewExitCommand()),
 	)
 
-	var repl = r.NewREPL(r.WithCommandExecutor(toolchain.RunCommand))
+	repl := r.NewREPL(r.WithCommandExecutor(toolchain.RunCommand))
 
 	repl.StartREPL()
 }
