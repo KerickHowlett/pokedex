@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"testing"
 
-	c "github.com/KerickHowlett/pokedexcli/cmd/command"
+	m "internal/tests/mocks"
 )
 
 func TestWithCommand(t *testing.T) {
 	fmt.Println("Should add a command to the toolchain.")
-	command := c.NewHelpCommand()
+	command := m.NewMockCommand()
 	toolchain := NewToolchain(WithCommand(command))
 
 	if _, exists := toolchain.SelectCommand(command.GetName()); !exists {

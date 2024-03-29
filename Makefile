@@ -1,6 +1,6 @@
 PWD:=$(shell pwd)
 bin_file:=$(PWD)/bin/pokedexcli
-src_code:=$(PWD)/internal/
+src_code:=$(PWD)/cmd/app
 
 clean:
 	rm -rf $(bin_file)

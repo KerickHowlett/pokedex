@@ -37,3 +37,7 @@ func (c *PrintStorage) restoreStdOut() {
 	c.write.Close()
 	os.Stdout = c.old
 }
+
+func NewPrintStorage() *PrintStorage {
+	return &PrintStorage{}
+}

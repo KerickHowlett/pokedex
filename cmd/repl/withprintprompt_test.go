@@ -2,14 +2,21 @@ package repl
 
 import (
 	"fmt"
+	"reflect"
 	"testing"
 
-	"github.com/KerickHowlett/pokedexcli/internal/tests/utils"
+	u "internal/tests/utils"
 )
 
 func TestWithPrintPrompt(t *testing.T) {
 	fmt.Println("WithPrintPrompt should set the PrintPrompt field of the REPL struct")
+
 	repl := setupREPLOptionTest(WithPrintPrompt(emptyFunctionMock))
 
-	utils.ExpectSameEntity(t, repl.PrintPrompt, emptyFunctionMock, "PrintPrompt")
+	if !reflect.DeepEqual(repl.PrintPrompt, emptyFunctionMock) {
+		fmt.Printf("PrintPrompt: %p\n", repl.PrintPrompt)
+		fmt.Printf("PrintPrompt: %p\n", emptyFunctionMock)
+	}
+
+	u.ExpectSameEntity(t, repl.PrintPrompt, emptyFunctionMock, "PrintPrompt")
 }

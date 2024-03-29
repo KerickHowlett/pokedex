@@ -34,7 +34,30 @@ func (c *MockCommand) PrintHelp() {
 	fmt.Printf("%s: %s\n", name, description)
 }
 
-func NewMockCommand() *MockCommand {
+type MockCommandOption func(*MockCommand)
+
+func WithName(name string) MockCommandOption {
+	return func(c *MockCommand) {
+		c.Name = name
+	}
+}
+
+func WithDescription(description string) MockCommandOption {
+	return func(c *MockCommand) {
+		c.Description = description
+	}
+}
+
+func NewMockCommand(options ...MockCommandOption) *MockCommand {
+	command := &MockCommand{
+		Name:        "mock",
+		Description: "This is a mocked command.",
+	}
+
+	for _, option := range options {
+		option(command)
+	}
+
 	return &MockCommand{
 		Name:        "mock",
 		Description: "This is a mocked command.",

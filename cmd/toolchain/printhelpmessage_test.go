@@ -4,21 +4,31 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/KerickHowlett/pokedexcli/internal/tests/mocks"
-	"github.com/KerickHowlett/pokedexcli/internal/tests/utils"
+	m "internal/tests/mocks"
+	"internal/tests/utils"
 )
 
 // @SECTION: Unit Test Cases
 
 func TestPrintHelpMessage(t *testing.T) {
-	printout := utils.PrintStorage{}
+	command1 := m.NewMockCommand(
+		m.WithName("Command 1"),
+		m.WithDescription("Command 1 help message."),
+	)
 
-	command1 := &mocks.MockCommand{Name: "Command 1", Description: "Command 1 help message."}
-	command2 := &mocks.MockCommand{Name: "Command 2", Description: "Command 2 help message."}
-	toolchain := NewToolchain(WithCommand(command1), WithCommand(command2))
+	command2 := m.NewMockCommand(
+		m.WithName("Command 2"),
+		m.WithDescription("Command 2 help message."),
+	)
+
+	toolchain := NewToolchain(
+		WithCommand(command1),
+		WithCommand(command2),
+	)
 
 	expectedOutput := createExpectedPrintHelpMessageOutput(toolchain)
 
+	printout := utils.NewPrintStorage()
 	output := printout.Capture(toolchain.PrintHelpMessage)
 
 	if output != expectedOutput {

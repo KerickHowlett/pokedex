@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/KerickHowlett/pokedexcli/internal/tests/utils"
+	"internal/tests/utils"
 )
 
 func TestWithPrintNewLine(t *testing.T) {
