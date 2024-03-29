@@ -6,6 +6,7 @@
         "exitrepl",
         "getcommands",
         "IREPL",
+        "mapb",
         "pokedex",
         "pokedexcli",
         "printhelpmessage"

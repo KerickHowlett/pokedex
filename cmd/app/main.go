@@ -8,8 +8,10 @@ import (
 
 func main() {
 	var toolchain = t.NewToolchain(
-		t.WithCommand(c.NewExitCommand()),
+		t.WithCommand(c.NewMapCommand()),
+		t.WithCommand(c.NewMapBCommand()),
 		t.WithCommand(c.NewHelpCommand()),
+		t.WithCommand(c.NewExitCommand()),
 	)
 
 	var repl = r.NewREPL(r.WithCommandExecutor(toolchain.RunCommand))
