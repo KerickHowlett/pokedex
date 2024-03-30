@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"testing"
 
-	m "internal/tests/mocks"
+	p "internal/tests/mocks/parser"
+	s "internal/tests/mocks/scanner"
 )
 
 func TestStartREPL(t *testing.T) {
@@ -18,7 +19,7 @@ func TestStartREPL(t *testing.T) {
 
 func setupStartREPLTest() (executedCommand *string, userInput string) {
 	executedCommand = new(string)
-	scanner := m.NewScannerMock()
+	scanner := s.NewMockScanner()
 
 	mockedCommandExecutor := func(args string) error {
 		*executedCommand = args
@@ -28,7 +29,7 @@ func setupStartREPLTest() (executedCommand *string, userInput string) {
 
 	repl := NewREPL(
 		WithCommandExecutor(mockedCommandExecutor),
-		WithParseInput(m.ParserMock),
+		WithParseInput(p.MockParser),
 		WithPrintNewLine(emptyFunctionMock),
 		WithPrintPrompt(emptyFunctionMock),
 		WithScanner(scanner),

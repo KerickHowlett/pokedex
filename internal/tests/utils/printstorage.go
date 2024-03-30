@@ -10,6 +10,17 @@ type PrintStorage struct {
 	read, write, old *os.File
 }
 
+func (c *PrintStorage) CaptureWithError(performTest func() error) (printout string, err error) {
+	c.captureStdOut()
+
+	err = performTest()
+
+	c.restoreStdOut()
+	printout = c.getCapturedPrintOut()
+
+	return printout, err
+}
+
 func (c *PrintStorage) Capture(performTest func()) string {
 	c.captureStdOut()
 

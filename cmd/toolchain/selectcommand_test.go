@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	m "internal/tests/mocks"
+	m "internal/tests/mocks/command"
 )
 
 const defaultCommandName string = "mock1"
@@ -37,14 +37,14 @@ func TestToolchain_SelectCommand_CommandDoesNotExist(t *testing.T) {
 	}
 }
 
-func setupSelectCommandTests(targetMockCommandName string) (*Toolchain, *m.MockCommand, *m.MockCommand) {
-	command1 := m.NewMockCommand()
+func setupSelectCommandTests(targetMockCommandName string) (toolchain *Toolchain, command1 *m.MockCommand, command2 *m.MockCommand) {
+	command1 = m.NewMockCommand()
 	command1.SetName(targetMockCommandName)
 
-	command2 := m.NewMockCommand()
+	command2 = m.NewMockCommand()
 	command2.SetName("mock2")
 
-	toolchain := NewToolchain(
+	toolchain = NewToolchain(
 		WithCommand(command1),
 		WithCommand(command2),
 	)

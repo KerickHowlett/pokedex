@@ -1,4 +1,4 @@
-package mocks
+package mockcommand
 
 import "fmt"
 
@@ -58,8 +58,5 @@ func NewMockCommand(options ...MockCommandOption) *MockCommand {
 		option(command)
 	}
 
-	return &MockCommand{
-		Name:        "mock",
-		Description: "This is a mocked command.",
-	}
+	return command
 }

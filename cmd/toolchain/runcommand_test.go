@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"internal/tests/mocks"
+	m "internal/tests/mocks/command"
 	"internal/tests/utils"
 )
 
@@ -54,6 +54,6 @@ func TestRunCommand_EmptySelection(t *testing.T) {
 }
 
 func createMockToolchain() *Toolchain {
-	command := mocks.NewMockCommand()
+	command := m.NewMockCommand()
 	return NewToolchain(WithCommand(command))
 }
