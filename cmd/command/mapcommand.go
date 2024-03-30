@@ -1,14 +1,29 @@
 package command
 
-import "fmt"
+import (
+	"fmt"
 
-type MapCommand struct{}
+	m "github.com/KerickHowlett/pokedexcli/cmd/mapslist"
+)
+
+type MapCommand struct {
+	state *m.MapsList
+}
 
 // Execute is a method of the MapCommand struct responsible for cycling through
 // the pokemon world map locations list via the Pokemon API.
 func (c *MapCommand) Execute() error {
-	fmt.Println("TODO: Implement 'map' command")
-	return nil
+	url := c.state.NextURL
+
+	if url == nil {
+		return fmt.Errorf("no more maps to fetch")
+	}
+
+	if err := c.state.FetchMapsList(*url); err != nil {
+		return err
+	}
+
+	return c.state.PrintLocations()
 }
 
 func (c *MapCommand) GetDescription() string {
@@ -31,6 +46,8 @@ func (c *MapCommand) PrintHelp() {
 // Example usage:
 //
 //	command := NewMapCommand()
-func NewMapCommand() *MapCommand {
-	return &MapCommand{}
+func NewMapCommand(state *m.MapsList) *MapCommand {
+	return &MapCommand{
+		state: state,
+	}
 }
