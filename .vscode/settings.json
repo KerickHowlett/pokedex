@@ -7,6 +7,11 @@
         "getcommands",
         "IREPL",
         "mapb",
+        "mapslist",
+        "mockcommand",
+        "mocklocation",
+        "mockparser",
+        "mockscanner",
         "pokedex",
         "pokedexcli",
         "printhelpmessage"
