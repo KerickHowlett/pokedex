@@ -3,8 +3,9 @@ package location
 import "testing"
 
 func TestNewLocation(t *testing.T) {
-	t.Run("Valid Location Name", func(t *testing.T) {
-		const starterTown = "Pallet Town"
+	const starterTown = "Pallet Town"
+
+	t.Run("should create struct successfully with required Name field set.", func(t *testing.T) {
 		location := NewLocation(WithName(starterTown))
 
 		if location.Name != starterTown {
@@ -12,7 +13,7 @@ func TestNewLocation(t *testing.T) {
 		}
 	})
 
-	t.Run("Empty Location Name", func(t *testing.T) {
+	t.Run("should panic if no required Name value is provided.", func(t *testing.T) {
 		defer func() {
 			if r := recover(); r == nil {
 				t.Errorf("Expected NewLocation to panic with empty location name")

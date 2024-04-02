@@ -9,67 +9,78 @@ import (
 	f "internal/tests/fixtures"
 )
 
-func TestFetchMapsList_Success_NoError(t *testing.T) {
-	maps, server := setupFetchMapsListTests("success")
-	defer server.Close()
+func TestFetchMapsList(t *testing.T) {
+	t.Run("should fetch the list of maps from the API successfully.", func(t *testing.T) {
+		maps, server := setupFetchMapsListTests("success")
+		defer server.Close()
 
-	err := maps.FetchMapsList(server.URL)
-	if err != nil {
-		t.Errorf("Unexpected error: %v", err)
-	}
-}
+		err := maps.FetchMapsList(server.URL)
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	})
 
-func TestFetchMapsList_Success_NextURL(t *testing.T) {
-	maps, server := setupFetchMapsListTests("success")
-	defer server.Close()
+	t.Run("MapsList struct payload", func(t *testing.T) {
+		t.Run("should set the NextURL field with the same named field's value.", func(t *testing.T) {
+			maps, server := setupFetchMapsListTests("success")
+			defer server.Close()
 
-	maps.FetchMapsList(server.URL)
+			maps.FetchMapsList(server.URL)
 
-	if *maps.NextURL != f.APIEndpoint {
-		t.Errorf("Expected maps.next to be nil, but got: %v", maps.NextURL)
-	}
-}
+			if *maps.NextURL != f.APIEndpoint {
+				t.Errorf("Expected maps.NextURL to be %s, but fetched: %v", f.APIEndpoint, maps.NextURL)
+			}
+		})
 
-func TestFetchMapsList_Success_PreviousURL(t *testing.T) {
-	maps, server := setupFetchMapsListTests("success")
-	defer server.Close()
+		t.Run("should set the PreviousURL with the same named field's value.", func(t *testing.T) {
+			maps, server := setupFetchMapsListTests("success")
+			defer server.Close()
 
-	maps.FetchMapsList(server.URL)
+			maps.FetchMapsList(server.URL)
 
-	if maps.PreviousURL != nil {
-		t.Errorf("Expected maps.previous to be nil, but got: %v", maps.PreviousURL)
-	}
-}
+			if maps.PreviousURL != nil {
+				t.Errorf("Expected maps.PreviousURL to be nil, but fetched: %v", maps.PreviousURL)
+			}
+		})
 
-func TestFetchMapsList_Success_Locations(t *testing.T) {
-	maps, server := setupFetchMapsListTests("success")
-	defer server.Close()
+		t.Run("should set the Locations field with the same named field's slice.", func(t *testing.T) {
+			maps, server := setupFetchMapsListTests("success")
+			defer server.Close()
 
-	maps.FetchMapsList(server.URL)
+			maps.FetchMapsList(server.URL)
 
-	if len(maps.Locations) != 0 {
-		t.Errorf("Expected maps.results to be empty, but got %d elements", len(maps.Locations))
-	}
-}
+			if len(maps.Locations) != 0 {
+				t.Errorf("Expected maps.Locations to be empty, but fetched %d elements", len(maps.Locations))
+			}
+		})
+	})
 
-func TestFetchMapsList_HTTPError(t *testing.T) {
-	maps, server := setupFetchMapsListTests("get-error")
-	defer server.Close()
+	t.Run("should return an error if http.Get fails.", func(t *testing.T) {
+		maps, server := setupFetchMapsListTests("get-error")
+		defer server.Close()
 
-	err := maps.FetchMapsList("invalid")
+		err := maps.FetchMapsList("invalid")
 
-	const expectedErrorMessage = "error fetching maps list"
-	expectFetchError(t, err, expectedErrorMessage)
-}
+		expectFetchError(t, err, "error fetching maps list")
+	})
 
-func TestFetchMapsList_ReadError(t *testing.T) {
-	maps, server := setupFetchMapsListTests("read-error")
-	defer server.Close()
+	t.Run("should return an error if HTTP Response Body cannot be read.", func(t *testing.T) {
+		maps, server := setupFetchMapsListTests("read-error")
+		defer server.Close()
 
-	err := maps.FetchMapsList(server.URL)
+		err := maps.FetchMapsList(server.URL)
 
-	const expectedErrorMessage = "error reading response body"
-	expectFetchError(t, err, expectedErrorMessage)
+		expectFetchError(t, err, "error reading response body")
+	})
+
+	t.Run("should return an error if the response status code is not within the 200 range.", func(t *testing.T) {
+		maps, server := setupFetchMapsListTests("error-response")
+		defer server.Close()
+
+		err := maps.FetchMapsList(server.URL)
+
+		expectFetchError(t, err, "error with response")
+	})
 }
 
 func TestFetchMapsList_ErrorResponse(t *testing.T) {

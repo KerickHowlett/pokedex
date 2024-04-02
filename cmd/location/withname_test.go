@@ -3,12 +3,22 @@ package location
 import "testing"
 
 func TestWithName(t *testing.T) {
-	location := &Location{}
-	name := "Test Location"
 
-	WithName(name)(location)
+	setup := func() (location *Location, name string) {
+		location = &Location{}
+		name = "Test Location"
 
-	if location.Name != name {
-		t.Errorf("Expected location.name to be %q, but got %q", name, location.Name)
+		return location, name
+
 	}
+
+	t.Run("should assign argued name to location.Name field", func(t *testing.T) {
+		location, name := setup()
+
+		WithName(name)(location)
+
+		if location.Name != name {
+			t.Errorf("Expected location.Name to be %q, but got %q", name, location.Name)
+		}
+	})
 }

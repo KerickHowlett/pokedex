@@ -1,6 +1,7 @@
 package mapslist
 
 import (
+	"fmt"
 	"testing"
 
 	f "internal/tests/fixtures"
@@ -8,41 +9,52 @@ import (
 	l "github.com/KerickHowlett/pokedexcli/cmd/location"
 )
 
-func TestMapsList_GetNextURL(t *testing.T) {
-	_, mapsList := setupTestMapsListStructTest()
-	nextURL := mapsList.NextURL
+func TestMapsList(t *testing.T) {
+	setup := func() (location *l.Location, mapsList *MapsList) {
+		location = l.NewLocation(l.WithName("Pallet Town"))
+		mapsList = NewMapsList(
+			AddLocation(*location),
+			WithNextURL(&f.APIEndpoint),
+			WithPreviousURL(&f.APIEndpoint),
+		)
 
-	if *mapsList.NextURL != f.APIEndpoint {
-		t.Errorf("Expected GetNextURL to return %s, but got %s", f.APIEndpoint, *nextURL)
+		return location, mapsList
 	}
-}
 
-func TestMapsList_GetPreviousURL(t *testing.T) {
-	_, mapsList := setupTestMapsListStructTest()
-	previousURL := mapsList.PreviousURL
+	t.Run("should return a non-nil MapsList struct.", func(t *testing.T) {
+		fmt.Println("should return a non-nil MapsList struct.")
+		_, mapsList := setup()
 
-	if *mapsList.PreviousURL != f.APIEndpoint {
-		t.Errorf("Expected GetPreviousURL to return %s, but got %s", f.APIEndpoint, *previousURL)
-	}
-}
+		if mapsList == nil {
+			t.Errorf("Expected NewMapsList to return a MapsList, but got nil")
+		}
+	})
 
-func TestMapsList_GetResults(t *testing.T) {
-	location, mapsList := setupTestMapsListStructTest()
-	result := mapsList.Locations[0]
+	t.Run("should return the NextURL value set in the MapsList field.", func(t *testing.T) {
+		_, mapsList := setup()
+		nextURL := *mapsList.NextURL
 
-	if result != *location {
-		expectedName, actualName := location.Name, result.Name
-		t.Errorf("Expected GetResults[0].Name to be %s, but got %s", actualName, expectedName)
-	}
-}
+		if nextURL != f.APIEndpoint {
+			t.Errorf("Expected GetNextURL to return %s, but got %s", f.APIEndpoint, nextURL)
+		}
+	})
 
-func setupTestMapsListStructTest() (location *l.Location, mapsList *MapsList) {
-	location = l.NewLocation(l.WithName("Pallet Town"))
-	mapsList = NewMapsList(
-		AddLocation(*location),
-		WithNextURL(&f.APIEndpoint),
-		WithPreviousURL(&f.APIEndpoint),
-	)
+	t.Run("should return the PreviousURL field set in the MapsList field.", func(t *testing.T) {
+		_, mapsList := setup()
+		previousURL := *mapsList.PreviousURL
 
-	return location, mapsList
+		if previousURL != f.APIEndpoint {
+			t.Errorf("Expected GetPreviousURL to return %s, but got %s", f.APIEndpoint, previousURL)
+		}
+	})
+
+	t.Run("should return a list of locations stored in the MapsList field.", func(t *testing.T) {
+		location, mapsList := setup()
+		result := mapsList.Locations[0]
+
+		if result != *location {
+			expectedName, actualName := location.Name, result.Name
+			t.Errorf("Expected Locations[0].Name to be %s, but got %s", actualName, expectedName)
+		}
+	})
 }

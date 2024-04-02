@@ -19,7 +19,7 @@ func (m *MapsList) FetchMapsList(url string) error {
 		return fmt.Errorf("error reading response body: %v", err)
 	}
 
-	if response.StatusCode != http.StatusOK {
+	if response.StatusCode < http.StatusOK || response.StatusCode > http.StatusMultipleChoices {
 		return fmt.Errorf("error with response: %s", body)
 	}
 
