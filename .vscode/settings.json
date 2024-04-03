@@ -2,10 +2,12 @@
     "go.buildOnSave": "workspace",
     "go.useLanguageServer": true,
     "cSpell.words": [
+        "IREPL",
+        "Pikachu",
         "cmds",
+        "commandexecutor",
         "exitrepl",
         "getcommands",
-        "IREPL",
         "mapb",
         "mapslist",
         "mockcommand",
@@ -14,6 +16,7 @@
         "mockscanner",
         "pokedex",
         "pokedexcli",
-        "printhelpmessage"
+        "printhelpmessage",
+        "testtools"
     ]
 }

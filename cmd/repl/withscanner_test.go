@@ -1,7 +1,6 @@
 package repl
 
 import (
-	"fmt"
 	"testing"
 
 	m "testtools/mocks/scanner"
@@ -9,10 +8,18 @@ import (
 )
 
 func TestWithScanner(t *testing.T) {
-	fmt.Println("WithScanner should set the Scanner field of the REPL struct")
+	setup := func() (repl *REPL, scanner *m.MockScanner) {
+		scanner = m.NewMockScanner()
+		repl = NewREPL(
+			WithCommandExecutor(commandExecutorMock),
+			WithScanner(scanner),
+		)
 
-	scanner := m.NewMockScanner()
-	repl := setupREPLOptionTest(WithScanner(scanner))
+		return repl, scanner
+	}
 
-	u.ExpectSameEntity(t, repl.scanner, scanner, "Scanner")
+	t.Run("should set the Scanner field of the REPL struct", func(t *testing.T) {
+		repl, scanner := setup()
+		u.ExpectSameEntity(t, repl.scanner, scanner, "Scanner")
+	})
 }

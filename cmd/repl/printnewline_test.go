@@ -2,19 +2,20 @@ package repl
 
 import (
 	"testing"
+
 	"testtools/utils"
 )
 
 func TestREPL_printNewLine(t *testing.T) {
-	const emptyNewLine = "\n"
+	setup := func() (output string) {
+		stdout := utils.NewPrintStorage()
+		output = stdout.Capture(REPL{}.printNewLine)
 
-	r := REPL{}
-	stdout := utils.NewPrintStorage()
+		return output
+	}
 
 	t.Run("should print out an empty new line", func(t *testing.T) {
-		output := stdout.Capture(r.printNewLine)
-
-		if output != emptyNewLine {
+		if output := setup(); output != "\n" {
 			t.Errorf("Expected output to be '\\n'. Got '%s'", output)
 		}
 	})

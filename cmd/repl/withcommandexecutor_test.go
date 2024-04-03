@@ -1,15 +1,20 @@
 package repl
 
 import (
-	"fmt"
 	"testing"
 
+	m "testtools/mocks/commandexecutor"
 	"testtools/utils"
 )
 
 func TestWithCommandExecutor(t *testing.T) {
-	fmt.Println("should set the Fields field of the Sanitizer struct")
-	repl := NewREPL(WithCommandExecutor(commandExecutorMock))
+	setup := func() func(string) error {
+		repl := NewREPL(WithCommandExecutor(m.MockedCommandExecutor))
+		return repl.execute
+	}
 
-	utils.ExpectSameEntity(t, repl.execute, commandExecutorMock, "execute")
+	t.Run("should set the Fields field of the Sanitizer struct", func(t *testing.T) {
+		execute := setup()
+		utils.ExpectSameEntity(t, execute, m.MockedCommandExecutor, "execute")
+	})
 }

@@ -1,19 +1,34 @@
 package repl
 
 import (
-	"fmt"
+	"reflect"
 	"testing"
 )
 
 func TestParseInput(t *testing.T) {
-	fmt.Println("parseInput should return a sanitized string")
-
 	repl := &REPL{}
+	const emptyString = ""
 
-	response := repl.parseInput("  Hello World  ")
-
-	const expected string = "hello"
-	if response == nil || response[0] != expected {
-		t.Errorf("Expected %s, but instead got %s\n", expected, response)
+	runParseInputTest := func(input string, expected []string) {
+		response := repl.parseInput(input)
+		if !reflect.DeepEqual(response, expected) {
+			t.Errorf("Expected %v, but instead got %v\n", expected, response)
+		}
 	}
+
+	t.Run("should trim leading and trailing spaces", func(t *testing.T) {
+		runParseInputTest("  Pikachu  ", []string{"pikachu"})
+	})
+
+	t.Run("should convert the input to lowercase", func(t *testing.T) {
+		runParseInputTest("PIKACHU", []string{"pikachu"})
+	})
+
+	t.Run("should split each word of input into a slice of words.", func(t *testing.T) {
+		runParseInputTest("Team Rocket", []string{"team", "rocket"})
+	})
+
+	t.Run("should return an empty string within a slice if no input is provided", func(t *testing.T) {
+		runParseInputTest(emptyString, []string{emptyString})
+	})
 }
