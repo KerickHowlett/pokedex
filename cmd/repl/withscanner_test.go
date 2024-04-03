@@ -14,5 +14,5 @@ func TestWithScanner(t *testing.T) {
 	scanner := m.NewMockScanner()
 	repl := setupREPLOptionTest(WithScanner(scanner))
 
-	u.ExpectSameEntity(t, repl.Scanner, scanner, "Scanner")
+	u.ExpectSameEntity(t, repl.scanner, scanner, "Scanner")
 }

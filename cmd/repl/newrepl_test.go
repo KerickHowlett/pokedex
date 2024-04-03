@@ -16,7 +16,7 @@ func TestDefaultNewREPL(t *testing.T) {
 
 	repl := NewREPL(WithCommandExecutor(commandExecutorMock))
 
-	if repl.Scanner == bufio.NewScanner(os.Stdin) {
+	if repl.scanner == bufio.NewScanner(os.Stdin) {
 		t.Errorf("repl.Scanner is not the default bufio.NewScanner(os.Stdin) instance")
 	}
 

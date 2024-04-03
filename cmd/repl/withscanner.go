@@ -18,6 +18,6 @@ package repl
 // Now the scanner will be used to read user input during the REPL session.
 func WithScanner(scanner scanner) REPLOption {
 	return func(r *REPL) {
-		r.Scanner = scanner
+		r.scanner = scanner
 	}
 }

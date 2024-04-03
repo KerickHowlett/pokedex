@@ -12,8 +12,8 @@ package repl
 func (r *REPL) StartREPL() {
 	r.printPrompt()
 
-	for r.Scanner.Scan() {
-		userInput := r.Scanner.Text()
+	for r.scanner.Scan() {
+		userInput := r.scanner.Text()
 		commands := r.parseInput(userInput)
 
 		r.printNewLine()
