@@ -20,7 +20,6 @@ import (
 // Example usage:
 //
 //	repl := NewREPL(WithCommandExecutor(commandExecutor))
-//	repl.StartREPL()
 //
 // Now the repl can be used to start the REPL.
 func NewREPL(options ...REPLOption) *REPL {
