@@ -16,7 +16,7 @@ func (r *REPL) StartREPL() {
 
 	for r.Scanner.Scan() {
 		userInput := r.Scanner.Text()
-		commands := r.ParseInput(userInput)
+		commands := r.parseInput(userInput)
 
 		r.PrintNewLine()
 		r.CommandExecutor(commands[0])

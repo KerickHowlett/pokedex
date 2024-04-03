@@ -14,11 +14,10 @@ package repl
 // The Scanner field is an interface that is used to read user input during the
 // REPL session.
 //
-// The ParseInput field is a function that is called to sanitize the user
+// The parseInput field is a function that is called to sanitize the user
 // input before processing it in the REPL.
 type REPL struct {
 	CommandExecutor func(string) error
-	ParseInput      func(string) []string
 	PrintNewLine    func()
 	PrintPrompt     func()
 	Scanner         scanner

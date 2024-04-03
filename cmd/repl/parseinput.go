@@ -1,8 +1,8 @@
-package parser
+package repl
 
 import "strings"
 
-// ParseInput sanitizes the input string by trimming leading and trailing
+// parseInput sanitizes the input string by trimming leading and trailing
 // spaces, converting it to lowercase, and splitting it into individual words.
 //
 // It returns a slice of strings representing the sanitized words.
@@ -15,8 +15,8 @@ import "strings"
 //
 // Example usage:
 //
-//	sanitizedOutput := sanitizer.ParseInput("  HELLO  ")
-func ParseInput(input string) (words []string) {
+//	sanitizedOutput := sanitizer.parseInput("  HELLO  ")
+func (r *REPL) parseInput(input string) (words []string) {
 	trimmedInput := strings.TrimSpace(input)
 	lowercasedInput := strings.ToLower(trimmedInput)
 	words = strings.Fields(lowercasedInput)

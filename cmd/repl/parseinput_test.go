@@ -1,4 +1,4 @@
-package parser
+package repl
 
 import (
 	"fmt"
@@ -6,12 +6,13 @@ import (
 )
 
 func TestParseInput(t *testing.T) {
-	fmt.Println("ParseInput should return a sanitized string")
+	fmt.Println("parseInput should return a sanitized string")
+
+	repl := &REPL{}
+
+	response := repl.parseInput("  Hello World  ")
 
 	const expected string = "hello"
-
-	response := ParseInput("  Hello World  ")
-
 	if response == nil || response[0] != expected {
 		t.Errorf("Expected %s, but instead got %s\n", expected, response)
 	}

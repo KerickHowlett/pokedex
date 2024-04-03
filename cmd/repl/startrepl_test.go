@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"testing"
 
-	p "testtools/mocks/parser"
 	s "testtools/mocks/scanner"
 )
 
@@ -29,7 +28,6 @@ func setupStartREPLTest() (executedCommand *string, userInput string) {
 
 	repl := NewREPL(
 		WithCommandExecutor(mockedCommandExecutor),
-		WithParseInput(p.MockParser),
 		WithPrintNewLine(emptyFunctionMock),
 		WithPrintPrompt(emptyFunctionMock),
 		WithScanner(scanner),
