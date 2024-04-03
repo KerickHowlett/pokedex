@@ -32,7 +32,7 @@ func setupStartREPLTest() (executedCommand *string, userInput string) {
 		WithScanner(scanner),
 	)
 
-	repl.StartREPL()
+	repl.RunREPL()
 	userInput = scanner.Text()
 
 	return executedCommand, userInput

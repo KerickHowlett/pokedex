@@ -25,5 +25,5 @@ func main() {
 		r.WithPrompt("pokedex > "),
 	)
 
-	repl.StartREPL()
+	repl.RunREPL()
 }

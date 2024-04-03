@@ -1,6 +1,6 @@
 package repl
 
-// StartREPL starts the Read-Eval-Print Loop (REPL) for the REPL struct.
+// RunREPL starts the Read-Eval-Print Loop (REPL) for the REPL struct.
 // It continuously prompts the user for input, sanitizes the input, executes the
 // command, and prints the result. The loop continues until the user exits the
 // REPL.
@@ -8,8 +8,8 @@ package repl
 // Example usage:
 //
 //	repl := NewREPL(WithCommandExecutor(commandExecutor))
-//	repl.StartREPL()
-func (r *REPL) StartREPL() {
+//	repl.RunREPL()
+func (r *REPL) RunREPL() {
 	r.printPrompt()
 
 	for r.scanner.Scan() {
