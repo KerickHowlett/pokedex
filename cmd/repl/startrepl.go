@@ -12,7 +12,7 @@ package repl
 //
 // The StartREPL method is used to start the REPL.
 func (r *REPL) StartREPL() {
-	r.PrintPrompt()
+	r.printPrompt()
 
 	for r.Scanner.Scan() {
 		userInput := r.Scanner.Text()
@@ -22,6 +22,6 @@ func (r *REPL) StartREPL() {
 		r.CommandExecutor(commands[0])
 
 		r.printNewLine()
-		r.PrintPrompt()
+		r.printPrompt()
 	}
 }

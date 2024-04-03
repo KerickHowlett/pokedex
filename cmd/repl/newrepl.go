@@ -24,8 +24,7 @@ import (
 // Now the repl can be used to start the REPL.
 func NewREPL(options ...REPLOption) *REPL {
 	repl := &REPL{
-		PrintPrompt: defaultPrintPrompt,
-		Scanner:     bufio.NewScanner(os.Stdin),
+		Scanner: bufio.NewScanner(os.Stdin),
 	}
 
 	for _, option := range options {

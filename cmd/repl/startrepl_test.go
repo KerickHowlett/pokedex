@@ -29,7 +29,6 @@ func setupStartREPLTest() (executedCommand *string, userInput string) {
 
 	repl := NewREPL(
 		WithCommandExecutor(mockedCommandExecutor),
-		WithPrintPrompt(emptyFunctionMock),
 		WithScanner(scanner),
 	)
 

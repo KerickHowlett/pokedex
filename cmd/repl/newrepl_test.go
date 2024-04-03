@@ -21,8 +21,6 @@ func TestDefaultNewREPL(t *testing.T) {
 	}
 
 	utils.ExpectSameEntity(t, repl.CommandExecutor, commandExecutorMock, "CommandExecutor")
-	utils.ExpectSameEntity(t, repl.CommandExecutor, commandExecutorMock, "CommandExecutor")
-	utils.ExpectSameEntity(t, repl.PrintPrompt, defaultPrintPrompt, "PrintPrompt")
 }
 
 func TestNewREPL_PanicIfCommandExecutorNotSet(t *testing.T) {
@@ -41,8 +39,6 @@ func TestNewREPL_PanicIfCommandExecutorNotSet(t *testing.T) {
 func commandExecutorMock(args string) error {
 	return nil
 }
-
-func emptyFunctionMock() {}
 
 func setupREPLOptionTest(option REPLOption) *REPL {
 	return NewREPL(WithCommandExecutor(commandExecutorMock), option)
