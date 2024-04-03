@@ -18,10 +18,10 @@ func (r *REPL) StartREPL() {
 		userInput := r.Scanner.Text()
 		commands := r.parseInput(userInput)
 
-		r.PrintNewLine()
+		r.printNewLine()
 		r.CommandExecutor(commands[0])
 
-		r.PrintNewLine()
+		r.printNewLine()
 		r.PrintPrompt()
 	}
 }

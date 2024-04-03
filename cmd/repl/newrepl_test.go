@@ -22,7 +22,6 @@ func TestDefaultNewREPL(t *testing.T) {
 
 	utils.ExpectSameEntity(t, repl.CommandExecutor, commandExecutorMock, "CommandExecutor")
 	utils.ExpectSameEntity(t, repl.CommandExecutor, commandExecutorMock, "CommandExecutor")
-	utils.ExpectSameEntity(t, repl.PrintNewLine, defaultPrintNewLine, "PrintNewLine")
 	utils.ExpectSameEntity(t, repl.PrintPrompt, defaultPrintPrompt, "PrintPrompt")
 }
 

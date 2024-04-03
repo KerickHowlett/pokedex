@@ -19,16 +19,16 @@ func TestStartREPL(t *testing.T) {
 func setupStartREPLTest() (executedCommand *string, userInput string) {
 	executedCommand = new(string)
 	scanner := s.NewMockScanner()
+	scanner.SetUserInput("mock")
 
 	mockedCommandExecutor := func(args string) error {
 		*executedCommand = args
-		defer func() { scanner.SetIsEnabled(false) }()
+		defer scanner.SetIsEnabled(false)
 		return nil
 	}
 
 	repl := NewREPL(
 		WithCommandExecutor(mockedCommandExecutor),
-		WithPrintNewLine(emptyFunctionMock),
 		WithPrintPrompt(emptyFunctionMock),
 		WithScanner(scanner),
 	)
@@ -36,5 +36,5 @@ func setupStartREPLTest() (executedCommand *string, userInput string) {
 	repl.StartREPL()
 	userInput = scanner.Text()
 
-	return
+	return executedCommand, userInput
 }

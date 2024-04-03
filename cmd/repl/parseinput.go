@@ -21,5 +21,10 @@ func (r *REPL) parseInput(input string) (words []string) {
 	lowercasedInput := strings.ToLower(trimmedInput)
 	words = strings.Fields(lowercasedInput)
 
+	if len(words) == 0 {
+		noEnteredCommands := []string{""}
+		return noEnteredCommands
+	}
+
 	return words
 }

@@ -18,7 +18,6 @@ package repl
 // input before processing it in the REPL.
 type REPL struct {
 	CommandExecutor func(string) error
-	PrintNewLine    func()
 	PrintPrompt     func()
 	Scanner         scanner
 }
