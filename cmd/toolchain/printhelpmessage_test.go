@@ -8,46 +8,52 @@ import (
 	"testtools/utils"
 )
 
-// @SECTION: Unit Test Cases
-
 func TestPrintHelpMessage(t *testing.T) {
-	command1 := m.NewMockCommand(
-		m.WithName("Command 1"),
-		m.WithDescription("Command 1 help message."),
-	)
+	stdout := utils.NewPrintStorage()
 
-	command2 := m.NewMockCommand(
-		m.WithName("Command 2"),
-		m.WithDescription("Command 2 help message."),
-	)
+	setup := func() (toolchain *Toolchain, expectedOutput string) {
+		command1 := m.NewMockCommand(
+			m.WithName("Command 1"),
+			m.WithDescription("Command 1 help message."),
+		)
+		command2 := m.NewMockCommand(
+			m.WithName("Command 2"),
+			m.WithDescription("Command 2 help message."),
+		)
+		toolchain = NewToolchain(
+			WithCommand(command1),
+			WithCommand(command2),
+		)
 
-	toolchain := NewToolchain(
-		WithCommand(command1),
-		WithCommand(command2),
-	)
+		expectedOutput = createExpectedPrintHelpMessageOutput(toolchain)
 
-	expectedOutput := createExpectedPrintHelpMessageOutput(toolchain)
-
-	printout := utils.NewPrintStorage()
-	output := printout.Capture(toolchain.PrintHelpMessage)
-
-	if output != expectedOutput {
-		t.Errorf("Expected output to be the following:\n %q\n\n Got the following instead:\n %q", expectedOutput, output)
+		return toolchain, expectedOutput
 	}
+
+	t.Run("should print the help message for the toolchain.", func(t *testing.T) {
+		toolchain, expectedOutput := setup()
+
+		output := stdout.Capture(toolchain.PrintHelpMessage)
+
+		if output != expectedOutput {
+			t.Errorf("Expected output to be the following:\n %q\n\n Got the following instead:\n %q", expectedOutput, output)
+		}
+	})
 }
 
-// @SECTION: Helper Functions
-
 func createExpectedPrintHelpMessageOutput(toolchain *Toolchain) string {
-	output := "Welcome to the Pokedex!\n"
-	output += "\n" // Empty Line
-	output += "Pokedex Commands\n"
-	output += "--------------------\n"
-	output += "\n" // Empty Line
+	const emptyLine = "\n"
+
+	expectedOutput := "Welcome to the Pokedex!\n"
+	expectedOutput += emptyLine
+	expectedOutput += "Pokedex Commands\n"
+	expectedOutput += "--------------------\n"
+	expectedOutput += emptyLine
 
 	for _, command := range *toolchain.commands {
-		output += fmt.Sprintf("%s: %s\n", (*command).GetName(), (*command).GetDescription())
+		name, description := (*command).GetName(), (*command).GetDescription()
+		expectedOutput += fmt.Sprintf("%s: %s\n", name, description)
 	}
 
-	return output
+	return expectedOutput
 }

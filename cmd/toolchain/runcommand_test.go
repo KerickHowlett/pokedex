@@ -1,59 +1,45 @@
 package toolchain
 
 import (
-	"fmt"
 	"testing"
 
 	m "testtools/mocks/command"
 	"testtools/utils"
 )
 
-func TestRunCommand_PrintHelpMessage(t *testing.T) {
-	toolchain := createMockToolchain()
+func TestRunCommand(t *testing.T) {
+	toolchain := NewToolchain(WithCommand(m.NewMockCommand()))
 
-	printout := utils.NewPrintStorage()
-	printout.Capture(toolchain.PrintHelpMessage)
+	helpCommandSetup := func(toolchain *Toolchain) (printout *utils.PrintStorage, expectedOutput string) {
+		printout = utils.NewPrintStorage()
+		expectedOutput = createExpectedPrintHelpMessageOutput(toolchain)
 
-	expectedOutput := createExpectedPrintHelpMessageOutput(toolchain)
-	actualOutput := printout.Capture(toolchain.PrintHelpMessage)
-
-	if actualOutput != expectedOutput {
-		t.Errorf("Expected output to be the following:\n %q\n\n Got the following instead:\n %q", expectedOutput, actualOutput)
+		return printout, expectedOutput
 	}
-}
 
-func TestRunCommand_ExecuteSelectedCommand(t *testing.T) {
-	toolchain := createMockToolchain()
+	t.Run("should print the help message if the command is not found.", func(t *testing.T) {
+		printout, expectedOutput := helpCommandSetup(toolchain)
+		if output := printout.Capture(func() { toolchain.RunCommand("help") }); output != expectedOutput {
+			t.Errorf("Expected output to be the following:\n %q\n\n Got the following instead:\n %q", expectedOutput, output)
+		}
+	})
 
-	err := toolchain.RunCommand("mock")
+	t.Run("should execute selected command without returning an error.", func(t *testing.T) {
+		if err := toolchain.RunCommand("mock"); err != nil {
+			t.Errorf("Expected no error, but got: %v", err)
+		}
+	})
 
-	if err != nil {
-		t.Errorf("Expected no error, but got: %v", err)
-	}
-}
+	t.Run("should return an error if entered command is invalid.", func(t *testing.T) {
+		const expectedError = "[ERROR] Command 'InvalidCommand' is not valid"
+		if err := toolchain.RunCommand("InvalidCommand"); err.Error() != expectedError {
+			t.Errorf("Expected error to be: %v, but got: %v", expectedError, err)
+		}
+	})
 
-func TestRunCommand_InvalidCommand(t *testing.T) {
-	toolchain := createMockToolchain()
-
-	err := toolchain.RunCommand("InvalidCommand")
-
-	expectedError := fmt.Errorf("[ERROR] Command 'InvalidCommand' is not valid")
-	if err.Error() != expectedError.Error() {
-		t.Errorf("Expected error to be: %v, but got: %v", expectedError, err)
-	}
-}
-
-func TestRunCommand_EmptySelection(t *testing.T) {
-	toolchain := createMockToolchain()
-
-	err := toolchain.RunCommand("")
-
-	if err != nil {
-		t.Errorf("Expected no error, but got: %v", err)
-	}
-}
-
-func createMockToolchain() *Toolchain {
-	command := m.NewMockCommand()
-	return NewToolchain(WithCommand(command))
+	t.Run("should not do anything when no command is entered.", func(t *testing.T) {
+		if err := toolchain.RunCommand(""); err != nil {
+			t.Errorf("Expected no error, but got: %v", err)
+		}
+	})
 }

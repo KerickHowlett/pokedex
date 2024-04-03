@@ -1,30 +1,24 @@
 package toolchain
 
 import (
-	"fmt"
 	"testing"
 
 	m "testtools/mocks/command"
 )
 
 func TestNewToolchain(t *testing.T) {
-	fmt.Println("Should create a new toolchain with at least one command.")
-	toolchain := NewToolchain(
-		WithCommand(m.NewMockCommand()),
-	)
-
-	if len(*toolchain.commands) == 0 {
-		t.Errorf("Expected Toolchain to have at least one command, but got 0")
-	}
-}
-
-func TestNewToolchain_Panic(t *testing.T) {
-	fmt.Println("Should panic if the toolchain has no commands.")
-	defer func() {
-		if recover := recover(); recover == nil {
-			t.Errorf("Expected NewToolchain to panic, but it didn't")
+	t.Run("should create a new toolchain successfully with one command requirement.", func(t *testing.T) {
+		if toolchain := NewToolchain(WithCommand(m.NewMockCommand())); len(*toolchain.commands) == 0 {
+			t.Errorf("Expected Toolchain to have at least one command, but got 0")
 		}
-	}()
+	})
 
-	NewToolchain()
+	t.Run("should panic if the toolchain was given no commands for initialization.", func(t *testing.T) {
+		defer func() {
+			if recover := recover(); recover == nil {
+				t.Errorf("Expected NewToolchain to panic, but it didn't")
+			}
+		}()
+		NewToolchain()
+	})
 }
