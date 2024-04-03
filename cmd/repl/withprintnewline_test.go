@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"internal/tests/utils"
+	"testtools/utils"
 )
 
 func TestWithPrintNewLine(t *testing.T) {

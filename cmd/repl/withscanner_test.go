@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"testing"
 
-	m "internal/tests/mocks/scanner"
-	u "internal/tests/utils"
+	m "testtools/mocks/scanner"
+	u "testtools/utils"
 )
 
 func TestWithScanner(t *testing.T) {

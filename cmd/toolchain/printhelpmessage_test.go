@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"testing"
 
-	m "internal/tests/mocks/command"
-	"internal/tests/utils"
+	m "testtools/mocks/command"
+	"testtools/utils"
 )
 
 // @SECTION: Unit Test Cases

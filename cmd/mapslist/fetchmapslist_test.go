@@ -6,7 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	f "internal/tests/fixtures"
+	f "testtools/fixtures"
 )
 
 func TestFetchMapsList(t *testing.T) {

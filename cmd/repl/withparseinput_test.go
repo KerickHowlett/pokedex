@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"testing"
 
-	m "internal/tests/mocks/parser"
-	"internal/tests/utils"
+	m "testtools/mocks/parser"
+	"testtools/utils"
 )
 
 func TestWithParseInput(t *testing.T) {

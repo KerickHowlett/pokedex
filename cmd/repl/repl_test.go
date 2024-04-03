@@ -6,7 +6,7 @@ import (
 	"os"
 	"testing"
 
-	utils "internal/tests/utils"
+	utils "testtools/utils"
 )
 
 // @SECTION: TEST CASES

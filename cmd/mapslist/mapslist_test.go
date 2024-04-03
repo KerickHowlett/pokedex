@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	f "internal/tests/fixtures"
+	f "testtools/fixtures"
 
 	l "github.com/KerickHowlett/pokedexcli/cmd/location"
 )

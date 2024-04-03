@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"internal/tests/utils"
+	"testtools/utils"
 )
 
 func TestWithCommandExecutor(t *testing.T) {

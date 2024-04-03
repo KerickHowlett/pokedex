@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	utils "internal/tests/utils"
+	utils "testtools/utils"
 
 	l "github.com/KerickHowlett/pokedexcli/cmd/location"
 )

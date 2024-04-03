@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	u "internal/tests/utils"
+	u "testtools/utils"
 )
 
 func TestWithPrintPrompt(t *testing.T) {

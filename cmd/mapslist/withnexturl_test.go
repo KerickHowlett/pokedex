@@ -3,7 +3,7 @@ package mapslist
 import (
 	"testing"
 
-	f "internal/tests/fixtures"
+	f "testtools/fixtures"
 )
 
 func TestWithNextURL(t *testing.T) {

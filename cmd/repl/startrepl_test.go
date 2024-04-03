@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"testing"
 
-	p "internal/tests/mocks/parser"
-	s "internal/tests/mocks/scanner"
+	p "testtools/mocks/parser"
+	s "testtools/mocks/scanner"
 )
 
 func TestStartREPL(t *testing.T) {
