@@ -12,7 +12,7 @@ func TestRunCommand(t *testing.T) {
 
 	helpCommandSetup := func(toolchain *Toolchain) (printout *utils.PrintStorage, expectedOutput string) {
 		printout = utils.NewPrintStorage()
-		expectedOutput = createExpectedPrintHelpMessageOutput(toolchain)
+		expectedOutput = getExpectedPrintHelpMessage(toolchain)
 
 		return printout, expectedOutput
 	}

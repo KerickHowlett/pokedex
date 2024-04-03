@@ -25,7 +25,7 @@ func TestPrintHelpMessage(t *testing.T) {
 			WithCommand(command2),
 		)
 
-		expectedOutput = createExpectedPrintHelpMessageOutput(toolchain)
+		expectedOutput = getExpectedPrintHelpMessage(toolchain)
 
 		return toolchain, expectedOutput
 	}
@@ -41,7 +41,7 @@ func TestPrintHelpMessage(t *testing.T) {
 	})
 }
 
-func createExpectedPrintHelpMessageOutput(toolchain *Toolchain) string {
+func getExpectedPrintHelpMessage(toolchain *Toolchain) string {
 	const emptyLine = "\n"
 
 	expectedOutput := "Welcome to the Pokedex!\n"
