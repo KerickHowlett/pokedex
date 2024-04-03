@@ -20,6 +20,10 @@ func main() {
 		t.WithCommand(c.NewExitCommand()),
 	)
 
-	repl := r.NewREPL(r.WithCommandExecutor(toolchain.RunCommand))
+	repl := r.NewREPL(
+		r.WithCommandExecutor(toolchain.RunCommand),
+		r.WithPrompt("pokedex > "),
+	)
+
 	repl.StartREPL()
 }

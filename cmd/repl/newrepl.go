@@ -24,6 +24,7 @@ import (
 // Now the repl can be used to start the REPL.
 func NewREPL(options ...REPLOption) *REPL {
 	repl := &REPL{
+		prompt:  "> ",
 		scanner: bufio.NewScanner(os.Stdin),
 	}
 
