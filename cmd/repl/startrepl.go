@@ -9,8 +9,6 @@ package repl
 //
 //	repl := NewREPL(WithCommandExecutor(commandExecutor))
 //	repl.StartREPL()
-//
-// The StartREPL method is used to start the REPL.
 func (r *REPL) StartREPL() {
 	r.printPrompt()
 
@@ -19,7 +17,7 @@ func (r *REPL) StartREPL() {
 		commands := r.parseInput(userInput)
 
 		r.printNewLine()
-		r.CommandExecutor(commands[0])
+		r.execute(commands[0])
 
 		r.printNewLine()
 		r.printPrompt()

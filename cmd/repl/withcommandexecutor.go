@@ -28,6 +28,6 @@ package repl
 // Now the commandExecutor function will be used to execute commands in the REPL.
 func WithCommandExecutor(commandExecutor func(string) error) REPLOption {
 	return func(r *REPL) {
-		r.CommandExecutor = commandExecutor
+		r.execute = commandExecutor
 	}
 }

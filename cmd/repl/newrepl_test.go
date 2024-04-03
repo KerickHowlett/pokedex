@@ -20,7 +20,7 @@ func TestDefaultNewREPL(t *testing.T) {
 		t.Errorf("repl.Scanner is not the default bufio.NewScanner(os.Stdin) instance")
 	}
 
-	utils.ExpectSameEntity(t, repl.CommandExecutor, commandExecutorMock, "CommandExecutor")
+	utils.ExpectSameEntity(t, repl.execute, commandExecutorMock, "execute")
 }
 
 func TestNewREPL_PanicIfCommandExecutorNotSet(t *testing.T) {
