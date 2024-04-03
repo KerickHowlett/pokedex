@@ -19,7 +19,7 @@ func (m *MapsList) FetchMapsList(url string) error {
 		return fmt.Errorf("error reading response body: %v", err)
 	}
 
-	if response.StatusCode < http.StatusOK || response.StatusCode > http.StatusMultipleChoices {
+	if !m.isSuccessfulResponse(response) {
 		return fmt.Errorf("error with response: %s", body)
 	}
 
@@ -28,4 +28,9 @@ func (m *MapsList) FetchMapsList(url string) error {
 	}
 
 	return nil
+}
+
+func (m *MapsList) isSuccessfulResponse(response *http.Response) bool {
+	code := response.StatusCode
+	return code >= http.StatusOK && code < http.StatusMultipleChoices
 }
