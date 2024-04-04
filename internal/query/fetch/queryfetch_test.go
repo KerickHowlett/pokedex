@@ -71,14 +71,14 @@ func TestFetchQuery(t *testing.T) {
 		return queryState, err
 	}
 
-	t.Run("FetchMapsList Happy Paths", func(t *testing.T) {
+	t.Run("FetchQueryState Happy Paths", func(t *testing.T) {
 		t.Run("should fetch the list of state from the API successfully.", func(t *testing.T) {
 			if _, err := setup(successResponse); err != nil {
 				t.Errorf("Unexpected error: %v", err)
 			}
 		})
 
-		t.Run("MapsList struct payload", func(t *testing.T) {
+		t.Run("QueryState struct payload", func(t *testing.T) {
 			t.Run("should set the NextURL field with the same named field's value.", func(t *testing.T) {
 				state, _ := setup(successResponse)
 				if actual := *state.NextURL; actual != f.APIEndpoint {
@@ -102,7 +102,7 @@ func TestFetchQuery(t *testing.T) {
 		})
 	})
 
-	t.Run("FetchMapsList Error Handling Paths", func(t *testing.T) {
+	t.Run("FetchQueryState Error Handling Paths", func(t *testing.T) {
 		expectFetchError := func(err error, expectedErrorMessage string) {
 			if err == nil {
 				t.Error("Expected an error, but got nil")

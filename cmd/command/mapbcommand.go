@@ -3,27 +3,40 @@ package command
 import (
 	"fmt"
 
-	m "github.com/KerickHowlett/pokedexcli/cmd/mapslist"
+	qf "query/fetch"
+	qs "query/state"
+
+	l "github.com/KerickHowlett/pokedexcli/cmd/location"
 )
 
 type MapBCommand struct {
-	state *m.MapsList
+	query *qs.QueryState[l.Location]
+}
+
+func (m *MapBCommand) PrintLocationNames() error {
+	if len(m.query.Results) == 0 {
+		return fmt.Errorf("no maps found")
+	}
+
+	for _, location := range m.query.Results {
+		fmt.Println(location.Name)
+	}
+
+	return nil
 }
 
 // Execute is a method of the MapBCommand struct responsible for cycling back
 // through the pokemon world map locations list via the Pokemon API.
-func (c *MapBCommand) Execute() error {
-	url := c.state.PreviousURL
-
-	if url == nil {
+func (m *MapBCommand) Execute() error {
+	if m.query.NextURL == nil {
 		return fmt.Errorf("this is the start of the maps list")
 	}
 
-	if err := c.state.FetchMapsList(*url); err != nil {
+	if err := qf.QueryFetch(*m.query.NextURL, m.query); err != nil {
 		return err
 	}
 
-	return c.state.PrintLocations()
+	return m.PrintLocationNames()
 }
 
 func (c *MapBCommand) GetDescription() string {
@@ -46,8 +59,8 @@ func (c *MapBCommand) PrintHelp() {
 // Example usage:
 //
 //	command := NewMapBCommand()
-func NewMapBCommand(state *m.MapsList) *MapBCommand {
+func NewMapBCommand(query *qs.QueryState[l.Location]) *MapBCommand {
 	return &MapBCommand{
-		state: state,
+		query: query,
 	}
 }
