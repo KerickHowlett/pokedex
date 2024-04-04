@@ -1,15 +1,17 @@
 package location
 
-import "testing"
+import (
+	"testing"
+
+	f "testtools/fixtures"
+)
 
 func TestNewLocation(t *testing.T) {
-	const starterTown = "Pallet Town"
-
 	t.Run("should create struct successfully with required Name field set.", func(t *testing.T) {
-		location := NewLocation(WithName(starterTown))
+		location := NewLocation(WithName(f.StarterTown))
 
-		if location.Name != starterTown {
-			t.Errorf("Expected location.name to be %q, but got %q", starterTown, location.Name)
+		if location.Name != f.StarterTown {
+			t.Errorf("Expected location.name to be %q, but got %q", f.StarterTown, location.Name)
 		}
 	})
 
