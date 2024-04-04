@@ -1,10 +1,7 @@
 package command
 
 import (
-	"fmt"
-
 	l "location"
-	qf "query/fetch"
 	qs "query/state"
 )
 
@@ -12,26 +9,8 @@ type MapCommand struct {
 	state *qs.QueryState[l.Location]
 }
 
-// Execute is a method of the MapCommand struct responsible for cycling through
-// the pokemon world map locations list via the Pokemon API.
 func (m *MapCommand) Execute() error {
-	if m.state.NextURL == nil {
-		return fmt.Errorf("no more maps to fetch")
-	}
-
-	if err := qf.QueryFetch(*m.state.NextURL, m.state); err != nil {
-		return err
-	}
-
-	if len(m.state.Results) == 0 {
-		return fmt.Errorf("no maps found")
-	}
-
-	for _, location := range m.state.Results {
-		fmt.Println(location.Name)
-	}
-
-	return nil
+	return fetchMapLocations(m.state.NextURL, m.state)
 }
 
 func (m MapCommand) GetDescription() string {
