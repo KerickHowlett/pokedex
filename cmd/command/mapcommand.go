@@ -3,10 +3,9 @@ package command
 import (
 	"fmt"
 
+	l "location"
 	qf "query/fetch"
 	qs "query/state"
-
-	l "github.com/KerickHowlett/pokedexcli/cmd/location"
 )
 
 type MapCommand struct {

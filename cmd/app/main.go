@@ -1,10 +1,10 @@
 package main
 
 import (
+	l "location"
 	q "query/state"
 
 	c "github.com/KerickHowlett/pokedexcli/cmd/command"
-	l "github.com/KerickHowlett/pokedexcli/cmd/location"
 	r "github.com/KerickHowlett/pokedexcli/cmd/repl"
 	t "github.com/KerickHowlett/pokedexcli/cmd/toolchain"
 )

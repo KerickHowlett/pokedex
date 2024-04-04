@@ -9,3 +9,7 @@ replace testtools => ./internal/testtools
 require query v1.0.0
 
 replace query => ./internal/query
+
+require location v1.0.0
+
+replace location => ./internal/location
