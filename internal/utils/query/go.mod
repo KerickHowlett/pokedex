@@ -2,7 +2,7 @@ module query
 
 require testtools v1.0.0
 
-replace testtools => ../testtools
+replace testtools => ../../testtools
 
 replace query => ./
 

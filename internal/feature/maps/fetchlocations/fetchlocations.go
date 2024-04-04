@@ -1,4 +1,4 @@
-package command
+package fetchlocations
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 	qs "query/state"
 )
 
-func fetchMapLocations(url *string, state *qs.QueryState[l.Location]) error {
+func FetchLocations(url *string, state *qs.QueryState[l.Location]) error {
 	if url == nil {
 		return fmt.Errorf("no more maps to fetch")
 	}

@@ -1,7 +1,7 @@
 package main
 
 import (
-	l "location"
+	l "maps/location"
 	q "query/state"
 
 	c "github.com/KerickHowlett/pokedexcli/cmd/command"

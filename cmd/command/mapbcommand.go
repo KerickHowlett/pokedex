@@ -1,16 +1,17 @@
 package command
 
 import (
-	l "location"
+	mf "maps/fetchlocations"
+	ml "maps/location"
 	qs "query/state"
 )
 
 type MapBCommand struct {
-	state *qs.QueryState[l.Location]
+	state *qs.QueryState[ml.Location]
 }
 
 func (m *MapBCommand) Execute() error {
-	return fetchMapLocations(m.state.PreviousURL, m.state)
+	return mf.FetchLocations(m.state.PreviousURL, m.state)
 }
 
 func (m MapBCommand) GetDescription() string {
@@ -36,7 +37,7 @@ func (m *MapBCommand) PrintHelp() {
 // Example usage:
 //
 //	command := NewMapBCommand()
-func NewMapBCommand(state *qs.QueryState[l.Location]) *MapBCommand {
+func NewMapBCommand(state *qs.QueryState[ml.Location]) *MapBCommand {
 	return &MapBCommand{
 		state: state,
 	}

@@ -5,6 +5,7 @@
         "cmds",
         "commandexecutor",
         "exitrepl",
+        "fetchlocations",
         "getcommands",
         "IREPL",
         "mapb",
