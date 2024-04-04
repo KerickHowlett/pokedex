@@ -1,7 +1,5 @@
 package command
 
-import "os"
-
 type ExitCommand struct{}
 
 // Execute terminates the program with an exit status of 0.
@@ -14,10 +12,7 @@ type ExitCommand struct{}
 //	command := c.NewExitCommand()
 //	command.Execute()
 func (c *ExitCommand) Execute() error {
-	const OKAY_STATUS = 0
-	os.Exit(OKAY_STATUS)
-
-	return nil
+	return exitApplication(okayStatus)
 }
 
 func (c *ExitCommand) GetDescription() string {
