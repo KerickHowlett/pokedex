@@ -9,48 +9,47 @@ import (
 )
 
 type MapBCommand struct {
-	query *qs.QueryState[l.Location]
+	state *qs.QueryState[l.Location]
 }
 
-func (m *MapBCommand) PrintLocationNames() error {
-	if len(m.query.Results) == 0 {
+// Execute is a method of the MapBCommand struct responsible for cycling back
+// through the pokemon world map locations list via the Pokemon API.
+func (m *MapBCommand) Execute() error {
+	if m.state.NextURL == nil {
+		return fmt.Errorf("no more maps to fetch")
+	}
+
+	if err := qf.QueryFetch(*m.state.NextURL, m.state); err != nil {
+		return err
+	}
+
+	if len(m.state.Results) == 0 {
 		return fmt.Errorf("no maps found")
 	}
 
-	for _, location := range m.query.Results {
+	for _, location := range m.state.Results {
 		fmt.Println(location.Name)
 	}
 
 	return nil
 }
 
-// Execute is a method of the MapBCommand struct responsible for cycling back
-// through the pokemon world map locations list via the Pokemon API.
-func (m *MapBCommand) Execute() error {
-	if m.query.NextURL == nil {
-		return fmt.Errorf("this is the start of the maps list")
-	}
-
-	if err := qf.QueryFetch(*m.query.NextURL, m.query); err != nil {
-		return err
-	}
-
-	return m.PrintLocationNames()
-}
-
-func (c *MapBCommand) GetDescription() string {
+func (m MapBCommand) GetDescription() string {
 	return "Show the previous 20 Pokemon world map locations."
 }
 
-func (c *MapBCommand) GetName() string {
+func (m MapBCommand) GetName() string {
 	return "mapb"
 }
 
-func (c *MapBCommand) PrintHelp() {
-	printSingleCommandHelp(c)
+func (m *MapBCommand) PrintHelp() {
+	printSingleCommandHelp(m)
 }
 
 // NewMapBCommand creates a new instance of the MapBCommand struct.
+//
+// Parameters:
+//   - state: A pointer to a QueryState struct instance.
 //
 // Returns:
 //   - A new instance of the MapBCommand struct.
@@ -58,8 +57,8 @@ func (c *MapBCommand) PrintHelp() {
 // Example usage:
 //
 //	command := NewMapBCommand()
-func NewMapBCommand(query *qs.QueryState[l.Location]) *MapBCommand {
+func NewMapBCommand(state *qs.QueryState[l.Location]) *MapBCommand {
 	return &MapBCommand{
-		query: query,
+		state: state,
 	}
 }

@@ -9,45 +9,41 @@ import (
 )
 
 type MapCommand struct {
-	query *qs.QueryState[l.Location]
+	state *qs.QueryState[l.Location]
 }
 
-func (m *MapCommand) PrintLocationNames() error {
-	if len(m.query.Results) == 0 {
+// Execute is a method of the MapCommand struct responsible for cycling through
+// the pokemon world map locations list via the Pokemon API.
+func (m *MapCommand) Execute() error {
+	if m.state.NextURL == nil {
+		return fmt.Errorf("no more maps to fetch")
+	}
+
+	if err := qf.QueryFetch(*m.state.NextURL, m.state); err != nil {
+		return err
+	}
+
+	if len(m.state.Results) == 0 {
 		return fmt.Errorf("no maps found")
 	}
 
-	for _, location := range m.query.Results {
+	for _, location := range m.state.Results {
 		fmt.Println(location.Name)
 	}
 
 	return nil
 }
 
-// Execute is a method of the MapCommand struct responsible for cycling through
-// the pokemon world map locations list via the Pokemon API.
-func (c *MapCommand) Execute() error {
-	if c.query.NextURL == nil {
-		return fmt.Errorf("no more maps to fetch")
-	}
-
-	if err := qf.QueryFetch(*c.query.NextURL, c.query); err != nil {
-		return err
-	}
-
-	return c.PrintLocationNames()
-}
-
-func (c *MapCommand) GetDescription() string {
+func (m MapCommand) GetDescription() string {
 	return "Show the next 20 Pokemon world map locations."
 }
 
-func (c *MapCommand) GetName() string {
+func (m MapCommand) GetName() string {
 	return "map"
 }
 
-func (c *MapCommand) PrintHelp() {
-	printSingleCommandHelp(c)
+func (m *MapCommand) PrintHelp() {
+	printSingleCommandHelp(m)
 }
 
 // NewMapCommand creates a new instance of the MapCommand struct.
@@ -63,6 +59,6 @@ func (c *MapCommand) PrintHelp() {
 //	command := NewMapCommand()
 func NewMapCommand(state *qs.QueryState[l.Location]) *MapCommand {
 	return &MapCommand{
-		query: state,
+		state: state,
 	}
 }
