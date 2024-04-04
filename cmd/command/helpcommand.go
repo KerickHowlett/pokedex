@@ -6,20 +6,20 @@ type HelpCommand struct{}
 // executing the actual 'help' command.
 //
 // It should never be called and will always panic with an error message.
-func (c *HelpCommand) Execute() error {
+func (h HelpCommand) Execute() error {
 	panic("[ERROR] 'HelpCommand.Execute()' should never be called.")
 }
 
-func (c *HelpCommand) GetDescription() string {
+func (h HelpCommand) GetDescription() string {
 	return "Show help for the Pokemon CLI commands."
 }
 
-func (c *HelpCommand) GetName() string {
+func (h HelpCommand) GetName() string {
 	return "help"
 }
 
-func (c *HelpCommand) PrintHelp() {
-	printSingleCommandHelp(c)
+func (h *HelpCommand) PrintHelp() {
+	printSingleCommandHelp(h)
 }
 
 // NewHelpCommand creates a new instance of the HelpCommand struct.

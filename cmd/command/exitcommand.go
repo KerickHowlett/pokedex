@@ -11,20 +11,20 @@ type ExitCommand struct{}
 //
 //	command := c.NewExitCommand()
 //	command.Execute()
-func (c *ExitCommand) Execute() error {
+func (e ExitCommand) Execute() error {
 	return exitApplication(okayStatus)
 }
 
-func (c *ExitCommand) GetDescription() string {
+func (e ExitCommand) GetDescription() string {
 	return "Exit out of the Pokemon CLI application."
 }
 
-func (c *ExitCommand) GetName() string {
+func (e ExitCommand) GetName() string {
 	return "exit"
 }
 
-func (c *ExitCommand) PrintHelp() {
-	printSingleCommandHelp(c)
+func (e *ExitCommand) PrintHelp() {
+	printSingleCommandHelp(e)
 }
 
 // NewExitCommand creates a new instance of ExitCommand.
