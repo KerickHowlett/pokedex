@@ -13,7 +13,7 @@ func main() {
 	// @TODO: Have API endpoint domain and 'offset' and 'limit' query parameters
 	//        be configurable.
 	nextURL := "https://pokeapi.co/api/v2/location?offset=0&limit=20"
-	mapsState := q.NewQueryState[l.Location](
+	mapsState := q.NewQueryState(
 		q.WithNextURL[l.Location](&nextURL),
 	)
 
