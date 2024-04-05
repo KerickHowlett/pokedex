@@ -1,4 +1,4 @@
-package command
+package utils
 
 import (
 	"os"
@@ -6,17 +6,13 @@ import (
 	"testing"
 )
 
-// @SECTION: Unit Test Cases
-
-func TestExitCommand(t *testing.T) {
+func TestExitApplication(t *testing.T) {
 
 	// This function configures the TestBed environment,
 	// so the test case(s) doesn't exit prematurely.
 	setup := func() error {
 		if os.Getenv("BE_CRASHER") == "1" {
-			command := ExitCommand{}
-
-			return command.Execute()
+			return ExitApplication(OK)
 		}
 
 		cmd := exec.Command(os.Args[0], "-test.run=TestExitProcess")
@@ -25,13 +21,10 @@ func TestExitCommand(t *testing.T) {
 		return cmd.Run()
 	}
 
-	t.Run("should exit any ongoing process gracefully with status 0.", func(t *testing.T) {
+	t.Run("should exit application gracefully with OK status.", func(t *testing.T) {
 		err := setup()
-
-		if _, ok := err.(*exec.ExitError); !ok {
-			return
+		if _, ok := err.(*exec.ExitError); ok {
+			t.Fatalf("Process exited with error %v, expected exit status of %v", err, OK)
 		}
-
-		t.Fatalf("Process exited with error %v, expected status 0", err)
 	})
 }

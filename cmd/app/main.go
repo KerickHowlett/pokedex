@@ -5,9 +5,9 @@ import (
 	q "query/state"
 
 	r "repl"
+	t "tc"
 
 	c "github.com/KerickHowlett/pokedexcli/cmd/command"
-	t "github.com/KerickHowlett/pokedexcli/cmd/toolchain"
 )
 
 func main() {
