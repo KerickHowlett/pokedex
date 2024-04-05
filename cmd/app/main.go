@@ -4,8 +4,9 @@ import (
 	l "maps/location"
 	q "query/state"
 
+	r "repl"
+
 	c "github.com/KerickHowlett/pokedexcli/cmd/command"
-	r "github.com/KerickHowlett/pokedexcli/cmd/repl"
 	t "github.com/KerickHowlett/pokedexcli/cmd/toolchain"
 )
 
