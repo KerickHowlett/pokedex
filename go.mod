@@ -3,20 +3,21 @@ module github.com/KerickHowlett/pokedexcli
 go 1.22.1
 
 require (
-	command v1.0.0
-	maps v1.0.0
-	query v1.0.0
-	repl v1.0.0
-	toochain v1.0.0
+	command v1.0.0 // indirect
+	maps v1.0.0 // indirect
+	query v1.0.0 // indirect
+	repl v1.0.0 // indirect
+	shell v1.0.0
 	testtools v1.0.0 // indirect
+	toochain v1.0.0 // indirect
 )
 
 replace (
-	pokedex => ./cmd/commands
 	command => ./internal/ui/command
-	maps => ./internal/feature/maps
+	maps => ./internal/features/maps
 	query => ./internal/utils/query
 	repl => ./internal/ui/repl
-	toochain => ./internal/ui/toolchain
+	shell => ./internal/shell
 	testtools => ./internal/testtools
+	toochain => ./internal/ui/toolchain
 )

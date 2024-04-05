@@ -20,6 +20,7 @@
         "printhelpmessage",
         "queryfetch",
         "querystate",
-        "testtools"
+        "testtools",
+        "toochain"
     ]
 }
