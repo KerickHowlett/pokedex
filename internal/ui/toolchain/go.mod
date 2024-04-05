@@ -1,4 +1,4 @@
-module tc
+module toochain
 
 go 1.22.1
 

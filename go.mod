@@ -7,7 +7,7 @@ require (
 	maps v1.0.0
 	query v1.0.0
 	repl v1.0.0
-	tc v1.0.0
+	toochain v1.0.0
 	testtools v1.0.0 // indirect
 )
 
@@ -17,6 +17,6 @@ replace (
 	maps => ./internal/feature/maps
 	query => ./internal/utils/query
 	repl => ./internal/ui/repl
-	tc => ./internal/ui/toolchain
+	toochain => ./internal/ui/toolchain
 	testtools => ./internal/testtools
 )

@@ -5,7 +5,7 @@ import (
 	q "query/state"
 
 	r "repl"
-	t "tc"
+	t "toochain"
 
 	cmd "github.com/KerickHowlett/pokedexcli/cmd/cli/commands"
 	conf "github.com/KerickHowlett/pokedexcli/cmd/cli/config"
