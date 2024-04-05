@@ -1,18 +1,15 @@
 package repl
 
-import (
-	"testing"
-	f "testtools/fixtures"
-)
+import "testing"
 
 func TestWithPrompt(t *testing.T) {
 	r := &REPL{}
 
 	t.Run("should set the prompt field in REPL.", func(t *testing.T) {
-		WithPrompt(f.Prompt)(r)
+		WithPrompt(defaultPrompt)(r)
 
-		if r.prompt != f.Prompt {
-			t.Errorf("Expected r.prompt to be %q, but got %q", f.Prompt, r.prompt)
+		if r.prompt != defaultPrompt {
+			t.Errorf("Expected r.prompt to be %q, but got %q", defaultPrompt, r.prompt)
 		}
 	})
 }

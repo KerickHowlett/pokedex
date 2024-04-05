@@ -2,12 +2,11 @@ package repl
 
 import (
 	"testing"
-	f "testtools/fixtures"
 	"testtools/utils"
 )
 
 func TestREPL_printPrompt(t *testing.T) {
-	r := REPL{prompt: f.Prompt}
+	r := REPL{prompt: defaultPrompt}
 	stdout := utils.NewPrintStorage()
 
 	t.Run("should print the set prompt to stdout", func(t *testing.T) {

@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"testing"
 
+	m "testtools/mocks/commandexecutor"
 	"testtools/utils"
 )
 
@@ -11,14 +12,11 @@ import (
 
 func TestNewREPL(t *testing.T) {
 	t.Run("REPL created successfully", func(t *testing.T) {
-		const defaultPrompt = "> "
-		mockedCommandExecutor := func(args string) error { return nil }
-
-		repl := NewREPL(WithCommandExecutor(mockedCommandExecutor))
+		repl := NewREPL(WithCommandExecutor(m.MockedCommandExecutor))
 
 		t.Run("with required argument(s)", func(t *testing.T) {
 			t.Run("should have the provided command executor", func(t *testing.T) {
-				utils.ExpectSameEntity(t, repl.execute, mockedCommandExecutor, "execute")
+				utils.ExpectSameEntity(t, repl.execute, m.MockedCommandExecutor, "execute")
 			})
 		})
 
