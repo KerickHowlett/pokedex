@@ -28,6 +28,6 @@ func (s *MockScanner) Text() string {
 func NewMockScanner() *MockScanner {
 	return &MockScanner{
 		isEnabled: true,
-		userInput: "",
+		userInput: "mock",
 	}
 }

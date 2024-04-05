@@ -1,5 +1,7 @@
 package repl
 
+import "fmt"
+
 // RunREPL starts the Read-Eval-Print Loop (REPL) for the REPL struct.
 // It continuously prompts the user for input, sanitizes the input, executes the
 // command, and prints the result. The loop continues until the user exits the
@@ -14,10 +16,12 @@ func (r *REPL) RunREPL() {
 
 	for r.scanner.Scan() {
 		userInput := r.scanner.Text()
-		commands := r.parseInput(userInput)
+		command := r.parseInput(userInput)[0]
 
 		r.printNewLine()
-		r.execute(commands[0])
+		if err := r.execute(command); err != nil {
+			fmt.Printf("There was an issue with running the %s command. Please try again.\n", command)
+		}
 
 		r.printNewLine()
 		r.printPrompt()
