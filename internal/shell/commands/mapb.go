@@ -4,6 +4,7 @@ import (
 	c "command"
 	mf "maps/fetchlocations"
 	ml "maps/location"
+	qf "query/fetch"
 	qs "query/state"
 )
 
@@ -12,7 +13,7 @@ type MapB struct {
 }
 
 func (m *MapB) Execute() error {
-	return mf.FetchLocations(m.state.PreviousURL, m.state)
+	return mf.FetchLocations(m.state.PreviousURL, m.state, qf.QueryFetch[ml.Location])
 }
 
 func (m MapB) GetDescription() string {
