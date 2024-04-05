@@ -12,6 +12,7 @@ require (
 )
 
 replace (
+	pokedex => ./cmd/commands
 	command => ./internal/ui/command
 	maps => ./internal/feature/maps
 	query => ./internal/utils/query
