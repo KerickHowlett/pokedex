@@ -7,8 +7,8 @@ import (
 	r "repl"
 	t "tc"
 
-	cmd "github.com/KerickHowlett/pokedexcli/cmd/commands"
-	conf "github.com/KerickHowlett/pokedexcli/cmd/config"
+	cmd "github.com/KerickHowlett/pokedexcli/cmd/cli/commands"
+	conf "github.com/KerickHowlett/pokedexcli/cmd/cli/config"
 )
 
 func main() {
