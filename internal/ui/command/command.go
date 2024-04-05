@@ -6,5 +6,3 @@ type Command interface {
 	GetName() string
 	PrintHelp()
 }
-
-type Commands = map[string]*Command

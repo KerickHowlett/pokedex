@@ -1,6 +1,13 @@
 package command
 
+import (
+	c "command"
+	"os"
+)
+
 type ExitCommand struct{}
+
+const okayStatus = 0
 
 // Execute terminates the program with an exit status of 0.
 //
@@ -12,7 +19,8 @@ type ExitCommand struct{}
 //	command := c.NewExitCommand()
 //	command.Execute()
 func (e ExitCommand) Execute() error {
-	return exitApplication(okayStatus)
+	os.Exit(okayStatus)
+	return nil
 }
 
 func (e ExitCommand) GetDescription() string {
@@ -24,7 +32,7 @@ func (e ExitCommand) GetName() string {
 }
 
 func (e *ExitCommand) PrintHelp() {
-	printSingleCommandHelp(e)
+	c.PrintHelp(e)
 }
 
 // NewExitCommand creates a new instance of ExitCommand.

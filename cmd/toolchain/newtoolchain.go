@@ -1,6 +1,6 @@
 package toolchain
 
-import c "github.com/KerickHowlett/pokedexcli/cmd/command"
+import c "command"
 
 // NewToolchain is a function that creates a new toolchain of CLI commands.
 // The toolchain is used to execute commands in the REPL.

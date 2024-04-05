@@ -1,6 +1,6 @@
 package toolchain
 
-import c "github.com/KerickHowlett/pokedexcli/cmd/command"
+import c "command"
 
 // WithCommand is a function that adds a CLI command to the toolchain.
 // The ToolchainOption function modifies the toolchain by adding the command

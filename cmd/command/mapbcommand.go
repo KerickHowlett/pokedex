@@ -1,6 +1,7 @@
 package command
 
 import (
+	c "command"
 	mf "maps/fetchlocations"
 	ml "maps/location"
 	qs "query/state"
@@ -23,7 +24,7 @@ func (m MapBCommand) GetName() string {
 }
 
 func (m *MapBCommand) PrintHelp() {
-	printSingleCommandHelp(m)
+	c.PrintHelp(m)
 }
 
 // NewMapBCommand creates a new instance of the MapBCommand struct.

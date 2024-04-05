@@ -8,7 +8,7 @@ import (
 	"testtools/utils"
 )
 
-func TestPrintSingleCommandHelp(t *testing.T) {
+func TestPrintHelp(t *testing.T) {
 	printout := utils.NewPrintStorage()
 
 	t.Run("should print the command name and description in the proper format.", func(t *testing.T) {

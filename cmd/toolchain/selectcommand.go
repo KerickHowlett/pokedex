@@ -1,6 +1,6 @@
 package toolchain
 
-import c "github.com/KerickHowlett/pokedexcli/cmd/command"
+import c "command"
 
 // SelectCommand plucks a CLI command from the toolchain based on the given
 // command name.

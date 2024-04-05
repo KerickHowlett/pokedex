@@ -2,14 +2,16 @@ module github.com/KerickHowlett/pokedexcli
 
 go 1.22.1
 
-require maps v1.0.0
+require (
+	command v1.0.0
+	maps v1.0.0
+	query v1.0.0
+	testtools v1.0.0
+)
 
-replace maps => ./internal/feature/maps
-
-require query v1.0.0
-
-replace query => ./internal/utils/query
-
-require testtools v1.0.0
-
-replace testtools => ./internal/testtools
+replace (
+	command => ./internal/ui/command
+	maps => ./internal/feature/maps
+	query => ./internal/utils/query
+	testtools => ./internal/testtools
+)

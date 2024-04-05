@@ -2,7 +2,7 @@ package command
 
 import "fmt"
 
-// PrintSingleCommandHelp prints the help message for a single command.
+// PrintHelp prints the help message for a single command.
 //
 // Parameters:
 //   - command: The command to print the help message for.
@@ -10,8 +10,8 @@ import "fmt"
 // Example usage:
 //
 //	command := c.NewExitCommand()
-//	c.PrintSingleCommandHelp(command)
-func printSingleCommandHelp(command Command) {
+//	c.PrintHelp(command)
+func PrintHelp(command Command) {
 	name := command.GetName()
 	description := command.GetDescription()
 

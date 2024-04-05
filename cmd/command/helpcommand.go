@@ -1,5 +1,7 @@
 package command
 
+import c "command"
+
 type HelpCommand struct{}
 
 // Execute is a method of the HelpCommand struct that is responsible for
@@ -19,7 +21,7 @@ func (h HelpCommand) GetName() string {
 }
 
 func (h *HelpCommand) PrintHelp() {
-	printSingleCommandHelp(h)
+	c.PrintHelp(h)
 }
 
 // NewHelpCommand creates a new instance of the HelpCommand struct.
