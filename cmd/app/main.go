@@ -7,7 +7,7 @@ import (
 	r "repl"
 	t "tc"
 
-	c "github.com/KerickHowlett/pokedexcli/cmd/command"
+	c "github.com/KerickHowlett/pokedexcli/cmd/commands"
 )
 
 func main() {
