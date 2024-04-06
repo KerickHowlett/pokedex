@@ -31,6 +31,7 @@ func FetchLocations(url *string, state *MapsQueryState, fetch QueryFetchFunc) er
 		return fmt.Errorf("no maps were found")
 	}
 
+	fmt.Println("Pokemon Maps:")
 	for _, location := range state.Results {
 		fmt.Println(location.Name)
 	}
