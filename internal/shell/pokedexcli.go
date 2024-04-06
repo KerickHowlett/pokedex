@@ -1,10 +1,13 @@
 package shell
 
 import (
+	m "maps/commands/map"
+	mb "maps/commands/mapb"
 	l "maps/location"
 	q "query/state"
 	r "repl"
-	c "shell/commands"
+	e "system/commands/exit"
+	h "system/commands/help"
 	t "toochain"
 )
 
@@ -12,10 +15,10 @@ func PokedexCLI(config PokedexCLIConfig) {
 	mapsState := q.NewQueryState(q.WithNextURL[l.Location](&config.StartingMapsAPIEndpoint))
 
 	toolchain := t.NewToolchain(
-		t.WithCommand(c.NewMap(mapsState)),
-		t.WithCommand(c.NewMapB(mapsState)),
-		t.WithCommand(c.NewHelp()),
-		t.WithCommand(c.NewExit()),
+		t.WithCommand(m.NewMapCommand(mapsState)),
+		t.WithCommand(mb.NewMapBCommand(mapsState)),
+		t.WithCommand(h.NewHelpCommand()),
+		t.WithCommand(e.NewExitCommand()),
 	)
 
 	repl := r.NewREPL(

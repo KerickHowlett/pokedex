@@ -4,11 +4,16 @@
     "cSpell.words": [
         "cmds",
         "commandexecutor",
+        "exitcommands",
         "exitrepl",
         "fetchlocations",
         "getcommands",
+        "helpcommands",
         "IREPL",
         "mapb",
+        "mapbcommands",
+        "mapcommands",
+        "mapcommandshelpers",
         "mapslist",
         "mockcommand",
         "mocklocation",
@@ -20,6 +25,7 @@
         "printhelpmessage",
         "queryfetch",
         "querystate",
+        "systemcommands",
         "testtools",
         "toochain"
     ]

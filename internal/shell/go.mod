@@ -3,12 +3,13 @@ module shell
 go 1.22.1
 
 require (
-	command v1.0.0
+	command v1.0.0 // indirect
 	maps v1.0.0
 	query v1.0.0
 	repl v1.0.0
-	toochain v1.0.0
+	system v1.0.0
 	testtools v1.0.0 // indirect
+	toochain v1.0.0
 )
 
 replace (
@@ -17,6 +18,7 @@ replace (
 	query => ../utils/query
 	repl => ../ui/repl
 	shell => .
-	toochain => ../ui/toolchain
+	system => ../features/system
 	testtools => ../testtools
+	toochain => ../ui/toolchain
 )
