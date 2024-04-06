@@ -5,22 +5,25 @@ import (
 )
 
 func TestQueryCache_Find(t *testing.T) {
-	qc := NewQueryCache()
+	const invalid_key = "invalid_key"
+	setup := func() (queryCache *QueryCache) {
+		queryCache = NewQueryCache()
+		queryCache.entry[key] = cacheEntry{value: []byte(value)}
 
-	// Add a sample entry to the cache
-	key := "testKey"
-	value := []byte("testValue")
-	qc.entry[key] = cacheEntry{value: value}
+		return queryCache
+	}
 
 	t.Run("when cache entry exists in QueryCache", func(t *testing.T) {
 		t.Run("should return with a boolean value of TRUE", func(t *testing.T) {
-			if _, exists := qc.Find(key); !exists {
+			queryCache := setup()
+			if _, exists := queryCache.Find(key); !exists {
 				t.Errorf("Expected key '%s' to exist in the cache", key)
 			}
 		})
 
 		t.Run("should return the value of the cache entry", func(t *testing.T) {
-			if result, _ := qc.Find(key); string(result) != string(value) {
+			queryCache := setup()
+			if result, _ := queryCache.Find(key); string(result) != string(value) {
 				t.Errorf("Expected value '%s' for key '%s', but got '%s'", string(value), key, string(result))
 			}
 		})
@@ -28,13 +31,15 @@ func TestQueryCache_Find(t *testing.T) {
 
 	t.Run("when cache entry does NOT exist in QueryCache", func(t *testing.T) {
 		t.Run("should return with a boolean value of FALSE", func(t *testing.T) {
-			if _, exists := qc.Find("nonExistingKey"); exists {
-				t.Errorf("Expected key 'nonExistingKey' to NOT exist in the cache")
+			queryCache := setup()
+			if _, exists := queryCache.Find(invalid_key); exists {
+				t.Errorf("Expected key '%s' to NOT exist in the cache", invalid_key)
 			}
 		})
 
 		t.Run("should return nil as the value", func(t *testing.T) {
-			if result, _ := qc.Find("nonExistingKey"); result != nil {
+			queryCache := setup()
+			if result, _ := queryCache.Find(invalid_key); result != nil {
 				t.Errorf("Expected nil value for non-existing key, but got '%s'", string(result))
 			}
 		})
