@@ -22,6 +22,7 @@
         "Pikachu",
         "pokedex",
         "pokedexcli",
+        "pokedexclishell",
         "printhelpmessage",
         "queryfetch",
         "querystate",

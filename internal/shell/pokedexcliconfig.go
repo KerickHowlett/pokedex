@@ -1,4 +1,4 @@
-package shell
+package pokedexclishell
 
 type PokedexCLIConfig struct {
 	Prompt                  string

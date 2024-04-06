@@ -7,5 +7,5 @@ import (
 )
 
 func main() {
-	s.PokedexCLI(conf.PokedexCLIConfig)
+	s.PokedexCLIShell(conf.PokedexCLIConfig)
 }

@@ -1,4 +1,4 @@
-package shell
+package pokedexclishell
 
 import (
 	m "maps/commands/map"
@@ -11,7 +11,7 @@ import (
 	t "toochain"
 )
 
-func PokedexCLI(config PokedexCLIConfig) {
+func PokedexCLIShell(config PokedexCLIConfig) {
 	mapsState := q.NewQueryState(q.WithNextURL[l.Location](&config.StartingMapsAPIEndpoint))
 
 	toolchain := t.NewToolchain(
