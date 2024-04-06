@@ -7,7 +7,7 @@
         "dotenv",
         "exitcommands",
         "exitrepl",
-        "fetchlocations",
+        "fetch_locations",
         "getcommands",
         "helpcommands",
         "IREPL",
@@ -28,7 +28,7 @@
         "queryfetch",
         "querystate",
         "systemcommands",
-        "testtools",
+        "test_tools",
         "toochain",
         "unmarshalled"
     ]

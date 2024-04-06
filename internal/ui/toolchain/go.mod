@@ -4,10 +4,10 @@ go 1.22.1
 
 require (
 	command v1.0.0
-	testtools v1.0.0
+	test_tools v1.0.0
 )
 
 replace (
 	command => ../command
-	testtools => ../../testtools
+	test_tools => ../../test_tools
 )

@@ -2,6 +2,6 @@ module repl
 
 go 1.22.1
 
-require testtools v1.0.0
+require test_tools v1.0.0
 
-replace testtools => ../../testtools
+replace test_tools => ../../test_tools

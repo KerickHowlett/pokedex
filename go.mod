@@ -9,7 +9,7 @@ require (
 	repl v1.0.0 // indirect
 	shell v1.0.0
 	system v1.0.0 // indirect
-	testtools v1.0.0 // indirect
+	test_tools v1.0.0 // indirect
 	toochain v1.0.0 // indirect
 )
 
@@ -20,6 +20,6 @@ replace (
 	repl => ./internal/ui/repl
 	shell => ./internal/shell
 	system => ./internal/features/system
-	testtools => ./internal/testtools
+	test_tools => ./internal/test_tools
 	toochain => ./internal/ui/toolchain
 )

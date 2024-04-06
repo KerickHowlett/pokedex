@@ -8,7 +8,7 @@ require (
 	query v1.0.0
 	repl v1.0.0
 	system v1.0.0
-	testtools v1.0.0 // indirect
+	test_tools v1.0.0 // indirect
 	toochain v1.0.0
 )
 
@@ -19,6 +19,6 @@ replace (
 	repl => ../ui/repl
 	shell => .
 	system => ../features/system
-	testtools => ../testtools
+	test_tools => ../test_tools
 	toochain => ../ui/toolchain
 )

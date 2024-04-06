@@ -1,9 +1,10 @@
 module query
 
-require testtools v1.0.0
+require test_tools v1.0.0
 
-replace testtools => ../testtools
-
-replace query => ./
+replace (
+	query => ./
+	test_tools => ../test_tools
+)
 
 go 1.22.1
