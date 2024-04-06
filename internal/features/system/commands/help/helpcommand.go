@@ -7,9 +7,13 @@ type Help struct{}
 // Execute is a method of the Help struct that is responsible for
 // executing the actual 'help' command.
 //
-// It should never be called and will always panic with an error message.
+// It should never be called and will always panic with an error
+// message.
+//
+// Returns:
+//   - An error if the method is called.
 func (h Help) Execute() error {
-	panic("[ERROR] 'Help.Execute()' should never be called.")
+	panic("this method should never be called")
 }
 
 func (h Help) GetDescription() string {

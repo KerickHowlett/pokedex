@@ -16,7 +16,7 @@ require (
 replace (
 	command => ./internal/ui/command
 	maps => ./internal/features/maps
-	query => ./internal/utils/query
+	query => ./internal/query
 	repl => ./internal/ui/repl
 	shell => ./internal/shell
 	system => ./internal/features/system

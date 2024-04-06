@@ -15,7 +15,7 @@ require (
 replace (
 	command => ../ui/command
 	maps => ../features/maps
-	query => ../utils/query
+	query => ../query
 	repl => ../ui/repl
 	shell => .
 	system => ../features/system

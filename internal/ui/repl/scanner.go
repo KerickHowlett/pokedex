@@ -1,12 +1,11 @@
 package repl
 
-// scanner is an interface that defines the behavior of a scanner.
+// scanner is an interface that represents a scanner used in the REPL (Read-Eval-Print Loop).
+// It provides methods for scanning input and retrieving the scanned text.
 //
-// It is used to read user input during the REPL session.
-//
-// The Scan method is used to read the next token from the input.
-//
-// The Text method is used to return the most recent token read from the input.
+// Fields:
+//   - Scan: Scans the input and returns true if there is more input to be scanned, false otherwise.
+//   - Text: Returns the text that has been scanned.
 type scanner interface {
 	Scan() bool
 	Text() string

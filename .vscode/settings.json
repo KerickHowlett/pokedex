@@ -4,6 +4,7 @@
     "cSpell.words": [
         "cmds",
         "commandexecutor",
+        "dotenv",
         "exitcommands",
         "exitrepl",
         "fetchlocations",
@@ -28,6 +29,7 @@
         "querystate",
         "systemcommands",
         "testtools",
-        "toochain"
+        "toochain",
+        "unmarshalled"
     ]
 }

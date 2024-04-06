@@ -10,6 +10,6 @@ require (
 
 replace (
 	command => ../../ui/command
-	query => ../../utils/query
+	query => ../../query
 	testtools => ../../testtools
 )

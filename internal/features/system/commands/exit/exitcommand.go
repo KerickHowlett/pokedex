@@ -7,8 +7,6 @@ import (
 
 type ExitCommand struct{}
 
-const OK = 0
-
 // Execute terminates the program with an exit status of 0.
 //
 // Returns:
@@ -23,14 +21,17 @@ func (e ExitCommand) Execute() error {
 	return nil
 }
 
+// GetDescription returns the description of the ExitCommand.
 func (e ExitCommand) GetDescription() string {
 	return "ExitCommand out of the Pokemon CLI application."
 }
 
+// GetName returns the name of the ExitCommand.
 func (e ExitCommand) GetName() string {
 	return "exit"
 }
 
+// PrintHelp prints the help message for the ExitCommand.
 func (e *ExitCommand) PrintHelp() {
 	c.PrintHelp(e)
 }
