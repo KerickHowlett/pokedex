@@ -1,3 +1,10 @@
 package query_cache
 
-const key, invalid_key, value = "cache_index_key", "invalid_key", "cached_value"
+import "time"
+
+const (
+	mockedInterval = time.Microsecond
+	invalid_key    = "invalid_key"
+	key            = "cache_index_key"
+	value          = "cached_value"
+)

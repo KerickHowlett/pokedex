@@ -18,7 +18,7 @@ func TestQueryCache_evictionLoop(t *testing.T) {
 	}
 
 	setup := func() (queryCache *QueryCache) {
-		queryCache = NewQueryCache()
+		queryCache = NewQueryCache(mockedInterval)
 
 		queryCache.entry["key1"] = createCacheEntry("value_1", f.FrozenTime.Add(-time.Hour))
 		queryCache.entry["key2"] = createCacheEntry("value_2", f.FrozenTime.Add(-time.Minute))

@@ -8,7 +8,7 @@ import (
 
 func TestQueryCache_Add(t *testing.T) {
 	runQueryCacheAddTest := func() (queryCache *QueryCache) {
-		queryCache = NewQueryCache()
+		queryCache = NewQueryCache(mockedInterval)
 
 		queryCache.Add(key, []byte(value), f.FrozenTime)
 

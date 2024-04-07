@@ -1,13 +1,10 @@
 package query_cache
 
-import (
-	"testing"
-)
+import "testing"
 
 func TestQueryCache_Find(t *testing.T) {
-	const invalid_key = "invalid_key"
 	setup := func() (queryCache *QueryCache) {
-		queryCache = NewQueryCache()
+		queryCache = NewQueryCache(mockedInterval)
 		queryCache.entry[key] = cacheEntry{value: []byte(value)}
 
 		return queryCache
