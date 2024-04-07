@@ -10,15 +10,8 @@ import (
 )
 
 func TestQueryCache_evictionLoop(t *testing.T) {
-	createCacheEntry := func(value string, createdAt time.Time) cacheEntry {
-		return cacheEntry{
-			createdAt: &createdAt,
-			value:     []byte(value),
-		}
-	}
-
 	setup := func() (queryCache *QueryCache) {
-		queryCache = NewQueryCache(mockedInterval)
+		queryCache = NewQueryCache(mockedTTL)
 
 		queryCache.entry["key1"] = createCacheEntry("value_1", f.FrozenTime.Add(-time.Hour))
 		queryCache.entry["key2"] = createCacheEntry("value_2", f.FrozenTime.Add(-time.Minute))

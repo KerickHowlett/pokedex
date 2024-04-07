@@ -4,7 +4,7 @@ import "testing"
 
 func TestQueryCache_Find(t *testing.T) {
 	setup := func() (queryCache *QueryCache) {
-		queryCache = NewQueryCache(mockedInterval)
+		queryCache = NewQueryCache(mockedTTL)
 		queryCache.entry[key] = cacheEntry{value: []byte(value)}
 
 		return queryCache
