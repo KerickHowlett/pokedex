@@ -1,8 +1,6 @@
 package query_cache
 
-import (
-	"sync"
-)
+import "sync"
 
 type QueryCache struct {
 	entry map[string]cacheEntry
