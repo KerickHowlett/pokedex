@@ -16,7 +16,7 @@ func TestNewQueryCache(t *testing.T) {
 	waitForEvictionLoop := func() { time.Sleep(5 * time.Millisecond) }
 
 	setup := func() (queryCache *QueryCache) {
-		queryCache = NewQueryCache(mockedTTL)
+		queryCache = NewQueryCache(mockedTTL, f.FrozenTime)
 		expectEmptyCache(queryCache) // Preliminary Check to weed out possible false positives.
 		queryCache.entry["key1"] = createCacheEntry("value_1", f.FrozenTime.Add(-time.Hour))
 		return queryCache
