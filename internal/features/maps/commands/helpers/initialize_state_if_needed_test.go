@@ -5,7 +5,7 @@ import (
 
 	ml "maps/location"
 	qs "query/state"
-	utils "test_tools/utils"
+	"test_tools/utils"
 )
 
 func TestInitializeStateIfNeeded(t *testing.T) {
