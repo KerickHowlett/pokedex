@@ -1,11 +1,12 @@
-package queryfetch
+package query_fetch
 
 import (
-	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
+	"time"
 
+	qc "query/cache"
 	qs "query/state"
 )
 
@@ -30,7 +31,17 @@ import (
 //	if err != nil {
 //	    log.Fatalf("error while fetching query: %v", err)
 //	}
-func QueryFetch[TResult any](url string, queryState *qs.QueryState[TResult]) error {
+func QueryFetch[TResult any](url string, queryState *qs.QueryState[TResult], ttlOption ...time.Duration) error {
+	ttl := oneDayTTL
+	if len(ttlOption) > 0 {
+		ttl = ttlOption[0]
+	}
+
+	cache := qc.NewQueryCache(ttl)
+	if cachedResponse, cacheHit := cache.Find(url); cacheHit {
+		return parseQueryFetchResponse(cachedResponse, queryState)
+	}
+
 	response, err := http.Get(url)
 	if err != nil {
 		return fmt.Errorf("error while attempting to fetch query: %v", err)
@@ -46,9 +57,11 @@ func QueryFetch[TResult any](url string, queryState *qs.QueryState[TResult]) err
 		return fmt.Errorf("error with response: %s", body)
 	}
 
-	if err = json.Unmarshal(body, &queryState); err != nil {
-		return fmt.Errorf("error with parsing payload %v", err)
+	if err = parseQueryFetchResponse(body, queryState); err != nil {
+		return err
 	}
+
+	cache.Save(url, body)
 
 	return nil
 }

@@ -4,7 +4,6 @@ import (
 	c "command"
 	mf "maps/fetch_locations"
 	ml "maps/location"
-	qf "query/fetch"
 	qs "query/state"
 )
 
@@ -15,7 +14,7 @@ type MapBCommand struct {
 
 // Execute fetches locations using the previous URL, state, and query fetch.
 func (m *MapBCommand) Execute() error {
-	return mf.FetchLocations(m.state.PreviousURL, m.state, qf.QueryFetch[ml.Location])
+	return mf.FetchLocations(m.state.PreviousURL, m.state)
 }
 
 // GetDescription returns the description of the MapBCommand.

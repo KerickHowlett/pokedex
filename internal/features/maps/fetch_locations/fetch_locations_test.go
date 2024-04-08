@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
+	"time"
 
 	l "maps/location"
 	s "query/state"
@@ -18,18 +19,18 @@ func TestFetchLocations(t *testing.T) {
 
 		fetchedMock := func(responseType string) QueryFetchFunc {
 			if responseType == "error" {
-				return func(url string, queryState *s.QueryState[l.Location]) error {
+				return func(url string, queryState *s.QueryState[l.Location], ttl ...time.Duration) error {
 					return fmt.Errorf("error with response: %s", http.StatusText(http.StatusInternalServerError))
 				}
 			}
 			if responseType == "no-maps" {
-				return func(url string, queryState *s.QueryState[l.Location]) error {
+				return func(url string, queryState *s.QueryState[l.Location], ttl ...time.Duration) error {
 					queryState.Results = []l.Location{}
 					return nil
 				}
 			}
 			if responseType == "success" {
-				return func(url string, queryState *s.QueryState[l.Location]) error {
+				return func(url string, queryState *s.QueryState[l.Location], ttl ...time.Duration) error {
 					newLocation := l.NewLocation(l.WithName(f.StarterTown))
 					queryState.Results = append(queryState.Results, *newLocation)
 					return nil
@@ -50,15 +51,6 @@ func TestFetchLocations(t *testing.T) {
 		}
 	}
 
-	t.Run("should panic if the fetch function is nil.", func(t *testing.T) {
-		defer func() {
-			if r := recover(); r == nil {
-				t.Error("Expected a panic to occur, but function proceeded with remaining operations.")
-			}
-		}()
-		FetchLocations(nil, nil, nil)
-	})
-
 	t.Run("should return an error if the state is nil.", func(t *testing.T) {
 		_, mockedFetch, _ := setup("success")
 		err := FetchLocations(&f.APIEndpoint, nil, mockedFetch)
@@ -73,8 +65,9 @@ func TestFetchLocations(t *testing.T) {
 
 	t.Run("should return an error if the query fetch fails.", func(t *testing.T) {
 		state, mockedFetch, _ := setup("error")
+		expectedErrorMessage := fmt.Sprintf("error with response: %s", http.StatusText(http.StatusInternalServerError))
 		err := FetchLocations(&f.APIEndpoint, state, mockedFetch)
-		expectErrorMessage(err, http.StatusText(http.StatusInternalServerError))
+		expectErrorMessage(err, expectedErrorMessage)
 	})
 
 	t.Run("should return an error if no locations are found.", func(t *testing.T) {

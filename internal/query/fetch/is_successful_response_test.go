@@ -1,4 +1,4 @@
-package queryfetch
+package query_fetch
 
 import (
 	"net/http"

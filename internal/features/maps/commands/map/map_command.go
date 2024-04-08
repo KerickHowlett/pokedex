@@ -4,7 +4,6 @@ import (
 	c "command"
 	mf "maps/fetch_locations"
 	ml "maps/location"
-	qf "query/fetch"
 	qs "query/state"
 )
 
@@ -15,7 +14,7 @@ type MapCommand struct {
 
 // Execute executes the MapCommand and fetches locations using the provided state and query.
 func (m *MapCommand) Execute() error {
-	return mf.FetchLocations(m.state.NextURL, m.state, qf.QueryFetch[ml.Location])
+	return mf.FetchLocations(m.state.NextURL, m.state)
 }
 
 // GetDescription returns the description of the MapCommand.

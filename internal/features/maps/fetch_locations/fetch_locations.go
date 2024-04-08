@@ -2,13 +2,15 @@ package fetch_locations
 
 import (
 	"fmt"
+	"time"
 
 	l "maps/location"
+	qf "query/fetch"
 	qs "query/state"
 )
 
 type MapsQueryState = qs.QueryState[l.Location]
-type QueryFetchFunc = func(url string, queryState *MapsQueryState) error
+type QueryFetchFunc = func(url string, queryState *MapsQueryState, ttlOption ...time.Duration) error
 
 // FetchLocations fetches locations from a given URL -- state.NextURL or
 // state.PreviousURL -- using the provided fetch function and updates the query state.
@@ -25,9 +27,10 @@ type QueryFetchFunc = func(url string, queryState *MapsQueryState) error
 // Example usage:
 //
 //	err := FetchLocations(&state.NextURL, state, fetch)
-func FetchLocations(url *string, state *MapsQueryState, fetch QueryFetchFunc) error {
-	if fetch == nil {
-		panic("fetch function is required")
+func FetchLocations(url *string, state *MapsQueryState, fetchFunc ...QueryFetchFunc) error {
+	fetch := qf.QueryFetch[l.Location]
+	if len(fetchFunc) > 0 {
+		fetch = fetchFunc[0]
 	}
 
 	if state == nil {
