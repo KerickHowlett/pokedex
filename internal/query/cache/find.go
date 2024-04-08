@@ -1,6 +1,6 @@
 package query_cache
 
-// Get retrieves the value associated with the given key from the query cache.
+// Find retrieves the value associated with the given key from the query cache.
 //
 // Parameters:
 //   - key: The key to retrieve the value for.
@@ -11,11 +11,11 @@ package query_cache
 //
 // Example:
 //
-//	value, cacheHit := cache.Get("key")
+//	value, cacheHit := cache.Find("key")
 //	if !cacheHit {
 //	    log.Println("key not found in cache")
 //	}
-func (qc *QueryCache) Get(key string) (value []byte, entryFound bool) {
+func (qc *QueryCache) Find(key string) (value []byte, entryFound bool) {
 	qc.mutex.Lock()
 	defer qc.mutex.Unlock()
 
