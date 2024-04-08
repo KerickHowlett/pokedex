@@ -20,7 +20,8 @@ func (r *REPL) RunREPL() {
 
 		r.printNewLine()
 		if err := r.execute(command); err != nil {
-			fmt.Printf("There was an issue with running the %s command. Please try again.\n", command)
+			fmt.Println(err)
+			fmt.Println("Please try again.")
 		}
 
 		r.printNewLine()

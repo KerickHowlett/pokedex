@@ -49,7 +49,7 @@ func TestStartREPL(t *testing.T) {
 	})
 
 	t.Run("should print error message if command execution fails", func(t *testing.T) {
-		expectedOutput := "There was an issue with running the mock command. Please try again."
+		expectedOutput := "Please try again."
 		if _, _, output := setup("error"); !strings.Contains(output, expectedOutput) {
 			t.Errorf("Output does not contain expected '%s', but instead got '%s'", expectedOutput, output)
 		}
