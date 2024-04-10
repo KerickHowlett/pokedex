@@ -14,7 +14,7 @@ type result struct {
 	Name string `json:"name"`
 }
 
-func TestParseQueryFetchResponse(t *testing.T) {
+func TestDecode(t *testing.T) {
 	t.Run("should parse the response body correctly", func(t *testing.T) {
 		body := []byte(fmt.Sprintf(`{
 			"NextURL": null,
@@ -26,13 +26,13 @@ func TestParseQueryFetchResponse(t *testing.T) {
 			qs.WithResult(result{Name: f.StarterTown}),
 		)
 
-		if parseQueryFetchResponse(body, state); !jsonEqual(state, expectedState) {
+		if decode(body, state); !expectEqualJSONs(state, expectedState) {
 			t.Errorf("Expected QueryState[TResult] to be %v, but instead received %v", expectedState, state)
 		}
 	})
 
 	t.Run("should return an error if the response body cannot be parsed", func(t *testing.T) {
-		err := parseQueryFetchResponse(nil, qs.NewQueryState[result]())
+		err := decode(nil, qs.NewQueryState[result]())
 
 		if err == nil {
 			t.Errorf("Expected error to be returned, but got nil")
@@ -45,9 +45,8 @@ func TestParseQueryFetchResponse(t *testing.T) {
 	})
 }
 
-// Helper function to compare JSON objects
-func jsonEqual(a, b interface{}) bool {
-	ajson, _ := json.Marshal(a)
-	bjson, _ := json.Marshal(b)
-	return string(ajson) == string(bjson)
+func expectEqualJSONs(a, b interface{}) bool {
+	aJSON, _ := json.Marshal(a)
+	bJSON, _ := json.Marshal(b)
+	return string(aJSON) == string(bJSON)
 }

@@ -6,7 +6,7 @@ import (
 	qs "query/state"
 )
 
-// parseQueryFetchResponse parses the HTTP Response's JSON body and populates the
+// decode parses the HTTP Response's JSON body and populates the
 // queryState it's values.
 //
 // Parameters:
@@ -26,8 +26,8 @@ import (
 //		"Results": [{"name": "value"}]
 //	}`)
 //	state := qs.NewQueryState[result]()
-//	err := parseQueryFetchResponse(body, state)
-func parseQueryFetchResponse[TResult any](body []byte, queryState *qs.QueryState[TResult]) error {
+//	err := decode(body, state)
+func decode[TResult any](body []byte, queryState *qs.QueryState[TResult]) error {
 	if err := json.Unmarshal(body, queryState); err != nil {
 		return fmt.Errorf("error with parsing payload %v", err)
 	}
