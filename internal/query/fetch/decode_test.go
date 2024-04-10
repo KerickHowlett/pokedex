@@ -1,13 +1,13 @@
 package query_fetch
 
 import (
-	"encoding/json"
 	"fmt"
 	"strings"
 	"testing"
 
 	qs "query/state"
 	f "test_tools/fixtures"
+	"test_tools/utils"
 )
 
 type result struct {
@@ -26,7 +26,7 @@ func TestDecode(t *testing.T) {
 			qs.WithResult(result{Name: f.StarterTown}),
 		)
 
-		if decode(body, state); !expectEqualJSONs(state, expectedState) {
+		if decode(body, state); !utils.ExpectEqualJSONs(state, expectedState) {
 			t.Errorf("Expected QueryState[TResult] to be %v, but instead received %v", expectedState, state)
 		}
 	})
@@ -43,10 +43,4 @@ func TestDecode(t *testing.T) {
 			t.Errorf("Expected error message to be '%s', but instead received '%s'", expectedErrorMessage, err.Error())
 		}
 	})
-}
-
-func expectEqualJSONs(a, b interface{}) bool {
-	aJSON, _ := json.Marshal(a)
-	bJSON, _ := json.Marshal(b)
-	return string(aJSON) == string(bJSON)
 }
