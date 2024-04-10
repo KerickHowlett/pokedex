@@ -39,7 +39,7 @@ func QueryFetch[TResult any](url string, queryState *qs.QueryState[TResult], ttl
 
 	cache := qc.NewQueryCache(ttl)
 	if cachedResponse, cacheHit := cache.Find(url); cacheHit {
-		return parseQueryFetchResponse(cachedResponse, queryState)
+		return decode(cachedResponse, queryState)
 	}
 
 	response, err := http.Get(url)
@@ -57,7 +57,7 @@ func QueryFetch[TResult any](url string, queryState *qs.QueryState[TResult], ttl
 		return fmt.Errorf("error with response: %s", body)
 	}
 
-	if err = parseQueryFetchResponse(body, queryState); err != nil {
+	if err = decode(body, queryState); err != nil {
 		return err
 	}
 
