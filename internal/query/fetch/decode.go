@@ -10,7 +10,7 @@ import (
 //
 // Generic Constraints:
 //
-//	TPayload: The schematic of the parsed query result.
+//	TQuery: The schematic of the intended query payload.
 //
 // Parameters:
 //
@@ -24,8 +24,8 @@ import (
 // Example:
 //
 //	err := decode(body, state)
-func decode[TPayload any](body []byte, payload *TPayload) error {
-	if err := json.Unmarshal(body, payload); err != nil {
+func decode[TQuery any](body []byte, query *TQuery) error {
+	if err := json.Unmarshal(body, query); err != nil {
 		return fmt.Errorf("error with parsing payload %v", err)
 	}
 

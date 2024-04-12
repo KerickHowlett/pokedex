@@ -9,15 +9,8 @@ import (
 	"time"
 
 	qc "query/cache"
-	qs "query/state"
 	f "test_tools/fixtures"
 )
-
-type MockedResult struct {
-	Name string
-}
-
-type MockedQueryState = qs.QueryState[MockedResult]
 
 func TestFetchQuery(t *testing.T) {
 	const (
@@ -32,7 +25,7 @@ func TestFetchQuery(t *testing.T) {
 		successResponse      = "success-response"             // Used to simulate a successful response from the API.
 	)
 
-	mockedPayload := fmt.Sprintf(`{"next":"%s","previous":null,"results":[]}`, f.APIEndpoint)
+	mockedPayload := fmt.Sprintf(`{"NextURL":"%s","PreviousURL":"","Results":[]}`, f.APIEndpoint)
 
 	expectFetchError := func(err error, expectedErrorMessage string) {
 		if err == nil {
@@ -48,7 +41,7 @@ func TestFetchQuery(t *testing.T) {
 		return fmt.Sprintf("error with response: %s", statusMessage)
 	}
 
-	setup := func(responseType string) (queryState *MockedQueryState, queryCache *qc.QueryCache, httpGetFuncWasCalled bool, endpointCalled string, err error) {
+	setup := func(responseType string) (payload *testQuery, queryCache *qc.QueryCache, httpGetFuncWasCalled bool, endpointCalled string, err error) {
 		var cachedResponsePayload string = ""
 		var httpHandler http.HandlerFunc
 		var useInvalidAPIEndpoint bool = false
@@ -115,46 +108,36 @@ func TestFetchQuery(t *testing.T) {
 			queryCache.Save(endpointCalled, []byte(cachedResponsePayload))
 		}
 
-		queryState = qs.NewQueryState[MockedResult]()
-		err = QueryFetch(endpointCalled, queryState)
+		payload = &testQuery{NextURL: f.APIEndpoint}
+		err = QueryFetch(endpointCalled, payload)
 
-		return queryState, queryCache, httpGetFuncWasCalled, endpointCalled, err
+		return payload, queryCache, httpGetFuncWasCalled, endpointCalled, err
 	}
 
 	t.Run("FetchQueryState Happy Paths", func(t *testing.T) {
+		t.Parallel()
 		t.Run("should fetch the list of state from the API successfully.", func(t *testing.T) {
+			t.Parallel()
 			if _, _, _, _, err := setup(successResponse); err != nil {
 				t.Errorf("Unexpected error: %v", err)
 			}
 		})
 
-		t.Run("QueryState struct payload", func(t *testing.T) {
-			t.Run("should set the NextURL field with the same named field's value.", func(t *testing.T) {
-				state, _, _, _, _ := setup(successResponse)
-				if actual := *state.NextURL; actual != f.APIEndpoint {
-					t.Errorf("Expected QueryState[TResult].NextURL to be %s, but fetched: %v", f.APIEndpoint, actual)
-				}
-			})
-
-			t.Run("should set the PreviousURL with the same named field's value.", func(t *testing.T) {
-				state, _, _, _, _ := setup(successResponse)
-				if actual := state.PreviousURL; actual != nil {
-					t.Errorf("Expected QueryState[TResult].PreviousURL to be nil, but fetched: %v", actual)
-				}
-			})
-
-			t.Run("should set the Results field with the same named field's slice.", func(t *testing.T) {
-				state, _, _, _, _ := setup(successResponse)
-				if actual := len(state.Results); actual != 0 {
-					t.Errorf("Expected QueryState[TResult].Results to be empty, but fetched %d elements", actual)
-				}
-			})
+		t.Run("should instantiate struct successfully with empty results slice.", func(t *testing.T) {
+			t.Parallel()
+			state, _, _, _, _ := setup(successResponse)
+			if actual := len(state.Results); actual != 0 {
+				t.Errorf("Expected TPayload.Results to be empty, but fetched %d elements", actual)
+			}
 		})
 	})
 
 	t.Run("Fetch QueryState Caching", func(t *testing.T) {
+		t.Parallel()
 		t.Run("Given the API response is pre-cached", func(t *testing.T) {
+			t.Parallel()
 			t.Run("should return the cached response without calling the API.", func(t *testing.T) {
+				t.Parallel()
 				state, _, httpGetFuncWasCalled, _, _ := setup(cachedResponse)
 				if httpGetFuncWasCalled {
 					t.Error("Expected http.Get to not be called, but it was.")
@@ -165,6 +148,7 @@ func TestFetchQuery(t *testing.T) {
 			})
 
 			t.Run("should return an error if the cached response cannot be parsed without calling the API.", func(t *testing.T) {
+				t.Parallel()
 				_, _, httpGetFuncWasCalled, _, err := setup(cachedParseJSONError)
 				if httpGetFuncWasCalled {
 					t.Error("Expected http.Get to not be called, but it was.")
@@ -177,7 +161,9 @@ func TestFetchQuery(t *testing.T) {
 		})
 
 		t.Run("Given the API response is not pre-cached", func(t *testing.T) {
+			t.Parallel()
 			t.Run("should call the API and cache the response.", func(t *testing.T) {
+				t.Parallel()
 				state, cache, httpGetFuncWasCalled, endpointCalled, _ := setup(successResponse)
 				if httpGetFuncWasCalled {
 					t.Error("Expected http.Get to be called, but it was not.")
@@ -191,6 +177,7 @@ func TestFetchQuery(t *testing.T) {
 			})
 
 			t.Run("should return an error if the API response cannot be parsed.", func(t *testing.T) {
+				t.Parallel()
 				_, _, httpGetFuncWasCalled, _, err := setup(parseJSONError)
 				if httpGetFuncWasCalled {
 					t.Error("Expected http.Get to be called, but it was not.")
@@ -201,22 +188,26 @@ func TestFetchQuery(t *testing.T) {
 	})
 
 	t.Run("FetchQueryState Error Handling Paths", func(t *testing.T) {
+		t.Parallel()
 		t.Run("should return an error if http.Get fails.", func(t *testing.T) {
 			_, _, _, _, err := setup(httpGetError)
 			expectFetchError(err, "error while attempting to fetch query")
 		})
 
 		t.Run("should return an error if HTTP Response Body cannot be read.", func(t *testing.T) {
+			t.Parallel()
 			_, _, _, _, err := setup(readPayloadError)
 			expectFetchError(err, "error from reading response body")
 		})
 
 		t.Run("should return an error if the response status code outside the 200 range.", func(t *testing.T) {
+			t.Parallel()
 			_, _, _, _, err := setup(errorResponse)
 			expectFetchError(err, getStatusMessageByCode(http.StatusInternalServerError))
 		})
 
 		t.Run("should return an error if the JSON payload cannot be parsed.", func(t *testing.T) {
+			t.Parallel()
 			_, _, _, _, err := setup(parseJSONError)
 			expectFetchError(err, "error with parsing payload")
 		})

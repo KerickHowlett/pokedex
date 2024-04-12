@@ -5,35 +5,40 @@ import (
 	"strings"
 	"testing"
 
-	qs "query/state"
 	f "test_tools/fixtures"
 	"test_tools/utils"
 )
 
-type result struct {
-	Name string `json:"name"`
-}
-
 func TestDecode(t *testing.T) {
-	t.Run("should parse the response body correctly", func(t *testing.T) {
-		body := []byte(fmt.Sprintf(`{
+	setup := func() (payload *testQuery, responseBody []byte, expectedPayload *testQuery) {
+		payload = &testQuery{}
+		responseBody = []byte(fmt.Sprintf(`{
 			"NextURL": null,
 			"PreviousURL": null,
 			"Results": [{"name": "%s"}]
 		}`, f.StarterTown))
-		state := qs.NewQueryState[result]()
-		expectedState := qs.NewQueryState(
-			qs.WithResult(result{Name: f.StarterTown}),
-		)
+		expectedPayload = &testQuery{
+			NextURL:     "",
+			PreviousURL: "",
+			Results:     []testResult{{Name: f.StarterTown}},
+		}
 
-		if decode(body, state); !utils.ExpectEqualJSONs(state, expectedState) {
-			t.Errorf("Expected QueryState[TResult] to be %v, but instead received %v", expectedState, state)
+		return payload, responseBody, expectedPayload
+	}
+
+	t.Run("should parse the response body correctly", func(t *testing.T) {
+		t.Parallel()
+		payload, body, expectedState := setup()
+		if decode(body, payload); !utils.ExpectEqualJSONs(payload, expectedState) {
+			t.Errorf("Expected QueryState[TResult] to be %v, but instead received %v", expectedState, payload)
 		}
 	})
 
 	t.Run("should return an error if the response body cannot be parsed", func(t *testing.T) {
-		err := decode(nil, qs.NewQueryState[result]())
+		t.Parallel()
+		payload, _, _ := setup()
 
+		err := decode(nil, payload)
 		if err == nil {
 			t.Errorf("Expected error to be returned, but got nil")
 		}
