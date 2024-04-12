@@ -16,6 +16,11 @@ func (m *MapCommand) Execute() error {
 	return mf.FetchLocations(m.state.NextURL, m.state)
 }
 
+// GetArgs returns the arguments of the MapCommand.
+func (m MapCommand) GetArgs() []string {
+	return []string{}
+}
+
 // GetDescription returns the description of the MapCommand.
 func (m MapCommand) GetDescription() string {
 	return "Show the next 20 Pokemon world map locations."
@@ -30,3 +35,6 @@ func (m MapCommand) GetName() string {
 func (m *MapCommand) PrintHelp() {
 	c.PrintHelp(m)
 }
+
+// SetArgs sets the arguments of the MapCommand.
+func (m *MapCommand) SetArgs(args []string) {}

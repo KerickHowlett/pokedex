@@ -8,16 +8,17 @@ import (
 
 	l "maps/location"
 	s "maps/state"
+	qf "query/fetch"
 	f "test_tools/fixtures"
 	"test_tools/utils"
 )
 
 func TestFetchLocations(t *testing.T) {
-	setup := func(responseType string) (queryMapState *s.MapsState, mockedFetch QueryFetchFunc, stdout *utils.PrintStorage) {
+	setup := func(responseType string) (queryMapState *s.MapsState, mockedFetch qf.QueryFetchFunc[s.MapsState], stdout *utils.PrintStorage) {
 		queryMapState = s.NewMapsState()
 		stdout = utils.NewPrintStorage()
 
-		fetchedMock := func(responseType string) QueryFetchFunc {
+		fetchedMock := func(responseType string) qf.QueryFetchFunc[s.MapsState] {
 			if responseType == "error" {
 				return func(url string, queryState *s.MapsState, ttl ...time.Duration) error {
 					return fmt.Errorf("error with response: %s", http.StatusText(http.StatusInternalServerError))
@@ -52,18 +53,21 @@ func TestFetchLocations(t *testing.T) {
 	}
 
 	t.Run("should return an error if the state is nil.", func(t *testing.T) {
+		t.Parallel()
 		_, mockedFetch, _ := setup("success")
 		err := FetchLocations(&f.APIEndpoint, nil, mockedFetch)
 		expectErrorMessage(err, "a query state is required to fetch locations")
 	})
 
 	t.Run("should return an error if the url is nil.", func(t *testing.T) {
+		t.Parallel()
 		state, mockedFetch, _ := setup("success")
 		err := FetchLocations(nil, state, mockedFetch)
 		expectErrorMessage(err, "no more maps to fetch")
 	})
 
 	t.Run("should return an error if the query fetch fails.", func(t *testing.T) {
+		t.Parallel()
 		state, mockedFetch, _ := setup("error")
 		expectedErrorMessage := fmt.Sprintf("error with response: %s", http.StatusText(http.StatusInternalServerError))
 		err := FetchLocations(&f.APIEndpoint, state, mockedFetch)
@@ -71,12 +75,14 @@ func TestFetchLocations(t *testing.T) {
 	})
 
 	t.Run("should return an error if no locations are found.", func(t *testing.T) {
+		t.Parallel()
 		state, mockedFetch, _ := setup("no-maps")
 		err := FetchLocations(&f.APIEndpoint, state, mockedFetch)
 		expectErrorMessage(err, "no maps were found")
 	})
 
 	t.Run("should print all map location names stored in query state.", func(t *testing.T) {
+		t.Parallel()
 		state, mockedFetch, stdout := setup("success")
 
 		output, err := stdout.CaptureWithError(func() error {

@@ -8,6 +8,6 @@ package help_command
 // Example usage:
 //
 //	command := NewHelpCommand()
-func NewHelpCommand() *Help {
-	return &Help{}
+func NewHelpCommand() *HelpCommand {
+	return &HelpCommand{}
 }

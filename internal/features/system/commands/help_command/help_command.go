@@ -2,7 +2,8 @@ package help_command
 
 import c "command"
 
-type Help struct{}
+// HelpCommand represents the 'help' command in the CLI.
+type HelpCommand struct{}
 
 // Execute is a method of the Help struct that is responsible for
 // executing the actual 'help' command.
@@ -12,18 +13,29 @@ type Help struct{}
 //
 // Returns:
 //   - An error if the method is called.
-func (h Help) Execute() error {
+func (h HelpCommand) Execute() error {
 	panic("this method should never be called")
 }
 
-func (h Help) GetDescription() string {
+// GetArgs returns the arguments of the HelpCommand.
+func (m HelpCommand) GetArgs() []string {
+	return []string{}
+}
+
+// GetDescription returns the description of the HelpCommand.
+func (h HelpCommand) GetDescription() string {
 	return "Show help for the Pokemon CLI commands."
 }
 
-func (h Help) GetName() string {
+// GetName returns the name of the HelpCommand.
+func (h HelpCommand) GetName() string {
 	return "help"
 }
 
-func (h *Help) PrintHelp() {
+// PrintHelp prints the help message for the HelpCommand.
+func (h *HelpCommand) PrintHelp() {
 	c.PrintHelp(h)
 }
+
+// SetArgs sets the arguments of the HelpCommand.
+func (m *HelpCommand) SetArgs(args []string) {}

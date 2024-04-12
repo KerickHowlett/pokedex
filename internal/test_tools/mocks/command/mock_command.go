@@ -5,6 +5,15 @@ import "fmt"
 type MockCommand struct {
 	Name        string
 	Description string
+	args        []string
+}
+
+func (c *MockCommand) GetArgs() []string {
+	return c.args
+}
+
+func (c *MockCommand) SetArgs(args []string) {
+	c.args = args
 }
 
 func (c *MockCommand) GetName() string {
