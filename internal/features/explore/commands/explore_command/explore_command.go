@@ -2,8 +2,8 @@ package explore
 
 import (
 	c "command"
+	la "entities/location_area"
 	fe "explore/fetch_encounters"
-	la "explore/location_area"
 	"fmt"
 )
 

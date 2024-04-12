@@ -1,6 +1,6 @@
 package pokemon_encounter
 
-import p "explore/pokemon"
+import p "entities/pokemon"
 
 // WithPokemon sets the Pokemon of the PokemonEncounter.
 //

@@ -3,7 +3,7 @@ package fetch_encounters
 import (
 	"fmt"
 
-	la "explore/location_area"
+	la "entities/location_area"
 	qf "query/fetch"
 )
 

@@ -1,6 +1,6 @@
 package location_area
 
-import pe "explore/pokemon_encounter"
+import pe "entities/pokemon_encounter"
 
 // WithPokemonEncounter returns a function that sets the
 // Pokemon encounters of a LocationArea.

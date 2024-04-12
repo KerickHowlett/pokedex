@@ -1,6 +1,6 @@
 package explore
 
-import la "explore/location_area"
+import la "entities/location_area"
 
 // WithState sets the state for the ExploreCommand instance.
 //

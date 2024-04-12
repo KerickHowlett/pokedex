@@ -1,6 +1,6 @@
 package maps_state
 
-import l "maps/location"
+import l "entities/location"
 
 // WithLocation is a MapsStateOption function that appends the given result to
 // the query state's Results slice.

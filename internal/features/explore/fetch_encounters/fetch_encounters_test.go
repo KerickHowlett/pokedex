@@ -6,9 +6,9 @@ import (
 	"testing"
 	"time"
 
-	la "explore/location_area"
-	p "explore/pokemon"
-	pe "explore/pokemon_encounter"
+	la "entities/location_area"
+	p "entities/pokemon"
+	pe "entities/pokemon_encounter"
 	qf "query/fetch"
 	f "test_tools/fixtures"
 	"test_tools/utils"

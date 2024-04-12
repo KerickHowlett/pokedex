@@ -1,6 +1,6 @@
 package maps_state
 
-import l "maps/location"
+import l "entities/location"
 
 // NewMapsState creates a new instance of MapsState with the specified options.
 //

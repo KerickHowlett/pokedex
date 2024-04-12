@@ -1,6 +1,6 @@
 package explore
 
-import la "explore/location_area"
+import la "entities/location_area"
 
 // NewExploreCommand creates a new instance of the Map struct.
 //

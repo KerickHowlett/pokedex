@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	l "maps/location"
+	l "entities/location"
 	s "maps/state"
 	qf "query/fetch"
 	f "test_tools/fixtures"

@@ -4,6 +4,7 @@ go 1.22.1
 
 require (
 	command v1.0.0 // indirect
+	entities v1.0.0 // indirect
 	explore v1.0.0 // indirect
 	maps v1.0.0 // indirect
 	query v1.0.0 // indirect
@@ -16,6 +17,7 @@ require (
 
 replace (
 	command => ./internal/ui/command
+	entities => ./internal/entities
 	explore => ./internal/features/explore
 	maps => ./internal/features/maps
 	query => ./internal/query

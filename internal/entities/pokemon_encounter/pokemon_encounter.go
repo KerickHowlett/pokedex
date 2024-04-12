@@ -1,6 +1,6 @@
 package pokemon_encounter
 
-import p "explore/pokemon"
+import p "entities/pokemon"
 
 // PokemonEncounter houses the essential information of a given Pokemon encounter.
 //

@@ -3,7 +3,7 @@ package explore
 import (
 	"testing"
 
-	la "explore/location_area"
+	la "entities/location_area"
 )
 
 func TestWithState(t *testing.T) {

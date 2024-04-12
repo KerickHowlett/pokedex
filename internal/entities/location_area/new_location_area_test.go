@@ -1,8 +1,8 @@
 package location_area
 
 import (
-	p "explore/pokemon"
-	pe "explore/pokemon_encounter"
+	p "entities/pokemon"
+	pe "entities/pokemon_encounter"
 	"test_tools/fixtures"
 	"testing"
 )
