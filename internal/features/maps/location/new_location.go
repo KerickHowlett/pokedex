@@ -17,17 +17,15 @@ package location
 //	)
 //	fmt.Println(location.Name) // Output: Pallet Town
 func NewLocation(options ...LocationOption) *Location {
-	pokemonMap := &Location{
-		Name: "",
-	}
+	location := &Location{}
 
 	for _, option := range options {
-		option(pokemonMap)
+		option(location)
 	}
 
-	if pokemonMap.Name == "" {
-		panic("[ERROR] Location name is required")
+	if location.Name == "" {
+		panic("name of location is required")
 	}
 
-	return pokemonMap
+	return location
 }
