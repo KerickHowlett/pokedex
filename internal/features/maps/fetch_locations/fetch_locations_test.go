@@ -87,7 +87,7 @@ func TestFetchLocations(t *testing.T) {
 			t.Errorf("Unexpected error: %v", err)
 		}
 
-		if expectedOutput := fmt.Sprintf("Pokemon Maps:\n%s\n", f.StarterTown); output != expectedOutput {
+		if expectedOutput := fmt.Sprintf("Pokemon Maps:\n  - %s\n", f.StarterTown); output != expectedOutput {
 			t.Errorf("Expected output to be %q, but got %q.", expectedOutput, output)
 		}
 	})

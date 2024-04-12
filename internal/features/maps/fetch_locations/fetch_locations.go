@@ -49,7 +49,7 @@ func FetchLocations(url *string, state *ms.MapsState, fetchFunc ...QueryFetchFun
 
 	fmt.Println("Pokemon Maps:")
 	for _, location := range state.Locations {
-		fmt.Println(location.Name)
+		fmt.Printf("  - %s\n", location.Name)
 	}
 
 	return nil
