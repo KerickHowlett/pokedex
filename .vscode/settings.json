@@ -25,6 +25,7 @@
         "pokedexcli",
         "pokedexclishell",
         "printhelpmessage",
+        "qttl",
         "queryfetch",
         "querystate",
         "systemcommands",

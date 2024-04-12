@@ -2,14 +2,13 @@ package mapb_commands
 
 import (
 	h "maps/commands/helpers"
-	ml "maps/location"
-	qs "query/state"
+	ms "maps/state"
 )
 
 // NewMapBCommand creates a new instance of the MapB struct.
 //
 // Parameters:
-//   - state: A pointer to a QueryState struct instance.
+//   - state: A pointer to a MapsState struct instance.
 //
 // Returns:
 //   - A new instance of the MapB struct.
@@ -17,7 +16,7 @@ import (
 // Example usage:
 //
 //	command := NewMapBCommand()
-func NewMapBCommand(state ...*qs.QueryState[ml.Location]) *MapBCommand {
+func NewMapBCommand(state ...*ms.MapsState) *MapBCommand {
 	return &MapBCommand{
 		state: h.InitializeStateIfNeeded(state...),
 	}

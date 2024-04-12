@@ -3,13 +3,12 @@ package mapb_commands
 import (
 	c "command"
 	mf "maps/fetch_locations"
-	ml "maps/location"
-	qs "query/state"
+	ms "maps/state"
 )
 
 // MapBCommand represents a command for Map B feature.
 type MapBCommand struct {
-	state *qs.QueryState[ml.Location]
+	state *ms.MapsState
 }
 
 // Execute fetches locations using the previous URL, state, and query fetch.

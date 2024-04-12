@@ -7,32 +7,32 @@ import (
 	"time"
 
 	l "maps/location"
-	s "query/state"
+	s "maps/state"
 	f "test_tools/fixtures"
 	"test_tools/utils"
 )
 
 func TestFetchLocations(t *testing.T) {
-	setup := func(responseType string) (queryMapState *s.QueryState[l.Location], mockedFetch QueryFetchFunc, stdout *utils.PrintStorage) {
-		queryMapState = s.NewQueryState[l.Location]()
+	setup := func(responseType string) (queryMapState *s.MapsState, mockedFetch QueryFetchFunc, stdout *utils.PrintStorage) {
+		queryMapState = s.NewMapsState()
 		stdout = utils.NewPrintStorage()
 
 		fetchedMock := func(responseType string) QueryFetchFunc {
 			if responseType == "error" {
-				return func(url string, queryState *s.QueryState[l.Location], ttl ...time.Duration) error {
+				return func(url string, queryState *s.MapsState, ttl ...time.Duration) error {
 					return fmt.Errorf("error with response: %s", http.StatusText(http.StatusInternalServerError))
 				}
 			}
 			if responseType == "no-maps" {
-				return func(url string, queryState *s.QueryState[l.Location], ttl ...time.Duration) error {
-					queryState.Results = []l.Location{}
+				return func(url string, queryState *s.MapsState, ttl ...time.Duration) error {
+					queryState.Locations = []l.Location{}
 					return nil
 				}
 			}
 			if responseType == "success" {
-				return func(url string, queryState *s.QueryState[l.Location], ttl ...time.Duration) error {
+				return func(url string, queryState *s.MapsState, ttl ...time.Duration) error {
 					newLocation := l.NewLocation(l.WithName(f.StarterTown))
-					queryState.Results = append(queryState.Results, *newLocation)
+					queryState.Locations = append(queryState.Locations, *newLocation)
 					return nil
 				}
 			}

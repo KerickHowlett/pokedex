@@ -4,13 +4,11 @@ import (
 	"fmt"
 	"time"
 
-	l "maps/location"
+	ms "maps/state"
 	qf "query/fetch"
-	qs "query/state"
 )
 
-type MapsQueryState = qs.QueryState[l.Location]
-type QueryFetchFunc = func(url string, queryState *MapsQueryState, ttlOption ...time.Duration) error
+type QueryFetchFunc = func(url string, queryState *ms.MapsState, ttlOption ...time.Duration) error
 
 // FetchLocations fetches locations from a given URL -- state.NextURL or
 // state.PreviousURL -- using the provided fetch function and updates the query state.
@@ -18,7 +16,7 @@ type QueryFetchFunc = func(url string, queryState *MapsQueryState, ttlOption ...
 //
 // Parameters:
 //   - url: A pointer to a string containing the URL to fetch locations from.
-//   - state: A pointer to a QueryState struct instance.
+//   - state: A pointer to a MapsState struct instance.
 //   - fetch: A function that fetches locations from a given URL.
 //
 // Returns:
@@ -27,8 +25,8 @@ type QueryFetchFunc = func(url string, queryState *MapsQueryState, ttlOption ...
 // Example usage:
 //
 //	err := FetchLocations(&state.NextURL, state, fetch)
-func FetchLocations(url *string, state *MapsQueryState, fetchFunc ...QueryFetchFunc) error {
-	fetch := qf.QueryFetch[l.Location]
+func FetchLocations(url *string, state *ms.MapsState, fetchFunc ...QueryFetchFunc) error {
+	fetch := qf.QueryFetch[ms.MapsState]
 	if len(fetchFunc) > 0 {
 		fetch = fetchFunc[0]
 	}
@@ -45,12 +43,12 @@ func FetchLocations(url *string, state *MapsQueryState, fetchFunc ...QueryFetchF
 		return err
 	}
 
-	if len(state.Results) == 0 {
+	if len(state.Locations) == 0 {
 		return fmt.Errorf("no maps were found")
 	}
 
 	fmt.Println("Pokemon Maps:")
-	for _, location := range state.Results {
+	for _, location := range state.Locations {
 		fmt.Println(location.Name)
 	}
 

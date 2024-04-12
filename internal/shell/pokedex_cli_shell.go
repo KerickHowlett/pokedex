@@ -1,10 +1,9 @@
 package pokedexclishell
 
 import (
-	m "maps/commands/map"
+	mf "maps/commands/map"
 	mb "maps/commands/mapb"
-	l "maps/location"
-	q "query/state"
+	ms "maps/state"
 	r "repl"
 	e "system/commands/exit_command"
 	h "system/commands/help_command"
@@ -29,10 +28,10 @@ import (
 //	}
 //	PokedexCLIShell(config)
 func PokedexCLIShell(config PokedexCLIConfig) {
-	mapsState := q.NewQueryState(q.WithNextURL[l.Location](&config.StartingMapsAPIEndpoint))
+	mapsState := ms.NewMapsState(ms.WithNextURL(&config.StartingMapsAPIEndpoint))
 
 	toolchain := t.NewToolchain(
-		t.WithCommand(m.NewMapCommand(mapsState)),
+		t.WithCommand(mf.NewMapCommand(mapsState)),
 		t.WithCommand(mb.NewMapBCommand(mapsState)),
 		t.WithCommand(h.NewHelpCommand()),
 		t.WithCommand(e.NewExitCommand()),

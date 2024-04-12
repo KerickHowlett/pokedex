@@ -3,14 +3,13 @@ package map_commands
 import (
 	"testing"
 
-	ml "maps/location"
-	qs "query/state"
+	ms "maps/state"
 	"test_tools/utils"
 )
 
 func TestNewMapCommand(t *testing.T) {
 	t.Run("should create a new MapCommand with the correct state.", func(t *testing.T) {
-		state := qs.NewQueryState[ml.Location]()
+		state := ms.NewMapsState()
 		command := NewMapCommand(state)
 		utils.ExpectSameEntity(t, state, command.state, "state")
 	})

@@ -3,13 +3,12 @@ package map_commands
 import (
 	c "command"
 	mf "maps/fetch_locations"
-	ml "maps/location"
-	qs "query/state"
+	ms "maps/state"
 )
 
 // MapCommand represents a command related to maps in the pokedexcli application.
 type MapCommand struct {
-	state *qs.QueryState[ml.Location]
+	state *ms.MapsState
 }
 
 // Execute executes the MapCommand and fetches locations using the provided state and query.

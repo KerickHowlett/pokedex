@@ -3,16 +3,19 @@ package query_fetch
 import (
 	"encoding/json"
 	"fmt"
-	qs "query/state"
 )
 
 // decode parses the HTTP Response's JSON body and populates the
-// queryState it's values.
+// payload it's values.
+//
+// Generic Constraints:
+//
+//	TPayload: The schematic of the parsed query result.
 //
 // Parameters:
 //
 //	body: The HTTP Response's body.
-//	queryState: The query state to populate with the response's values.
+//	payload: The payload struct to populate with the response body's values.
 //
 // Returns:
 //
@@ -20,15 +23,9 @@ import (
 //
 // Example:
 //
-//	body := []byte(`{
-//		"NextURL": null,
-//		"PreviousURL": null,
-//		"Results": [{"name": "value"}]
-//	}`)
-//	state := qs.NewQueryState[result]()
 //	err := decode(body, state)
-func decode[TResult any](body []byte, queryState *qs.QueryState[TResult]) error {
-	if err := json.Unmarshal(body, queryState); err != nil {
+func decode[TPayload any](body []byte, payload *TPayload) error {
+	if err := json.Unmarshal(body, payload); err != nil {
 		return fmt.Errorf("error with parsing payload %v", err)
 	}
 

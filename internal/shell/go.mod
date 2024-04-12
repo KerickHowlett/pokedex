@@ -5,7 +5,7 @@ go 1.22.1
 require (
 	command v1.0.0 // indirect
 	maps v1.0.0
-	query v1.0.0
+	query v1.0.0 // indirect
 	repl v1.0.0
 	system v1.0.0
 	test_tools v1.0.0 // indirect
