@@ -1,11 +1,12 @@
 package pokedexclishell
 
 import (
+	e "explore/commands/explore_command"
 	mf "maps/commands/map"
 	mb "maps/commands/mapb"
 	ms "maps/state"
 	r "repl"
-	e "system/commands/exit_command"
+	ex "system/commands/exit_command"
 	h "system/commands/help_command"
 	t "toochain"
 )
@@ -28,13 +29,21 @@ import (
 //	}
 //	PokedexCLIShell(config)
 func PokedexCLIShell(config PokedexCLIConfig) {
-	mapsState := ms.NewMapsState(ms.WithNextURL(&config.StartingMapsAPIEndpoint))
+	helpCommand := h.NewHelpCommand()
+	exitCommand := ex.NewExitCommand()
+
+	sharedMapState := ms.NewMapsState(ms.WithNextURL(&config.StartingMapsAPIEndpoint))
+	mapCommand := mf.NewMapCommand(sharedMapState)
+	mapBCommand := mb.NewMapBCommand(sharedMapState)
+
+	exploreCommand := e.NewExploreCommand(e.WithAPIEndpoint(config.LocalAreaAPIEndpoint))
 
 	toolchain := t.NewToolchain(
-		t.WithCommand(mf.NewMapCommand(mapsState)),
-		t.WithCommand(mb.NewMapBCommand(mapsState)),
-		t.WithCommand(h.NewHelpCommand()),
-		t.WithCommand(e.NewExitCommand()),
+		t.WithCommand(exploreCommand),
+		t.WithCommand(mapCommand),
+		t.WithCommand(mapBCommand),
+		t.WithCommand(helpCommand),
+		t.WithCommand(exitCommand),
 	)
 
 	repl := r.NewREPL(

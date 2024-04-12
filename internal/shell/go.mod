@@ -4,6 +4,7 @@ go 1.22.1
 
 require (
 	command v1.0.0 // indirect
+	explore v1.0.0
 	maps v1.0.0
 	query v1.0.0 // indirect
 	repl v1.0.0
@@ -14,6 +15,7 @@ require (
 
 replace (
 	command => ../ui/command
+	explore => ../features/explore
 	maps => ../features/maps
 	query => ../query
 	repl => ../ui/repl
