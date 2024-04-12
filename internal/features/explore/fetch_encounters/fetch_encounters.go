@@ -31,10 +31,6 @@ func FetchEncounters(url string, state *la.LocationArea, fetchFunc ...qf.QueryFe
 		return fmt.Errorf("a query state is required to fetch locations")
 	}
 
-	if url == "" {
-		return fmt.Errorf("a url is required to fetch the location area")
-	}
-
 	if err := fetch(url, state); err != nil {
 		return err
 	}

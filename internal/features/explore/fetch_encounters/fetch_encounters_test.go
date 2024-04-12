@@ -60,13 +60,6 @@ func TestFetchEncounters(t *testing.T) {
 		expectErrorMessage(err, "a query state is required to fetch locations")
 	})
 
-	t.Run("should return an error if the url is nil.", func(t *testing.T) {
-		t.Parallel()
-		state, mockedFetch, _ := setup("success")
-		err := FetchEncounters("", state, mockedFetch)
-		expectErrorMessage(err, "a url is required to fetch the location area")
-	})
-
 	t.Run("should return an error if the query fetch fails.", func(t *testing.T) {
 		t.Parallel()
 		state, mockedFetch, _ := setup("error")
