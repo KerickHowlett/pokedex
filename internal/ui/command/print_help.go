@@ -11,9 +11,6 @@ import "fmt"
 //
 //	command := c.NewExitCommand()
 //	c.PrintHelp(command)
-func PrintHelp(command Command) {
-	name := command.GetName()
-	description := command.GetDescription()
-
-	fmt.Printf("%s: %s\n", name, description)
+func PrintHelp(c Command) {
+	fmt.Printf("%s: %s\n", c.GetName(), c.GetDescription())
 }
