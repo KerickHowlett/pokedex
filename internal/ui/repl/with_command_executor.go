@@ -26,7 +26,7 @@ package repl
 //	repl := NewREPL(WithCommandExecutor(commandExecutor))
 //
 // Now the commandExecutor function will be used to execute commands in the REPL.
-func WithCommandExecutor(commandExecutor func(string) error) REPLOption {
+func WithCommandExecutor(commandExecutor func(command string, args []string) error) REPLOption {
 	return func(r *REPL) {
 		r.execute = commandExecutor
 	}

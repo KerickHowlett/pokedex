@@ -14,8 +14,8 @@ func TestStartREPL(t *testing.T) {
 		executedCommand = new(string)
 
 		scanner := s.NewMockScanner()
-		mockedCommandExecutor := func(args string) error {
-			*executedCommand = args
+		mockedCommandExecutor := func(command string, args []string) error {
+			*executedCommand = command
 			defer scanner.SetIsEnabled(false)
 
 			if responseType == "success" {

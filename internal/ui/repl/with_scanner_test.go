@@ -3,15 +3,16 @@ package repl
 import (
 	"testing"
 
-	m "test_tools/mocks/scanner"
+	mc "test_tools/mocks/command_executor"
+	ms "test_tools/mocks/scanner"
 	u "test_tools/utils"
 )
 
 func TestWithScanner(t *testing.T) {
-	setup := func() (repl *REPL, scanner *m.MockScanner) {
-		scanner = m.NewMockScanner()
+	setup := func() (repl *REPL, scanner *ms.MockScanner) {
+		scanner = ms.NewMockScanner()
 		repl = NewREPL(
-			WithCommandExecutor(commandExecutorMock),
+			WithCommandExecutor(mc.MockedCommandExecutor),
 			WithScanner(scanner),
 		)
 

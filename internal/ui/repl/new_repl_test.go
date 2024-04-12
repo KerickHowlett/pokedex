@@ -47,9 +47,3 @@ func TestNewREPL(t *testing.T) {
 		})
 	})
 }
-
-// @SECTION: MOCKS
-
-func commandExecutorMock(args string) error {
-	return nil
-}

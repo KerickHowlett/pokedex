@@ -15,11 +15,11 @@ func (r *REPL) RunREPL() {
 	r.printPrompt()
 
 	for r.scanner.Scan() {
-		userInput := r.scanner.Text()
-		command := r.parseInput(userInput)[0]
-
 		r.printNewLine()
-		if err := r.execute(command); err != nil {
+
+		userInput := r.parseInput(r.scanner.Text())
+		command, args := userInput[0], userInput[1:]
+		if err := r.execute(command, args); err != nil {
 			fmt.Println(err)
 			fmt.Println("Please try again.")
 		}

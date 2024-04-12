@@ -1,5 +1,5 @@
 package commandexecutor
 
-func MockedCommandExecutor(args string) error {
+func MockedCommandExecutor(command string, args []string) error {
 	return nil
 }

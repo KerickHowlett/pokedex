@@ -8,7 +8,7 @@ import (
 )
 
 func TestWithCommandExecutor(t *testing.T) {
-	setup := func() func(string) error {
+	setup := func() func(command string, args []string) error { // Modify the function signature
 		repl := NewREPL(WithCommandExecutor(m.MockedCommandExecutor))
 		return repl.execute
 	}
