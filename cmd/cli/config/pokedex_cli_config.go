@@ -9,34 +9,37 @@ import s "shell"
 // PokedexCLIConfig is a struct that holds the configuration for the Pokedex CLI.
 //
 // Configurations:
-//   - ListSize: The number of items to display in a list.
-//   - Offset: The starting index of the list.
-//   - PokedexAPIDomain: The domain of the Pokedex API.
-//   - PokedexPrompt: The text displayed as the Pokedex prompt.
-//   - PokemonMapsURI: The URI for the Pokemon Maps service.
-//   - Prompt: The text displayed as the command prompt.
-//   - StartingMapsAPIEndpoint: The initial API endpoint for the Maps service.
 //   - limitParam: The query parameter for the number of items to display in a list.
+//   - listSize: The number of items to display in a list.
+//   - offset: The starting index of the list.
 //   - offsetParam: The query parameter for the starting index of the list.
+//   - pokedexAPIDomain: The domain of the Pokedex API.
+//   - pokedexPrompt: The text displayed as the Pokedex prompt.
+//   - pokemonMapsURI: The URI for the Pokemon Maps service.
+//   - prompt: The text displayed as the command prompt.
+//   - pokemonLocationAreaURI: The URI for the Pokemon Location Area service.
 const (
-	ListSize         = "20"
-	Offset           = "0"
-	PokedexAPIDomain = "https://pokeapi.co/api/v2"
-	PokedexPrompt    = "pokedex > "
-	PokemonMapsURI   = "/location"
-
-	// Private Constants to be used for URI query parameters.
+	// The query parameter for the starting index of the list.
+	limitParam = "limit"
+	// The number of items to display in a list.
+	listSize = "20"
+	// The starting index of the list.
+	offset = "0"
+	// The query parameter for the number of items to display in a list.
 	offsetParam = "offset"
-	limitParam  = "limit"
-)
-
-// StartingMapsAPIEndpoint is the initial API endpoint for the Maps service.
-var (
-	StartingMapsAPIEndpoint = PokedexAPIDomain + PokemonMapsURI + "?" + offsetParam + "=" + Offset + "&" + limitParam + "=" + ListSize
+	// The domain of the Pokedex API.
+	pokedexAPIDomain = "https://pokeapi.co/api/v2"
+	// The text displayed as the Pokedex prompt.
+	pokedexPrompt = "pokedex > "
+	// The URI for the Pokemon Maps service.
+	pokemonMapsURI = "/location"
+	// The URI for the Pokemon Location Area service.
+	pokemonLocationAreaURI = "/location-area"
 )
 
 // PokedexCLIConfig is the configuration for the Pokedex CLI application.
 var PokedexCLIConfig = s.PokedexCLIConfig{
-	StartingMapsAPIEndpoint: PokedexAPIDomain + PokemonMapsURI + "?" + offsetParam + "=" + Offset + "&" + limitParam + "=" + ListSize,
-	Prompt:                  PokedexPrompt,
+	LocalAreaAPIEndpoint:    pokedexAPIDomain + pokemonLocationAreaURI,
+	StartingMapsAPIEndpoint: pokedexAPIDomain + pokemonMapsURI + "?" + offsetParam + "=" + offset + "&" + limitParam + "=" + listSize,
+	Prompt:                  pokedexPrompt,
 }
