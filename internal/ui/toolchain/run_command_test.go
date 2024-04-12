@@ -19,26 +19,26 @@ func TestRunCommand(t *testing.T) {
 
 	t.Run("should print the help message if the command is not found.", func(t *testing.T) {
 		printout, expectedOutput := helpCommandSetup(toolchain)
-		if output := printout.Capture(func() { toolchain.RunCommand("help") }); output != expectedOutput {
+		if output := printout.Capture(func() { toolchain.RunCommand("help", nil) }); output != expectedOutput {
 			t.Errorf("Expected output to be the following:\n %q\n\n Got the following instead:\n %q", expectedOutput, output)
 		}
 	})
 
 	t.Run("should execute selected command without returning an error.", func(t *testing.T) {
-		if err := toolchain.RunCommand("mock"); err != nil {
+		if err := toolchain.RunCommand("mock", nil); err != nil {
 			t.Errorf("Expected no error, but got: %v", err)
 		}
 	})
 
 	t.Run("should return an error if entered command is invalid.", func(t *testing.T) {
 		const expectedError = "[ERROR] Command 'InvalidCommand' is not valid"
-		if err := toolchain.RunCommand("InvalidCommand"); err.Error() != expectedError {
+		if err := toolchain.RunCommand("InvalidCommand", nil); err.Error() != expectedError {
 			t.Errorf("Expected error to be: %v, but got: %v", expectedError, err)
 		}
 	})
 
 	t.Run("should not do anything when no command is entered.", func(t *testing.T) {
-		if err := toolchain.RunCommand(""); err != nil {
+		if err := toolchain.RunCommand("", nil); err != nil {
 			t.Errorf("Expected no error, but got: %v", err)
 		}
 	})

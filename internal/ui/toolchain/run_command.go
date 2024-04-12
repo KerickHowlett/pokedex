@@ -9,6 +9,7 @@ import "fmt"
 //
 // Parameters:
 //   - selection: The name of the command to execute.
+//   - args: A slice of strings representing the arguments to the command.
 //
 // Returns:
 //   - An error if the selection is not valid or if there is an error executing
@@ -22,7 +23,7 @@ import "fmt"
 //	)
 //
 //	err := toolchain.RunCommand("exit")
-func (t *Toolchain) RunCommand(selection string) error {
+func (t *Toolchain) RunCommand(selection string, args []string) error {
 	if selection == "" {
 		return nil
 	}
@@ -33,6 +34,7 @@ func (t *Toolchain) RunCommand(selection string) error {
 	}
 
 	if selectedCommand, commandFound := t.SelectCommand(selection); commandFound {
+		(*selectedCommand).SetArgs(args)
 		return (*selectedCommand).Execute()
 	}
 
