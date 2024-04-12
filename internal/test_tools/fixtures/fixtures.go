@@ -12,6 +12,9 @@ var (
 	// This time is set to April 6, 2024, 12:00:00 UTC.
 	FrozenTime = time.Date(2024, time.April, 6, 12, 0, 0, 0, time.UTC)
 
+	// PokemonName represents the name of the Pokemon used for tests.
+	PokemonName = "Pikachu"
+
 	// StarterTown represents the name of the starting town in the game,
 	// which is used for filling out Location.Name for tests.
 	StarterTown = "Pallet Town"
