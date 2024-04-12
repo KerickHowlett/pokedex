@@ -4,12 +4,19 @@ import (
 	"testing"
 
 	p "explore/pokemon"
+	pe "explore/pokemon_encounter"
+	f "test_tools/fixtures"
 )
 
 func TestWithPokemonEncounter(t *testing.T) {
-	runWithPokemonEncounterTest := func() (encounter p.Pokemon, locationArea LocationArea) {
-		encounter, locationArea = p.Pokemon{}, LocationArea{}
-		WithPokemonEncounter(encounter)(&locationArea)
+	runWithPokemonEncounterTest := func() (encounter *pe.PokemonEncounter, locationArea LocationArea) {
+		locationArea = LocationArea{}
+
+		pokemon := p.NewPokemon(p.WithName(f.PokemonName))
+		encounter = pe.NewPokemonEncounter(pe.WithPokemon(pokemon))
+
+		WithPokemonEncounter(*encounter)(&locationArea)
+
 		return encounter, locationArea
 	}
 
@@ -22,8 +29,8 @@ func TestWithPokemonEncounter(t *testing.T) {
 
 	t.Run("should add the correct Pokemon Encounter to the LocationArea", func(t *testing.T) {
 		t.Parallel()
-		if encounter, locationArea := runWithPokemonEncounterTest(); locationArea.Encounters[0] != encounter {
-			t.Errorf("Expected encounter %v, got %v", encounter, locationArea.Encounters[0])
+		if encounter, locationArea := runWithPokemonEncounterTest(); locationArea.Encounters[0] != *encounter {
+			t.Errorf("Expected encounter %v, got %v", *encounter, locationArea.Encounters[0])
 		}
 
 	})

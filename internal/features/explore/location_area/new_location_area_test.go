@@ -2,6 +2,7 @@ package location_area
 
 import (
 	p "explore/pokemon"
+	pe "explore/pokemon_encounter"
 	"test_tools/fixtures"
 	"testing"
 )
@@ -17,9 +18,10 @@ func TestNewLocationArea(t *testing.T) {
 	t.Run("should instantiate new struct with added options", func(t *testing.T) {
 		t.Parallel()
 		pokemon := p.NewPokemon(p.WithName(fixtures.PokemonName))
-		locationArea := NewLocationArea(WithPokemonEncounter(*pokemon))
+		encounter := pe.NewPokemonEncounter(pe.WithPokemon(pokemon))
+		locationArea := NewLocationArea(WithPokemonEncounter(*encounter))
 
-		if actualEncounter := locationArea.Encounters[0]; actualEncounter != *pokemon {
+		if actualEncounter := locationArea.Encounters[0]; actualEncounter != *encounter {
 			t.Errorf("Expected encounter %v, got %v", *pokemon, actualEncounter)
 		}
 	})

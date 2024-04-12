@@ -12,10 +12,10 @@ package location_area
 // Example usage:
 //
 //	locationArea := NewLocationArea()
-func NewLocationArea(options ...LocationAreaOption) LocationArea {
-	locationArea := LocationArea{}
+func NewLocationArea(options ...LocationAreaOption) *LocationArea {
+	locationArea := &LocationArea{}
 	for _, option := range options {
-		option(&locationArea)
+		option(locationArea)
 	}
 	return locationArea
 }
