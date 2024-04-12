@@ -11,7 +11,7 @@ func TestNewLocation(t *testing.T) {
 		location := NewLocation(WithName(f.StarterTown))
 
 		if location.Name != f.StarterTown {
-			t.Errorf("Expected location.name to be %q, but got %q", f.StarterTown, location.Name)
+			t.Errorf("Expected Location.Name to be %q, but got %q", f.StarterTown, location.Name)
 		}
 	})
 
