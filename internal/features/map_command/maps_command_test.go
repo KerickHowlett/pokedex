@@ -6,7 +6,7 @@ import (
 	"time"
 
 	l "entities/location"
-	ms "map/state"
+	ms "map_command/state"
 	f "test_tools/fixtures"
 	"test_tools/utils"
 )

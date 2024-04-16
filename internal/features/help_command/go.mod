@@ -1,4 +1,4 @@
-module help
+module help_command
 
 go 1.22.1
 

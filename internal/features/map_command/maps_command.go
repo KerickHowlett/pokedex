@@ -5,7 +5,7 @@ import (
 	"time"
 
 	c "command"
-	ms "map/state"
+	ms "map_command/state"
 	qf "query/fetch"
 )
 

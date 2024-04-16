@@ -2,7 +2,7 @@ package map_command
 
 import (
 	"fmt"
-	ms "map/state"
+	ms "map_command/state"
 	qf "query/fetch"
 	"query/fetch/ttl"
 )

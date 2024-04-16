@@ -3,7 +3,7 @@ package map_command
 import (
 	"time"
 
-	ms "map/state"
+	ms "map_command/state"
 )
 
 type MapCommandOption func(*MapCommand)

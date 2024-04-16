@@ -1,11 +1,11 @@
 package pokedexclishell
 
 import (
-	exit "exit"
-	explore "explore"
-	help "help"
-	mc "map"
-	ms "map/state"
+	exit "exit_command"
+	explore "explore_command"
+	help "help_command"
+	mc "map_command"
+	ms "map_command/state"
 	"repl"
 	tc "toochain"
 )

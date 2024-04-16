@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	ms "map/state"
+	ms "map_command/state"
 )
 
 func TestWithCacheTTL(t *testing.T) {

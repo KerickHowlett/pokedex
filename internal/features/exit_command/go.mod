@@ -1,4 +1,4 @@
-module exit
+module exit_command
 
 go 1.22.1
 
