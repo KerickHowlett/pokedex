@@ -2,6 +2,7 @@ package repl
 
 import (
 	"fmt"
+	"reflect"
 	"strings"
 	"testing"
 
@@ -52,6 +53,59 @@ func TestStartREPL(t *testing.T) {
 		expectedOutput := "Please try again."
 		if _, _, output := setup("error"); !strings.Contains(output, expectedOutput) {
 			t.Errorf("Output does not contain expected '%s', but instead got '%s'", expectedOutput, output)
+		}
+	})
+}
+
+func TestParseInput(t *testing.T) {
+	runParseInputTest := func(input string, expected []string) {
+		repl := &REPL{}
+		response := repl.parseInput(input)
+		if !reflect.DeepEqual(response, expected) {
+			t.Errorf("Expected %v, but instead got %v\n", expected, response)
+		}
+	}
+
+	t.Run("should trim leading and trailing spaces", func(t *testing.T) {
+		runParseInputTest("  Pikachu  ", []string{"pikachu"})
+	})
+
+	t.Run("should convert the input to lowercase", func(t *testing.T) {
+		runParseInputTest("PIKACHU", []string{"pikachu"})
+	})
+
+	t.Run("should split each word of input into a slice of words.", func(t *testing.T) {
+		runParseInputTest("Team Rocket", []string{"team", "rocket"})
+	})
+
+	t.Run("should return an empty string within a slice if no input is provided", func(t *testing.T) {
+		runParseInputTest("", []string{""})
+	})
+}
+func TestREPL_printNewLine(t *testing.T) {
+	setup := func() (output string) {
+		stdout := utils.NewPrintStorage()
+		output = stdout.Capture(REPL{}.printNewLine)
+
+		return output
+	}
+
+	t.Run("should print out an empty new line", func(t *testing.T) {
+		if output := setup(); output != "\n" {
+			t.Errorf("Expected output to be '\\n'. Got '%s'", output)
+		}
+	})
+}
+
+func TestREPL_printPrompt(t *testing.T) {
+	r := REPL{prompt: " >"}
+	stdout := utils.NewPrintStorage()
+
+	t.Run("should print the set prompt to stdout", func(t *testing.T) {
+		output := stdout.Capture(r.printPrompt)
+
+		if output != r.prompt {
+			t.Errorf("Expected output to be %q. Got %q", r.prompt, output)
 		}
 	})
 }

@@ -28,7 +28,7 @@ func TestNewREPL(t *testing.T) {
 			})
 
 			t.Run("should have the default prompt", func(t *testing.T) {
-				if repl.prompt != defaultPrompt {
+				if repl.prompt != "> " {
 					t.Errorf("repl.Prompt is not the default prompt")
 				}
 			})
