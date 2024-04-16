@@ -11,8 +11,10 @@ import (
 //   - createdAt: The time when the cache entry was created.
 //   - value: The cached value.
 type cacheEntry struct {
-	createdAt *time.Time
-	value     []byte
+	// createdAt is the time when the cache entry was created.
+	createdAt time.Time
+	// value is the cached value.
+	value []byte
 }
 
 // QueryCache is a cache that stores HTTP query results.
@@ -22,9 +24,16 @@ type cacheEntry struct {
 // Fields:
 //   - entry: A map that stores one or more cached entries.
 //   - mutex: A mutex that synchronizes access to the cache and makes the struct thread-safe.
+//   - now: The current time to be used as the reference time for the cache.
 type QueryCache struct {
+	// entry is a map that stores one or more cached entries.
 	entry map[string]cacheEntry
+	// mutex synchronizes access to the cache and makes the struct thread-safe.
 	mutex *sync.Mutex
+	// now is the current time to be used as the reference time for the cache.
+	now func() time.Time
+	// ttl is the Time-to-Live (TTL) duration that determines how long each entry will be kept in the cache before being evicted.
+	ttl time.Duration
 }
 
 // Find retrieves the value associated with the given key from the query cache.
@@ -60,23 +69,17 @@ func (qc *QueryCache) Find(key string) (value []byte, entryFound bool) {
 // Parameters:
 //   - key: The key to associate with the value.
 //   - value: The value to be stored in the cache.
-//   - now: The current time to be used as the reference time for the cache. If not provided, the current system time will be used.
 //
 // Example:
 //
-//	 response, err := http.Get("https://example.com/api/v1")
-//		cache.Save("key", response.Body)
-func (qc *QueryCache) Save(key string, value []byte, now ...time.Time) {
+// response, err := http.Get("https://example.com/api/v1")
+// cache.Save("key", response.Body)
+func (qc *QueryCache) Save(key string, value []byte) {
 	qc.mutex.Lock()
 	defer qc.mutex.Unlock()
 
-	createdAt := time.Now()
-	if len(now) >= 1 {
-		createdAt = now[0]
-	}
-
 	qc.entry[key] = cacheEntry{
-		createdAt: &createdAt,
+		createdAt: qc.now(),
 		value:     value,
 	}
 }
@@ -86,21 +89,16 @@ func (qc *QueryCache) Save(key string, value []byte, now ...time.Time) {
 // The function acquires a lock on the query cache, iterates over all entries,
 // and deletes any entry that has expired based on the TTL and current time.
 //
-// Parameters:
-//   - ttl: The Time-to-Live (TTL) duration that determines how long each entry will be kept in the cache before being evicted.
-//   - now: The current time to be used as the reference time for the cache. If not provided, the current system time will be used.
-//
 // Example:
 //
-//	 ttl := 5 * time.Minute
-//	 cache := NewQueryCache(ttl)
-//		cache.evictionLoop(ttl)
-func (qc *QueryCache) evictionLoop(ttl time.Duration, now ...time.Time) {
+// cache := NewQueryCache()
+// go cache.evictionLoop()
+func (qc *QueryCache) evictionLoop() {
 	qc.mutex.Lock()
 	defer qc.mutex.Unlock()
 
 	for key, entry := range qc.entry {
-		if qc.isEntryExpired(&entry, ttl, now...) {
+		if qc.isEntryExpired(&entry) {
 			delete(qc.entry, key)
 		}
 	}
@@ -110,8 +108,6 @@ func (qc *QueryCache) evictionLoop(ttl time.Duration, now ...time.Time) {
 //
 // Parameters:
 //   - entry: The cache entry to check for expiration.
-//   - ttl: The Time-to-Live (TTL) duration that determines how long each entry will be kept in the cache before being evicted.
-//   - now: The current time to be used as the reference time for the cache. If not provided, the current system time will be used.
 //
 // Returns:
 //   - A boolean value indicating whether the cache entry is expired.
@@ -119,10 +115,6 @@ func (qc *QueryCache) evictionLoop(ttl time.Duration, now ...time.Time) {
 // Example:
 //
 //	isExpired := cache.isEntryExpired(entry, 5 * time.Minute)
-func (qc *QueryCache) isEntryExpired(entry *cacheEntry, ttl time.Duration, now ...time.Time) bool {
-	currentTime := time.Now()
-	if len(now) > 0 {
-		currentTime = now[0]
-	}
-	return entry.createdAt.Add(-ttl).Before(currentTime)
+func (qc *QueryCache) isEntryExpired(entry *cacheEntry) bool {
+	return entry.createdAt.Add(-qc.ttl).Before(qc.now())
 }

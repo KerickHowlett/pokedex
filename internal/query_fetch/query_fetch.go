@@ -43,16 +43,14 @@ type QueryFetchFunc[TQuery any] func(url string, query *TQuery, ttlOption ...tim
 // Example:
 //
 //	err := QueryFetch("https://example.com/query", query)
-//	if err != nil {
-//	    log.Fatalf("error while fetching query: %v", err)
-//	}
 func QueryFetch[TQuery any](url string, query *TQuery, ttlOption ...time.Duration) error {
+	// @TODO: Refactor to replace with a struct possessing both 'now' and 'ttl' fields.
 	cacheTTL := ttl.OneDay
 	if len(ttlOption) > 0 {
 		cacheTTL = ttlOption[0]
 	}
 
-	cache := qc.NewQueryCache(cacheTTL)
+	cache := qc.NewQueryCache(qc.WithTTL(cacheTTL))
 	if cachedResponse, cacheHit := cache.Find(url); cacheHit {
 		return decode(cachedResponse, query)
 	}

@@ -58,7 +58,7 @@ func TestFetchQuery(t *testing.T) {
 		var httpHandler http.HandlerFunc
 		var useInvalidAPIEndpoint bool = false
 
-		queryCache = qc.NewQueryCache(time.Hour)
+		queryCache = qc.NewQueryCache(qc.WithTTL(time.Hour))
 		httpGetFuncWasCalled = false
 
 		switch responseType {
@@ -115,7 +115,7 @@ func TestFetchQuery(t *testing.T) {
 			endpointCalled = "INVALID"
 		}
 
-		queryCache = qc.NewQueryCache(time.Hour)
+		queryCache = qc.NewQueryCache(qc.WithTTL(time.Hour))
 		if cachedResponsePayload != "" {
 			queryCache.Save(endpointCalled, []byte(cachedResponsePayload))
 		}

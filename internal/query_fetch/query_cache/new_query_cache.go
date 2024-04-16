@@ -3,13 +3,14 @@ package query_cache
 import (
 	"sync"
 	"time"
+
+	"query_fetch/query_cache/ttl"
 )
 
 // NewQueryCache creates a new instance of QueryCache with the specified Time-to-Live (TTL) duration.
 //
 // Parameters:
-//   - ttl: The Time-to-Live (TTL) that determines how long each entry will be kept in the cache before being evicted.
-//   - now: The current time to be used as the reference time for the cache. If not provided, the current system time will be used.
+//   - options: A variadic list of QueryCacheOption functions to configure the QueryCache instance.
 //
 // Returns:
 //   - A new instance of QueryCache.
@@ -17,13 +18,19 @@ import (
 // Example:
 //
 //	cache := NewQueryCache(5 * time.Minute)
-func NewQueryCache(ttl time.Duration, now ...time.Time) *QueryCache {
+func NewQueryCache(options ...QueryCacheOption) *QueryCache {
 	qc := &QueryCache{
 		entry: make(map[string]cacheEntry),
 		mutex: &sync.Mutex{},
+		now:   func() time.Time { return time.Now() },
+		ttl:   ttl.OneDay,
 	}
 
-	go qc.evictionLoop(ttl, now...)
+	for _, option := range options {
+		option(qc)
+	}
+
+	go qc.evictionLoop()
 
 	return qc
 }

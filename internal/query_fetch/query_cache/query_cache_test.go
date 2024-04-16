@@ -17,23 +17,18 @@ const (
 	value       = "cached_value"
 )
 
-func createCacheEntry(value string, createdAt time.Time) cacheEntry {
-	return cacheEntry{
-		createdAt: &createdAt,
-		value:     []byte(value),
-	}
-}
-
 func TestQueryCache_Find(t *testing.T) {
 	setup := func() *QueryCache {
-		queryCache := NewQueryCache(24*time.Hour, f.FrozenTime)
+		queryCache := NewQueryCache(WithNow(func() time.Time { return f.FrozenTime }))
 		queryCache.entry[key] = cacheEntry{value: []byte(value)}
 
 		return queryCache
 	}
 
 	t.Run("Cache Hit", func(t *testing.T) {
+		t.Parallel()
 		t.Run("should return the value of the cache entry if it exists.", func(t *testing.T) {
+			t.Parallel()
 			cache := setup()
 			if cachedValue, _ := cache.Find(key); !bytes.Equal(cachedValue, []byte(value)) {
 				t.Errorf("Expected value to be %v, but got %v", value, cachedValue)
@@ -41,6 +36,7 @@ func TestQueryCache_Find(t *testing.T) {
 		})
 
 		t.Run("should return TRUE if the cache entry exists.", func(t *testing.T) {
+			t.Parallel()
 			cache := setup()
 			if _, entryFound := cache.Find(key); !entryFound {
 				t.Error("Expected cache entry to exist, but it does not.")
@@ -49,6 +45,7 @@ func TestQueryCache_Find(t *testing.T) {
 	})
 
 	t.Run("Cache Miss", func(t *testing.T) {
+		t.Parallel()
 		t.Run("should return nil if the cache entry does not exist.", func(t *testing.T) {
 			cache := setup()
 			if cachedValue, _ := cache.Find(invalid_key); cachedValue != nil {
@@ -57,6 +54,7 @@ func TestQueryCache_Find(t *testing.T) {
 		})
 
 		t.Run("should return FALSE if the cache entry does not exist.", func(t *testing.T) {
+			t.Parallel()
 			cache := setup()
 			if _, entryFound := cache.Find(invalid_key); entryFound {
 				t.Error("Expected cache entry to not exist, but it does.")
@@ -66,29 +64,34 @@ func TestQueryCache_Find(t *testing.T) {
 }
 
 func TestQueryCache_Save(t *testing.T) {
-	runQueryCacheSaveTest := func() (queryCache *QueryCache) {
-		queryCache = NewQueryCache(mockedTTL)
-
-		queryCache.Save(key, []byte(value), f.FrozenTime)
-
-		return queryCache
+	runQueryCacheSaveTest := func() (cache *QueryCache) {
+		now := func() time.Time { return f.FrozenTime }
+		cache = NewQueryCache(
+			WithNow(now),
+			WithTTL(time.Hour),
+		)
+		cache.Save(key, []byte(value))
+		return cache
 	}
 
 	t.Run("should save new cache entry.", func(t *testing.T) {
+		t.Parallel()
 		cache := runQueryCacheSaveTest()
 		if _, exists := cache.entry[key]; !exists {
 			t.Errorf("Expected entry with key '%s' to exist in cache, but it doesn't", key)
 		}
 	})
 
-	t.Run("should set createdAt as the current time.", func(t *testing.T) {
+	t.Run("should set createdAt with the current time.", func(t *testing.T) {
+		t.Parallel()
 		cache := runQueryCacheSaveTest()
 		if entry := cache.entry[key]; !entry.createdAt.Equal(f.FrozenTime) {
 			t.Errorf("Expected createdAt to be %v, but got %v", f.FrozenTime.String(), entry.createdAt.String())
 		}
 	})
 
-	t.Run("should set value as the provided value with it unmutated.", func(t *testing.T) {
+	t.Run("should set value with the provided value with it unmutated.", func(t *testing.T) {
+		t.Parallel()
 		cache := runQueryCacheSaveTest()
 		if entry := cache.entry[key]; string(entry.value) != value {
 			t.Errorf("Expected value to be '%s', but got '%s'", value, string(entry.value))
@@ -97,8 +100,18 @@ func TestQueryCache_Save(t *testing.T) {
 }
 
 func TestQueryCache_evictionLoop(t *testing.T) {
+	createCacheEntry := func(value string, createdAt time.Time) cacheEntry {
+		return cacheEntry{
+			createdAt: createdAt,
+			value:     []byte(value),
+		}
+	}
+
 	setup := func() (queryCache *QueryCache) {
-		queryCache = NewQueryCache(mockedTTL)
+		queryCache = NewQueryCache(
+			WithNow(func() time.Time { return f.FrozenTime }),
+			WithTTL(time.Microsecond),
+		)
 
 		queryCache.entry["key1"] = createCacheEntry("value_1", f.FrozenTime.Add(-time.Hour))
 		queryCache.entry["key2"] = createCacheEntry("value_2", f.FrozenTime.Add(-time.Minute))
@@ -125,7 +138,7 @@ func TestQueryCache_evictionLoop(t *testing.T) {
 
 		// Preliminary Check to weed out possible false positives.
 		expectEntryCount(3, cache)
-		cache.evictionLoop(time.Minute, f.FrozenTime)
+		cache.evictionLoop()
 
 		expectEntryCount(1, cache)
 		expectCacheEntryExistence("key1", false, cache)
@@ -135,26 +148,28 @@ func TestQueryCache_evictionLoop(t *testing.T) {
 }
 
 func TestIsEntryExpired(t *testing.T) {
-	setup := func(createdAt time.Time) (queryCache *QueryCache, entry *cacheEntry, ttl time.Duration) {
-		queryCache = &QueryCache{}
-		entry = &cacheEntry{
-			createdAt: &createdAt,
-		}
-		ttl = time.Hour
+	setup := func(createdAt time.Time) (queryCache *QueryCache, entry *cacheEntry) {
+		queryCache = NewQueryCache(
+			WithNow(func() time.Time { return f.FrozenTime }),
+			WithTTL(time.Hour),
+		)
+		entry = &cacheEntry{createdAt: createdAt}
 
-		return queryCache, entry, ttl
+		return queryCache, entry
 	}
 
 	t.Run("should return TRUE if entry has expired.", func(t *testing.T) {
-		cache, entry, ttl := setup(f.FrozenTime)
-		if expired := cache.isEntryExpired(entry, ttl, f.FrozenTime); !expired {
+		t.Parallel()
+		cache, entry := setup(f.FrozenTime)
+		if expired := cache.isEntryExpired(entry); !expired {
 			t.Errorf("Expected entry to be expired, but it is not")
 		}
 	})
 
 	t.Run("should return FALSE if entry has NOT expired.", func(t *testing.T) {
-		cache, entry, ttl := setup(f.FrozenTime.Add(time.Hour * 24))
-		if expired := cache.isEntryExpired(entry, ttl, f.FrozenTime); expired {
+		t.Parallel()
+		cache, entry := setup(f.FrozenTime.Add(time.Hour * 24))
+		if expired := cache.isEntryExpired(entry); expired {
 			t.Errorf("Expected entry to NOT be expired, but it is")
 		}
 	})
