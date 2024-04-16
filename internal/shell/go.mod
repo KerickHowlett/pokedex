@@ -7,10 +7,10 @@ require (
 	entities v1.0.0 // indirect
 	exit v1.0.0
 	explore v1.0.0
+	help v1.0.0
 	map v1.0.0
 	query v1.0.0 // indirect
 	repl v1.0.0
-	system v1.0.0
 	test_tools v1.0.0 // indirect
 	toochain v1.0.0
 )
@@ -20,6 +20,7 @@ replace (
 	entities => ../entities
 	exit => ../features/exit_command
 	explore => ../features/explore_command
+	help => ../features/help_command
 	map => ../features/map_command
 	query => ../query
 	repl => ../ui/repl
