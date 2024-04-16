@@ -37,3 +37,7 @@ type Command interface {
 	//   - args: A slice of strings representing the arguments.
 	SetArgs(args []string)
 }
+
+// Commands is a map that stores command names as keys
+// and their corresponding Command structs as values.
+type Commands = map[string]*Command
