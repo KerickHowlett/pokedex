@@ -25,6 +25,15 @@ type FetchEncounters qf.QueryFetchFunc[la.LocationArea]
 //   - noEnteredArgsErrorMessage: An error message to display when no arguments are entered.
 //   - noEncountersFoundErrorMessage: An error message to display when no maps are found.
 //   - state: The state of the location area to be explored.
+//
+// Methods:
+//   - Execute: Executes the ExploreCommand and fetches locations using the provided state and query.
+//   - GetArgs: Returns the arguments of the ExploreCommand.
+//   - GetDescription: Returns the description of the ExploreCommand.
+//   - GetName: Returns the name of the ExploreCommand.
+//   - PrintHelp: Prints the help message for the ExploreCommand.
+//   - SetArgs: Sets the arguments of the ExploreCommand.
+//   - hasValidArgs: Checks if the ExploreCommand has valid arguments needed to run the Execute() method properly.
 type ExploreCommand struct {
 	// The arguments provided to the command.
 	args []string
