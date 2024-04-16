@@ -18,7 +18,7 @@ type MapCommandOption func(*MapCommand)
 //
 // Example usage:
 //
-//	command := NewMapCommand(WithCacheTTL(ttl.OneDayTTL))
+//	command := NewMapCommand(WithCacheTTL(ttl.OneDay))
 func WithCacheTTL(cacheTTL time.Duration) MapCommandOption {
 	return func(c *MapCommand) {
 		c.cacheTTL = cacheTTL

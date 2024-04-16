@@ -17,8 +17,8 @@ func TestNewMapCommand(t *testing.T) {
 		t.Parallel()
 		t.Run("should have the default value for the cacheTTL.", func(t *testing.T) {
 			t.Parallel()
-			if command := setup(pd.Next); command.cacheTTL != ttl.OneDayTTL {
-				t.Errorf("expected cacheTTL to be %v, got %v", ttl.OneDayTTL, command.cacheTTL)
+			if command := setup(pd.Next); command.cacheTTL != ttl.OneDay {
+				t.Errorf("expected cacheTTL to be %v, got %v", ttl.OneDay, command.cacheTTL)
 			}
 		})
 

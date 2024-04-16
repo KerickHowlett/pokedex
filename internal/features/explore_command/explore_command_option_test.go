@@ -25,13 +25,13 @@ func TestWithAPIEndpoint(t *testing.T) {
 func TestWithCacheTTL(t *testing.T) {
 	runWithCacheTTLTests := func() *ExploreCommand {
 		command := &ExploreCommand{}
-		WithCacheTTL(ttl.OneDayTTL)(command)
+		WithCacheTTL(ttl.OneDay)(command)
 		return command
 	}
 
 	t.Run("should set the cache time-to-live (TTL) for the ExploreCommand instance.", func(t *testing.T) {
-		if command := runWithCacheTTLTests(); command.cacheTTL != ttl.OneDayTTL {
-			t.Errorf("Expected cacheTTL to be %v, but got %v", ttl.OneDayTTL, command.cacheTTL)
+		if command := runWithCacheTTLTests(); command.cacheTTL != ttl.OneDay {
+			t.Errorf("Expected cacheTTL to be %v, but got %v", ttl.OneDay, command.cacheTTL)
 		}
 	})
 }

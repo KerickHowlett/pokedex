@@ -32,7 +32,7 @@ import (
 //	    log.Fatalf("error while fetching query: %v", err)
 //	}
 func QueryFetch[TQuery any](url string, query *TQuery, ttlOption ...time.Duration) error {
-	cacheTTL := ttl.OneDayTTL
+	cacheTTL := ttl.OneDay
 	if len(ttlOption) > 0 {
 		cacheTTL = ttlOption[0]
 	}

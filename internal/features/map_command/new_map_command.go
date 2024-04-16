@@ -21,7 +21,7 @@ import (
 //	command := NewMapCommand()
 func NewMapCommand(options ...MapCommandOption) (command *MapCommand) {
 	command = &MapCommand{
-		cacheTTL:                ttl.OneDayTTL,
+		cacheTTL:                ttl.OneDay,
 		fetchLocations:          qf.QueryFetch[ms.MapsState],
 		listMarker:              "  -",
 		listTitle:               "Pokemon Maps:",
