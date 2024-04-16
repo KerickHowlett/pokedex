@@ -1,5 +1,24 @@
 package command
 
+// Command represents a command that can be executed in the CLI.
+//
+// @TODO: Break up into smaller interfaces.
+//
+// Methods:
+//   - Execute: Executes the command and returns an error if any.
+//   - GetArgs: Returns the arguments passed to the command.
+//   - GetDescription: Returns a brief description of the command.
+//   - GetName: Returns the name of the command.
+//   - PrintHelp: Prints the help information for the command.
+//   - SetArgs: Sets the arguments for the command.
+type Command interface {
+	CommandArguments
+	CommandDescription
+	CommandExecutor
+	CommandHelp
+	CommandName
+}
+
 // CommandArguments represents an interface for command arguments.
 //
 // Methods:
@@ -56,25 +75,6 @@ type CommandName interface {
 	// Returns:
 	//   - A string representing the name of the command.
 	GetName() string
-}
-
-// Command represents a command that can be executed in the CLI.
-//
-// @TODO: Break up into smaller interfaces.
-//
-// Methods:
-//   - Execute: Executes the command and returns an error if any.
-//   - GetArgs: Returns the arguments passed to the command.
-//   - GetDescription: Returns a brief description of the command.
-//   - GetName: Returns the name of the command.
-//   - PrintHelp: Prints the help information for the command.
-//   - SetArgs: Sets the arguments for the command.
-type Command interface {
-	CommandArguments
-	CommandDescription
-	CommandExecutor
-	CommandHelp
-	CommandName
 }
 
 // Commands is a map that stores command names as keys
