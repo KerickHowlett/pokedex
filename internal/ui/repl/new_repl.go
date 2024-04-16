@@ -33,7 +33,7 @@ func NewREPL(options ...REPLOption) *REPL {
 	}
 
 	if repl.execute == nil {
-		panic("[ERROR] execute is required. Use WithCommandExecutor to set it in REPL.")
+		panic("the command executor ('execute' field) is required")
 	}
 
 	return repl
