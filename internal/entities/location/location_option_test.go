@@ -7,13 +7,10 @@ import (
 )
 
 func TestWithName(t *testing.T) {
-
 	setup := func() (location *Location, name string) {
 		location = &Location{}
 		name = f.StarterTown
-
 		return location, name
-
 	}
 
 	t.Run("should assign argued name to Location.Name field", func(t *testing.T) {
