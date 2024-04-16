@@ -5,12 +5,24 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 	"time"
 
 	qc "query_fetch/query_cache"
 	f "test_tools/fixtures"
+	"test_tools/utils"
 )
+
+type testResult struct {
+	Name string
+}
+
+type testQuery struct {
+	NextURL     string
+	PreviousURL string
+	Results     []testResult
+}
 
 func TestFetchQuery(t *testing.T) {
 	const (
@@ -211,5 +223,60 @@ func TestFetchQuery(t *testing.T) {
 			_, _, _, _, err := setup(parseJSONError)
 			expectFetchError(err, "error with parsing payload")
 		})
+	})
+}
+
+func TestDecode(t *testing.T) {
+	setup := func() (payload *testQuery, responseBody []byte, expectedPayload *testQuery) {
+		payload = &testQuery{}
+		responseBody = []byte(fmt.Sprintf(`{
+			"NextURL": null,
+			"PreviousURL": null,
+			"Results": [{"name": "%s"}]
+		}`, f.StarterTown))
+		expectedPayload = &testQuery{
+			NextURL:     "",
+			PreviousURL: "",
+			Results:     []testResult{{Name: f.StarterTown}},
+		}
+
+		return payload, responseBody, expectedPayload
+	}
+
+	t.Run("should parse the response body correctly", func(t *testing.T) {
+		t.Parallel()
+		payload, body, expectedState := setup()
+		if decode(body, payload); !utils.ExpectEqualJSONs(payload, expectedState) {
+			t.Errorf("Expected QueryState[TResult] to be %v, but instead received %v", expectedState, payload)
+		}
+	})
+
+	t.Run("should return an error if the response body cannot be parsed", func(t *testing.T) {
+		t.Parallel()
+		payload, _, _ := setup()
+
+		err := decode(nil, payload)
+		if err == nil {
+			t.Errorf("Expected error to be returned, but got nil")
+		}
+
+		const expectedErrorMessage = "error with parsing payload"
+		if !strings.Contains(err.Error(), expectedErrorMessage) {
+			t.Errorf("Expected error message to be '%s', but instead received '%s'", expectedErrorMessage, err.Error())
+		}
+	})
+}
+
+func TestIsSuccessfulResponse(t *testing.T) {
+	t.Run("should return true if the response status code is in the 200 range.", func(t *testing.T) {
+		if !isSuccessfulResponse(http.StatusOK) {
+			t.Error("Expected response to be successful, but got false")
+		}
+	})
+
+	t.Run("should return false if the response status code is outside the 200 range.", func(t *testing.T) {
+		if isSuccessfulResponse(http.StatusInternalServerError) {
+			t.Error("Expected response to be unsuccessful, but got true")
+		}
 	})
 }
