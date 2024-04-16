@@ -17,11 +17,11 @@ type FetchEncounters qf.QueryFetchFunc[la.LocationArea]
 //   - args: The arguments provided to the command.
 //   - apiEndpoint: The URL of the API endpoint to fetch the location area data.
 //   - cacheTTL: The time-to-live (TTL) determines how long fetchEncounters' cached responses get to exist before being discarded.
-//   - description: Describes the purpose of the MapsCommand.
+//   - description: Describes the purpose of the ExploreCommand.
 //   - fetchEncounters: A function that fetches locations/maps from the Pokemon API.
 //   - listMarker: A string marker to display before each map name for nicer formatting.
 //   - listTitle: A string title to display before the list of maps.
-//   - name: The name of the MapsCommand.
+//   - name: The name of the ExploreCommand.
 //   - noEnteredArgsErrorMessage: An error message to display when no arguments are entered.
 //   - noEncountersFoundErrorMessage: An error message to display when no maps are found.
 //   - state: The state of the location area to be explored.
@@ -32,7 +32,7 @@ type ExploreCommand struct {
 	apiEndpoint string
 	// cacheTTL is the time-to-live (TTL) determines how long FetchEncounters' cached responses get to exist before being discarded.
 	cacheTTL time.Duration
-	// description describes the purpose of the MapsCommand.
+	// description describes the purpose of the ExploreCommand.
 	description string
 	// fetchEncounters is a function that fetches locations/maps from the Pokemon API.
 	fetchEncounters FetchEncounters
@@ -40,7 +40,7 @@ type ExploreCommand struct {
 	listMarker string
 	// listTitle is a string title to display before the list of maps.
 	listTitle string
-	// name is the name of the MapsCommand.
+	// name is the name of the ExploreCommand.
 	name string
 	// noEncountersFoundErrorMessage is an error message to display when no maps are found.
 	noEnteredArgsErrorMessage string
