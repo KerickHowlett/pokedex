@@ -7,5 +7,6 @@ import c "command"
 // Fields:
 //   - commands: A pointer to a map of Commands.
 type Toolchain struct {
+	// commands is a pointer to a map of Commands.
 	commands *c.Commands
 }
