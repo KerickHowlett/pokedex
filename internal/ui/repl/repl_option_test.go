@@ -8,12 +8,26 @@ import (
 	"test_tools/utils"
 )
 
+func TestWithErrorMessagePrompt(t *testing.T) {
+	runWithErrorMessagePromptTest := func() (repl *REPL, errorMessagePrompt string) {
+		repl = &REPL{}
+		errorMessagePrompt = "Error Prompt"
+		WithErrorMessagePrompt(errorMessagePrompt)(repl)
+		return repl, errorMessagePrompt
+	}
+	t.Run("should set the errorMessagePrompt field in REPL.", func(t *testing.T) {
+		if repl, errorMessagePrompt := runWithErrorMessagePromptTest(); repl.errorMessagePrompt != errorMessagePrompt {
+			t.Errorf("Expected r.errorMessagePrompt to be %q, but got %q", errorMessagePrompt, repl.errorMessagePrompt)
+		}
+	})
+}
+
 func TestWithCommandExecutor(t *testing.T) {
-	setup := func() func(command string, args []string) error { // Modify the function signature
-		repl := NewREPL(WithCommandExecutor(mc.MockedCommandExecutor))
+	setup := func() CommandExecutor {
+		repl := &REPL{}
+		WithCommandExecutor(mc.MockedCommandExecutor)(repl)
 		return repl.execute
 	}
-
 	t.Run("should set the Fields field of the Sanitizer struct", func(t *testing.T) {
 		execute := setup()
 		utils.ExpectSameEntity(t, execute, mc.MockedCommandExecutor, "execute")
@@ -21,26 +35,24 @@ func TestWithCommandExecutor(t *testing.T) {
 }
 
 func TestWithPrompt(t *testing.T) {
-	r := &REPL{}
-	const prompt = "> "
-
+	runWithPromptTest := func() (repl *REPL, prompt string) {
+		repl = &REPL{}
+		prompt = "*"
+		WithPrompt(prompt)(repl)
+		return repl, prompt
+	}
 	t.Run("should set the prompt field in REPL.", func(t *testing.T) {
-		WithPrompt(prompt)(r)
-
-		if r.prompt != prompt {
-			t.Errorf("Expected r.prompt to be %q, but got %q", prompt, r.prompt)
+		if repl, prompt := runWithPromptTest(); repl.prompt != prompt {
+			t.Errorf("Expected REPL.prompt to be %q, but got %q", prompt, repl.prompt)
 		}
 	})
 }
 
 func TestWithScanner(t *testing.T) {
 	setup := func() (repl *REPL, scanner *ms.MockScanner) {
+		repl = &REPL{}
 		scanner = ms.NewMockScanner()
-		repl = NewREPL(
-			WithCommandExecutor(mc.MockedCommandExecutor),
-			WithScanner(scanner),
-		)
-
+		WithScanner(scanner)(repl)
 		return repl, scanner
 	}
 

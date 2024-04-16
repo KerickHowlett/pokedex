@@ -16,6 +16,10 @@ var (
 	// invalid value.
 	Invalid = "invalid"
 
+	// EmptyLine represents an empty line used for tests that require an
+	// empty line.
+	EmptyLine = "\n"
+
 	// PokemonName represents the name of the Pokemon used for tests.
 	PokemonName = "Pikachu"
 

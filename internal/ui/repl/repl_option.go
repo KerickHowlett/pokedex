@@ -3,6 +3,27 @@ package repl
 // REPLOption is a function type that represents options for configuring a REPL.
 type REPLOption func(*REPL)
 
+// WithErrorMessagePrompt is a function that sets the error message prompt for the REPL.
+//
+// The error message prompt is displayed to the user when a command execution fails.
+//
+// Parameters:
+//   - errorMessagePrompt: The string to be displayed as the error message prompt.
+//
+// Returns:
+//   - An option function that sets the error message prompt for the REPL.
+//
+// Example usage:
+//
+//	repl := NewREPL(
+//		WithErrorMessagePrompt("Please try again."),
+//	)
+func WithErrorMessagePrompt(errorMessagePrompt string) REPLOption {
+	return func(r *REPL) {
+		r.errorMessagePrompt = errorMessagePrompt
+	}
+}
+
 // WithCommandExecutor is a function that sets the command executor for the REPL.
 //
 // The command executor is responsible for executing commands in the REPL.
@@ -27,8 +48,6 @@ type REPLOption func(*REPL)
 //		return nil
 //	}
 //	repl := NewREPL(WithCommandExecutor(commandExecutor))
-//
-// Now the commandExecutor function will be used to execute commands in the REPL.
 func WithCommandExecutor(commandExecutor func(command string, args []string) error) REPLOption {
 	return func(r *REPL) {
 		r.execute = commandExecutor
@@ -48,8 +67,6 @@ func WithCommandExecutor(commandExecutor func(command string, args []string) err
 //	repl := NewREPL(
 //		WithPrompt("Enter command: "),
 //	)
-//
-// Now the prompt "Enter command: " will be displayed to the user in the REPL.
 func WithPrompt(prompt string) REPLOption {
 	return func(r *REPL) {
 		r.prompt = prompt
@@ -70,8 +87,6 @@ func WithPrompt(prompt string) REPLOption {
 //
 //	scanner := bufio.NewScanner(os.Stdin)
 //	repl := NewREPL(WithScanner(scanner))
-//
-// Now the scanner will be used to read user input during the REPL session.
 func WithScanner(scanner scanner) REPLOption {
 	return func(r *REPL) {
 		r.scanner = scanner

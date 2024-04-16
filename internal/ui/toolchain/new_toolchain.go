@@ -1,6 +1,9 @@
 package toolchain
 
-import c "command"
+import (
+	c "command"
+	hmp "toochain/help_message_prints"
+)
 
 // NewToolchain is a function that creates a new toolchain of CLI commands.
 // The toolchain is used to execute commands in the REPL.
@@ -20,6 +23,7 @@ import c "command"
 func NewToolchain(options ...ToolchainOption) *Toolchain {
 	toolchain := &Toolchain{
 		commands: &c.Commands{},
+		prints:   hmp.NewHelpMessagePrints(),
 	}
 
 	for _, option := range options {
@@ -27,7 +31,7 @@ func NewToolchain(options ...ToolchainOption) *Toolchain {
 	}
 
 	if len(*toolchain.commands) == 0 {
-		panic("[ERROR] Toolchain must have at least one command.")
+		panic("toolchain must have at least one command")
 	}
 
 	return toolchain
