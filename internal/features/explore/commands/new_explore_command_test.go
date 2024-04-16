@@ -1,9 +1,10 @@
-package explore
+package explore_command
 
 import (
 	"testing"
 
 	f "test_tools/fixtures"
+	"test_tools/utils"
 )
 
 func TestNewExploreCommand(t *testing.T) {
@@ -16,11 +17,6 @@ func TestNewExploreCommand(t *testing.T) {
 
 	t.Run("should panic if API endpoint is not provided.", func(t *testing.T) {
 		t.Parallel()
-		defer func() {
-			if r := recover(); r == nil {
-				t.Error("Expected a panic, but got nil.")
-			}
-		}()
-		NewExploreCommand()
+		utils.ExpectPanic(t, NewExploreCommand)
 	})
 }
