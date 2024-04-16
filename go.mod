@@ -18,7 +18,7 @@ require (
 replace (
 	command => ./internal/ui/command
 	entities => ./internal/entities
-	explore => ./internal/features/explore
+	explore => ./internal/features/explore_command
 	maps => ./internal/features/maps
 	query => ./internal/query
 	repl => ./internal/ui/repl

@@ -1,7 +1,7 @@
 package pokedexclishell
 
 import (
-	e "explore/commands"
+	e "explore"
 	m "maps/commands"
 	ms "maps/state"
 	r "repl"

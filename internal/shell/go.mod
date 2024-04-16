@@ -17,7 +17,7 @@ require (
 replace (
 	command => ../ui/command
 	entities => ../entities
-	explore => ../features/explore
+	explore => ../features/explore_command
 	maps => ../features/maps
 	query => ../query
 	repl => ../ui/repl
