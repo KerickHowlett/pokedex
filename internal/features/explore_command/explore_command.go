@@ -9,6 +9,7 @@ import (
 	qf "query_fetch"
 )
 
+// FetchEncounters is a type alias for the QueryFetchFunc type that fetches locations/maps from the Pokemon API.
 type FetchEncounters qf.QueryFetchFunc[la.LocationArea]
 
 // ExploreCommand represents a command related to maps in the pokedexcli application.
