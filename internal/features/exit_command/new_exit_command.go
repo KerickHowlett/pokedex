@@ -9,6 +9,13 @@ package exit_command
 // Example usage:
 //
 //	command := NewExitCommand()
-func NewExitCommand() *ExitCommand {
-	return &ExitCommand{}
+func NewExitCommand(options ...ExitCommandOption) *ExitCommand {
+	command := &ExitCommand{
+		name:        "exit",
+		description: "Exit the Pokemon CLI application.",
+	}
+	for _, option := range options {
+		option(command)
+	}
+	return command
 }

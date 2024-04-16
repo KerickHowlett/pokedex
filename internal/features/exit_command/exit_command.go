@@ -1,12 +1,30 @@
 package exit_command
 
 import (
-	c "command"
 	"os"
+
+	c "command"
 )
 
-// ExitCommand is a struct that defines the ExitCommand for the CLI.
-type ExitCommand struct{}
+// ExitCommand is a struct that defines the 'exit' command for the CLI.
+//
+// Properties:
+//   - name: The name of the command.
+//   - description: A brief description of the command.
+//
+// Methods:
+//   - GetName: Returns the name of the ExitCommand.
+//   - GetDescription: Returns the description of the ExitCommand.
+//   - Execute: Terminates the program with an exit status of 0.
+//   - GetArgs: Returns the arguments of the ExitCommand.
+//   - SetArgs: Sets the arguments of the ExitCommand.
+//   - PrintHelp: Prints the help message for the ExitCommand.
+type ExitCommand struct {
+	// The name of the command.
+	name string
+	// A brief description of the command.
+	description string
+}
 
 // Execute terminates the program with an exit status of 0.
 //
@@ -23,18 +41,18 @@ func (e ExitCommand) Execute() error {
 }
 
 // GetArgs returns the arguments of the ExitCommand.
-func (m ExitCommand) GetArgs() []string {
+func (e ExitCommand) GetArgs() []string {
 	return []string{}
 }
 
 // GetDescription returns the description of the ExitCommand.
 func (e ExitCommand) GetDescription() string {
-	return "ExitCommand out of the Pokemon CLI application."
+	return e.description
 }
 
 // GetName returns the name of the ExitCommand.
 func (e ExitCommand) GetName() string {
-	return "exit"
+	return e.name
 }
 
 // PrintHelp prints the help message for the ExitCommand.
@@ -43,4 +61,4 @@ func (e *ExitCommand) PrintHelp() {
 }
 
 // SetArgs sets the arguments of the ExitCommand.
-func (m *ExitCommand) SetArgs(args []string) {}
+func (e *ExitCommand) SetArgs(args []string) {}
