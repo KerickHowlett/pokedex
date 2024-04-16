@@ -4,14 +4,13 @@ import (
 	"testing"
 	hmp "toochain/help_message_prints"
 
-	c "command"
 	m "test_tools/mocks/command"
 	"test_tools/utils"
 )
 
 func TestWithCommand(t *testing.T) {
 	runWithCommandTest := func() (toolchain *Toolchain, command *m.MockCommand) {
-		toolchain = &Toolchain{commands: &c.Commands{}}
+		toolchain = &Toolchain{commands: &Commands{}}
 		command = m.NewMockCommand()
 		WithCommand(command)(toolchain)
 		return toolchain, command

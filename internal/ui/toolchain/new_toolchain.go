@@ -1,7 +1,6 @@
 package toolchain
 
 import (
-	c "command"
 	hmp "toochain/help_message_prints"
 )
 
@@ -22,7 +21,7 @@ import (
 //	)
 func NewToolchain(options ...ToolchainOption) *Toolchain {
 	toolchain := &Toolchain{
-		commands: &c.Commands{},
+		commands: &Commands{},
 		prints:   hmp.NewHelpMessagePrints(),
 	}
 

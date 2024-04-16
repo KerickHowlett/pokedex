@@ -7,6 +7,10 @@ import (
 	hmp "toochain/help_message_prints"
 )
 
+// Commands is a map that stores command names as keys
+// and their corresponding Command structs as values.
+type Commands = map[string]*c.Command
+
 // Toolchain represents a collection of commands used in the UI toolchain.
 //
 // Fields:
@@ -14,7 +18,7 @@ import (
 //   - prints: A pointer to a HelpMessagePrints struct.
 type Toolchain struct {
 	// commands is a pointer to a map of Commands.
-	commands *c.Commands
+	commands *Commands
 	// prints is a pointer to a HelpMessagePrints struct.
 	prints *hmp.HelpMessagePrints
 }

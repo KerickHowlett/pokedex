@@ -2,8 +2,6 @@ package command
 
 // Command represents a command that can be executed in the CLI.
 //
-// @TODO: Break up into smaller interfaces.
-//
 // Methods:
 //   - Execute: Executes the command and returns an error if any.
 //   - GetArgs: Returns the arguments passed to the command.
@@ -25,14 +23,8 @@ type Command interface {
 //   - GetArgs: Returns the arguments passed to the command.
 //   - SetArgs: Sets the arguments for the command.
 type CommandArguments interface {
-	// GetArgs returns the arguments passed to the command.
-	// Returns:
-	//   - A slice of strings representing the command's entered arguments.
-	GetArgs() []string
-	// SetArgs sets the arguments for the command.
-	// Parameters:
-	//   - args: A slice of strings representing the arguments.
-	SetArgs(args []string)
+	GetArguments
+	SetArguments
 }
 
 // CommandDescription represents an interface for getting a brief description of commands.
@@ -77,6 +69,24 @@ type CommandName interface {
 	GetName() string
 }
 
-// Commands is a map that stores command names as keys
-// and their corresponding Command structs as values.
-type Commands = map[string]*Command
+// GetArguments represents an interface for getting command arguments.
+//
+// Methods:
+//   - GetArgs: Returns the arguments passed to the command.
+type GetArguments interface {
+	// GetArgs returns the arguments passed to the command.
+	// Returns:
+	//   - A slice of strings representing the command's entered arguments.
+	GetArgs() []string
+}
+
+// SetArguments represents an interface for setting command arguments.
+//
+// Methods:
+//   - SetArgs: Sets the arguments for the command.
+type SetArguments interface {
+	// SetArgs sets the arguments for the command.
+	// Parameters:
+	//   - args: A slice of strings representing the arguments.
+	SetArgs(args []string)
+}
