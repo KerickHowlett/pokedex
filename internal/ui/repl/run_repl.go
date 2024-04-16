@@ -20,8 +20,10 @@ func (r *REPL) RunREPL() {
 	for r.scanner.Scan() {
 		r.printNewLine()
 
-		userInput := r.parseInput(r.scanner.Text())
-		command, args := userInput[0], userInput[1:]
+		rawUserInput := r.scanner.Text()
+		parsedUserInput := r.parseInput(rawUserInput)
+
+		command, args := parsedUserInput[0], parsedUserInput[1:]
 		if err := r.execute(command, args); err != nil {
 			fmt.Println(err)
 			fmt.Println("Please try again.")
