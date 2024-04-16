@@ -1,7 +1,7 @@
 package explore_command
 
 import (
-	la "entities/location_area"
+	la "location_area"
 	qf "query_fetch"
 	"query_fetch/query_cache/ttl"
 )

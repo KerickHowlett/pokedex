@@ -1,6 +1,6 @@
 package location_area
 
-import pe "entities/pokemon_encounter"
+import pe "pokemon_encounter"
 
 // LocationArea houses the essential information of a given location area.
 //

@@ -1,10 +1,11 @@
 package location_area
 
 import (
-	p "entities/pokemon"
-	pe "entities/pokemon_encounter"
-	"test_tools/fixtures"
 	"testing"
+
+	p "pokemon"
+	pe "pokemon_encounter"
+	"test_tools/fixtures"
 )
 
 func TestNewLocationArea(t *testing.T) {

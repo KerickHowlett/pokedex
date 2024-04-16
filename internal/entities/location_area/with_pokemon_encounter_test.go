@@ -3,8 +3,8 @@ package location_area
 import (
 	"testing"
 
-	p "entities/pokemon"
-	pe "entities/pokemon_encounter"
+	p "pokemon"
+	pe "pokemon_encounter"
 	f "test_tools/fixtures"
 )
 

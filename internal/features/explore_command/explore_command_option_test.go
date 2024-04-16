@@ -3,7 +3,7 @@ package explore_command
 import (
 	"testing"
 
-	la "entities/location_area"
+	la "location_area"
 	"query_fetch/query_cache/ttl"
 	f "test_tools/fixtures"
 )

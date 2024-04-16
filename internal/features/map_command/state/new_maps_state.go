@@ -1,6 +1,6 @@
 package maps_state
 
-import l "entities/location"
+import l "location"
 
 // NewMapsState creates a new instance of MapsState with the specified options.
 //
@@ -12,13 +12,7 @@ import l "entities/location"
 //
 // Example:
 //
-//		state := NewMapsState(
-//			WithNextURL("https://example.com/query?after=123"),
-//			WithPreviousURL("https://example.com/query?before=123"),
-//	     WithLocations("result1"),
-//	     WithLocations("result2"),
-//
-// )
+// state := NewMapsState()
 func NewMapsState(options ...MapsStateOption) (mapsState *MapsState) {
 	mapsState = &MapsState{
 		NextURL:     nil,

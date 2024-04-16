@@ -3,7 +3,7 @@ package pokemon_encounter
 import (
 	"testing"
 
-	p "entities/pokemon"
+	p "pokemon"
 	f "test_tools/fixtures"
 )
 

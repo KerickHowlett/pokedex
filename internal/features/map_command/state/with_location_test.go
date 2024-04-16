@@ -3,7 +3,7 @@ package maps_state
 import (
 	"testing"
 
-	l "entities/location"
+	l "location"
 	f "test_tools/fixtures"
 )
 

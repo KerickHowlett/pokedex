@@ -1,6 +1,6 @@
 package maps_state
 
-import l "entities/location"
+import l "location"
 
 // MapsState represents the state of a query result.
 //

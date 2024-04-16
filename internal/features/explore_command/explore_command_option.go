@@ -3,7 +3,7 @@ package explore_command
 import (
 	"time"
 
-	la "entities/location_area"
+	la "location_area"
 )
 
 type ExploreCommandOption func(*ExploreCommand)

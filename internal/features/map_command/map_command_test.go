@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	l "entities/location"
+	l "location"
 	pd "map_command/pagination_direction"
 	ms "map_command/state"
 	f "test_tools/fixtures"

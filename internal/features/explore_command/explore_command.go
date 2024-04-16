@@ -5,7 +5,7 @@ import (
 	"time"
 
 	c "command"
-	la "entities/location_area"
+	la "location_area"
 	qf "query_fetch"
 )
 

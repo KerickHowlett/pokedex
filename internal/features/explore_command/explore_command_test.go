@@ -5,9 +5,9 @@ import (
 	"testing"
 	"time"
 
-	la "entities/location_area"
-	p "entities/pokemon"
-	"entities/pokemon_encounter"
+	la "location_area"
+	p "pokemon"
+	pe "pokemon_encounter"
 	f "test_tools/fixtures"
 	"test_tools/utils"
 )
@@ -40,7 +40,7 @@ func TestExploreCommand_Execute(t *testing.T) {
 		case Empty:
 			expected = command.noEncountersFoundErrorMessage
 			command.fetchEncounters = func(url string, state *la.LocationArea, cacheTTL ...time.Duration) error {
-				command.state.Encounters = []pokemon_encounter.PokemonEncounter{}
+				command.state.Encounters = []pe.PokemonEncounter{}
 				return nil
 			}
 		case Error:
@@ -54,7 +54,7 @@ func TestExploreCommand_Execute(t *testing.T) {
 		case Success:
 			expected = fmt.Sprintf("%s\n - %s\n", command.listTitle, f.PokemonName)
 			command.fetchEncounters = func(url string, state *la.LocationArea, cacheTTL ...time.Duration) error {
-				command.state.Encounters = []pokemon_encounter.PokemonEncounter{
+				command.state.Encounters = []pe.PokemonEncounter{
 					{Pokemon: &p.Pokemon{Name: f.PokemonName}},
 				}
 				return nil

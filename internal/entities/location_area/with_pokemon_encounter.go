@@ -1,6 +1,6 @@
 package location_area
 
-import pe "entities/pokemon_encounter"
+import pe "pokemon_encounter"
 
 // WithPokemonEncounter returns a function that sets the
 // Pokemon encounters of a LocationArea.
@@ -21,7 +21,7 @@ import pe "entities/pokemon_encounter"
 //		WithPokemonEncounter(pokemon),
 //	)
 func WithPokemonEncounter(encounter pe.PokemonEncounter) LocationAreaOption {
-	return func(p *LocationArea) {
-		p.Encounters = append(p.Encounters, encounter)
+	return func(la *LocationArea) {
+		la.Encounters = append(la.Encounters, encounter)
 	}
 }
