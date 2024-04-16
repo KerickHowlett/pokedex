@@ -131,7 +131,59 @@ func TestMapCommand_Execute(t *testing.T) {
 	})
 }
 
-func TestGetMapsAPIEndpoint(t *testing.T) {
+func TestMapCommand_GetArgs(t *testing.T) {
+	t.Run("should return the arguments of the MapCommand.", func(t *testing.T) {
+		command := &MapCommand{}
+		if args := command.GetArgs(); len(args) != 0 {
+			t.Error("expected args to be an empty slice")
+		}
+	})
+}
+
+func TestMapCommand_GetDescription(t *testing.T) {
+	t.Run("should return the description of the MapCommand.", func(t *testing.T) {
+		command := &MapCommand{description: "Fetches locations from the Pokemon API."}
+		if description := command.GetDescription(); description != "Fetches locations from the Pokemon API." {
+			t.Errorf("expected description to be %q, got %q", "Fetches locations from the Pokemon API.", description)
+		}
+	})
+}
+
+func TestMapCommand_GetName(t *testing.T) {
+	t.Run("should return the name of the MapCommand.", func(t *testing.T) {
+		command := &MapCommand{name: "map"}
+		if name := command.GetName(); name != "map" {
+			t.Errorf("expected name to be %q, got %q", "map", name)
+		}
+	})
+}
+
+func TestMapCommand_PrintHelp(t *testing.T) {
+	t.Run("should print the help message for the MapCommand.", func(t *testing.T) {
+		stdout := utils.NewPrintStorage()
+		t.Run("should call the PrintHelp function.", func(t *testing.T) {
+			command := &MapCommand{
+				description: "Fetches locations from the Pokemon API.",
+				name:        "map",
+			}
+			if output := stdout.Capture(command.PrintHelp); output == "" {
+				t.Error("Expected PrintHelp to be called, but it wasn't.")
+			}
+		})
+	})
+}
+
+func TestMapCommand_SetArgs(t *testing.T) {
+	t.Run("should do nothing.", func(t *testing.T) {
+		command := &MapCommand{}
+		command.SetArgs([]string{"arg1", "arg2"})
+		if args := command.GetArgs(); len(args) != 0 {
+			t.Error("expected args to be an empty slice")
+		}
+	})
+}
+
+func TestMapCommand_getMapsAPIEndpoint(t *testing.T) {
 	setup := func(paginationDirection string) *MapCommand {
 		nextURL := f.APIEndpoint + "/" + pd.Next
 		previousURL := f.APIEndpoint + "/" + pd.Previous
