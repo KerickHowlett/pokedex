@@ -7,7 +7,7 @@ import (
 	c "command"
 	pd "map_command/pagination_direction"
 	ms "map_command/state"
-	qf "query/fetch"
+	qf "query_fetch"
 )
 
 // FetchLocations is a function that fetches locations/maps from the Pokemon API.

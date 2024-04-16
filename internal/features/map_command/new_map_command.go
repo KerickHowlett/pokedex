@@ -4,8 +4,8 @@ import (
 	"fmt"
 	pd "map_command/pagination_direction"
 	ms "map_command/state"
-	qf "query/fetch"
-	"query/fetch/ttl"
+	qf "query_fetch"
+	"query_fetch/query_cache/ttl"
 )
 
 // NewMapCommand creates a new instance of the Map struct.

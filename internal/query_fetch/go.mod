@@ -1,4 +1,4 @@
-module query
+module query_fetch
 
 require test_tools v1.0.0
 

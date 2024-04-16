@@ -6,7 +6,7 @@ import (
 
 	c "command"
 	la "entities/location_area"
-	qf "query/fetch"
+	qf "query_fetch"
 )
 
 type FetchEncounters qf.QueryFetchFunc[la.LocationArea]

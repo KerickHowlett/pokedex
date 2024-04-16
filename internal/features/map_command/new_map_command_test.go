@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	pd "map_command/pagination_direction"
-	"query/fetch/ttl"
+	"query_fetch/query_cache/ttl"
 	f "test_tools/fixtures"
 )
 

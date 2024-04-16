@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	la "entities/location_area"
-	"query/fetch/ttl"
+	"query_fetch/query_cache/ttl"
 	f "test_tools/fixtures"
 )
 

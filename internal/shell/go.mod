@@ -9,7 +9,7 @@ require (
 	explore_command v1.0.0
 	help_command v1.0.0
 	map_command v1.0.0
-	query v1.0.0 // indirect
+	query_fetch v1.0.0 // indirect
 	repl v1.0.0
 	test_tools v1.0.0 // indirect
 	toochain v1.0.0
@@ -22,7 +22,7 @@ replace (
 	explore_command => ../features/explore_command
 	help_command => ../features/help_command
 	map_command => ../features/map_command
-	query => ../query
+	query_fetch => ../query_fetch
 	repl => ../ui/repl
 	shell => .
 	system => ../features/system

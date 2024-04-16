@@ -2,8 +2,8 @@ package explore_command
 
 import (
 	la "entities/location_area"
-	query_fetch "query/fetch"
-	"query/fetch/ttl"
+	qf "query_fetch"
+	"query_fetch/query_cache/ttl"
 )
 
 // NewExploreCommand creates a new instance of the Map struct.
@@ -21,7 +21,7 @@ func NewExploreCommand(options ...ExploreCommandOption) *ExploreCommand {
 	command := &ExploreCommand{
 		cacheTTL:                      ttl.OneDayTTL,
 		description:                   "Find out what Pokemon can be encountered in any location area. Usage: explore <location-area-name>",
-		fetchEncounters:               query_fetch.QueryFetch[la.LocationArea],
+		fetchEncounters:               qf.QueryFetch[la.LocationArea],
 		listMarker:                    " -",
 		listTitle:                     "Found Pokemon:",
 		name:                          "explore",

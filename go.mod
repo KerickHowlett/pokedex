@@ -9,7 +9,7 @@ require (
 	explore_command v1.0.0 // indirect
 	help_command v1.0.0 // indirect
 	map_command v1.0.0 // indirect
-	query v1.0.0 // indirect
+	query_fetch v1.0.0 // indirect
 	repl v1.0.0 // indirect
 	shell v1.0.0
 	test_tools v1.0.0 // indirect
@@ -23,7 +23,7 @@ replace (
 	explore_command => ./internal/features/explore_command
 	help_command => ./internal/features/help_command
 	map_command => ./internal/features/map_command
-	query => ./internal/query
+	query_fetch => ./internal/query_fetch
 	repl => ./internal/ui/repl
 	shell => ./internal/shell
 	system => ./internal/features/system

@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"time"
 
-	qc "query/cache"
-	qttl "query/fetch/ttl"
+	qc "query_fetch/query_cache"
+	"query_fetch/query_cache/ttl"
 )
 
 // QueryFetch sends an HTTP GET request to the specified URL and fetches the
@@ -32,12 +32,12 @@ import (
 //	    log.Fatalf("error while fetching query: %v", err)
 //	}
 func QueryFetch[TQuery any](url string, query *TQuery, ttlOption ...time.Duration) error {
-	ttl := qttl.OneDayTTL
+	cacheTTL := ttl.OneDayTTL
 	if len(ttlOption) > 0 {
-		ttl = ttlOption[0]
+		cacheTTL = ttlOption[0]
 	}
 
-	cache := qc.NewQueryCache(ttl)
+	cache := qc.NewQueryCache(cacheTTL)
 	if cachedResponse, cacheHit := cache.Find(url); cacheHit {
 		return decode(cachedResponse, query)
 	}

@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	qc "query/cache"
+	qc "query_fetch/query_cache"
 	f "test_tools/fixtures"
 )
 
