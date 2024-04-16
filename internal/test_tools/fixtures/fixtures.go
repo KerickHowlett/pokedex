@@ -12,6 +12,10 @@ var (
 	// This time is set to April 6, 2024, 12:00:00 UTC.
 	FrozenTime = time.Date(2024, time.April, 6, 12, 0, 0, 0, time.UTC)
 
+	// Invalid represents an invalid value used for tests that require an
+	// invalid value.
+	Invalid = "invalid"
+
 	// PokemonName represents the name of the Pokemon used for tests.
 	PokemonName = "Pikachu"
 
