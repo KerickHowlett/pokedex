@@ -1,11 +1,12 @@
 package maps_commands
 
 import (
-	c "command"
 	"fmt"
+	"time"
+
+	c "command"
 	ms "maps/state"
 	qf "query/fetch"
-	"time"
 )
 
 // FetchLocations is a function that fetches locations/maps from the Pokemon API.
@@ -93,6 +94,11 @@ func (m MapsCommand) GetArgs() []string {
 //
 // Returns:
 //   - A string describing the purpose of the MapsCommand.
+//
+// Example usage:
+//
+// m := NewMapsCommand()
+// description := m.GetDescription()
 func (m MapsCommand) GetDescription() string {
 	return m.description
 }
@@ -101,6 +107,11 @@ func (m MapsCommand) GetDescription() string {
 //
 // Returns:
 //   - A string containing the name of the MapsCommand.
+//
+// Example usage:
+//
+// m := NewMapsCommand()
+// name := m.GetName()
 func (m MapsCommand) GetName() string {
 	return m.name
 }

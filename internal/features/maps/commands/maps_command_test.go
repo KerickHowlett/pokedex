@@ -14,13 +14,13 @@ import (
 func TestMapsCommand_Execute(t *testing.T) {
 	// Define the response types for the test cases.
 	const (
-		// Empty represents the response type for when the fetchLocations function returns an empty list of locations.
+		// Empty represents the response type for when the fetchLocations method returns an empty list of locations.
 		Empty = "empty"
-		// Error represents the response type for when the fetchLocations function returns an error.
+		// Error represents the response type for when the fetchLocations method returns an error.
 		Error = "error"
 		// NilURL represents the response type for when the MapsCommand.NextURL field is nil.
 		NilURL = "nil-url"
-		// Success represents the response type for when the fetchLocations function executes successfully.
+		// Success represents the response type for when the fetchLocations method executes successfully.
 		Success = "success"
 	)
 
@@ -38,25 +38,25 @@ func TestMapsCommand_Execute(t *testing.T) {
 
 		switch responseType {
 		case Empty:
+			expected = command.noMapsFoundErrorMessage
 			command.fetchLocations = func(url string, state *ms.MapsState, cacheTTL ...time.Duration) error {
 				command.state.Locations = []l.Location{}
 				return nil
 			}
-			expected = command.noMapsFoundErrorMessage
 		case Error:
+			expected = "error fetching locations"
 			command.fetchLocations = func(url string, state *ms.MapsState, cacheTTL ...time.Duration) error {
 				return fmt.Errorf(expected)
 			}
-			expected = "error fetching locations"
 		case NilURL:
-			command.state.NextURL = nil
 			expected = fmt.Sprintf("%s\n", command.noMoreMapsMessage)
+			command.state.NextURL = nil
 		case Success:
+			expected = fmt.Sprintf("%s\n - %s\n", command.listTitle, f.StarterTown)
 			command.fetchLocations = func(url string, state *ms.MapsState, cacheTTL ...time.Duration) error {
 				state.Locations = append(state.Locations, l.Location{Name: f.StarterTown})
 				return nil
 			}
-			expected = fmt.Sprintf("%s\n - %s\n", command.listTitle, f.StarterTown)
 		default:
 			panic("invalid response type")
 		}
