@@ -14,8 +14,6 @@ import (
 // - expected: the expected value
 // - fieldName: the name of the field being tested
 //
-// returns: nothing
-//
 // Example usage:
 // utils.ExpectSameEntity(t, actualScanner, expectedScanner, "Scanner")
 func ExpectSameEntity(t *testing.T, actual any, expected any, fieldName string) {
