@@ -1,4 +1,4 @@
-package maps_commands
+package map_command
 
 // Maps Pagination Direction.
 // These constants represent the direction of the maps pagination that is

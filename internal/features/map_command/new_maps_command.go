@@ -1,25 +1,25 @@
-package maps_commands
+package map_command
 
 import (
 	"fmt"
-	ms "maps/state"
+	ms "map/state"
 	qf "query/fetch"
 	"query/fetch/ttl"
 )
 
-// NewMapsCommand creates a new instance of the Map struct.
+// NewMapCommand creates a new instance of the Map struct.
 //
 // Parameters:
-//   - options: A variadic parameter of MapsCommandOption functions.
+//   - options: A variadic parameter of MapCommandOption functions.
 //
 // Returns:
 //   - A new instance of the Map struct.
 //
 // Example usage:
 //
-//	command := NewMapsCommand()
-func NewMapsCommand(options ...MapsCommandOption) (command *MapsCommand) {
-	command = &MapsCommand{
+//	command := NewMapCommand()
+func NewMapCommand(options ...MapCommandOption) (command *MapCommand) {
+	command = &MapCommand{
 		cacheTTL:                ttl.OneDayTTL,
 		fetchLocations:          qf.QueryFetch[ms.MapsState],
 		listMarker:              "  -",
@@ -53,7 +53,7 @@ func NewMapsCommand(options ...MapsCommandOption) (command *MapsCommand) {
 
 // setDefaultCommandName sets the default command name based on the pagination direction.
 //
-// This is a private function that is used within the NewMapsCommand function.
+// This is a private function that is used within the NewMapCommand function.
 //
 // Parameters:
 //   - paginationDirection: The direction of the pagination. Either "next" or "previous".
@@ -78,7 +78,7 @@ func setDefaultCommandName(paginationDirection string) string {
 
 // setDefaultNoMoreMapsMessage sets the default message when there are no more maps to display.
 //
-// This is a private function that is used within the NewMapsCommand function.
+// This is a private function that is used within the NewMapCommand function.
 //
 // Parameters:
 //   - paginationDirection: The direction of the pagination. Either "next" or "previous".

@@ -6,7 +6,7 @@ require (
 	command v1.0.0 // indirect
 	entities v1.0.0 // indirect
 	explore v1.0.0
-	maps v1.0.0
+	map v1.0.0
 	query v1.0.0 // indirect
 	repl v1.0.0
 	system v1.0.0
@@ -18,7 +18,7 @@ replace (
 	command => ../ui/command
 	entities => ../entities
 	explore => ../features/explore_command
-	maps => ../features/maps
+	map => ../features/map_command
 	query => ../query
 	repl => ../ui/repl
 	shell => .

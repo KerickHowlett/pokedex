@@ -1,35 +1,35 @@
-package maps_commands
+package map_command
 
 import (
 	"fmt"
 	"time"
 
 	c "command"
-	ms "maps/state"
+	ms "map/state"
 	qf "query/fetch"
 )
 
 // FetchLocations is a function that fetches locations/maps from the Pokemon API.
 type FetchLocations qf.QueryFetchFunc[ms.MapsState]
 
-// MapsCommand represents a command related to maps in the pokedexcli application.
+// MapCommand represents a command related to maps in the pokedexcli application.
 //
 // Fields:
 //   - cacheTTL: The time-to-live (TTL) determines how long fetchLocations' cached responses get to exist before being discarded.
-//   - description: Describes the purpose of the MapsCommand.
-//   - config: A pointer to a MapsCommandsConfig struct instance.
+//   - description: Describes the purpose of the MapCommand.
+//   - config: A pointer to a MapCommandsConfig struct instance.
 //   - fetchLocations: A function that fetches locations/maps from the Pokemon API.
 //   - listMarker: A string marker to display before each map name for nicer formatting.
 //   - listTitle: A string title to display before the list of maps.
-//   - name: The name of the MapsCommand.
+//   - name: The name of the MapCommand.
 //   - noMapsFoundErrorMessage: An error message to display when no maps are found.
 //   - noMoreMapsMessage: A message to display when there are no more maps to be found.
 //   - paginationDirection: Sets which direction of the maps pagination flows: "next" or "previous".
 //   - state: A pointer to a MapsState struct instance.
-type MapsCommand struct {
+type MapCommand struct {
 	// cacheTTL is the time-to-live (TTL) determines how long fetchLocations' cached responses get to exist before being discarded.
 	cacheTTL time.Duration
-	// description describes the purpose of the MapsCommand.
+	// description describes the purpose of the MapCommand.
 	description string
 	// fetchLocations is a function that fetches locations/maps from the Pokemon API.
 	fetchLocations FetchLocations
@@ -37,7 +37,7 @@ type MapsCommand struct {
 	listMarker string
 	// listTitle is a string title to display before the list of maps.
 	listTitle string
-	// name is the name of the MapsCommand.
+	// name is the name of the MapCommand.
 	name string
 	// noMapsFoundErrorMessage is an error message to display when no maps are found.
 	noMapsFoundErrorMessage string
@@ -49,7 +49,7 @@ type MapsCommand struct {
 	state *ms.MapsState
 }
 
-// Execute executes the MapsCommand and fetches locations using the provided
+// Execute executes the MapCommand and fetches locations using the provided
 // state and query.
 //
 // Returns:
@@ -57,9 +57,9 @@ type MapsCommand struct {
 //
 // Example usage:
 //
-// m := NewMapsCommand()
+// m := NewMapCommand()
 // err := m.Execute()
-func (m *MapsCommand) Execute() error {
+func (m *MapCommand) Execute() error {
 	url := m.getMapsAPIEndpoint()
 	if url == nil {
 		fmt.Println(m.noMoreMapsMessage)
@@ -82,55 +82,55 @@ func (m *MapsCommand) Execute() error {
 	return nil
 }
 
-// GetArgs returns the arguments of the MapsCommand.
+// GetArgs returns the arguments of the MapCommand.
 //
 // This is just to appease the Command interface static type checks where needed.
 // This shouldn't actually be used for anything.
-func (m MapsCommand) GetArgs() []string {
+func (m MapCommand) GetArgs() []string {
 	return []string{}
 }
 
-// GetDescription returns the description of the MapsCommand.
+// GetDescription returns the description of the MapCommand.
 //
 // Returns:
-//   - A string describing the purpose of the MapsCommand.
+//   - A string describing the purpose of the MapCommand.
 //
 // Example usage:
 //
-// m := NewMapsCommand()
+// m := NewMapCommand()
 // description := m.GetDescription()
-func (m MapsCommand) GetDescription() string {
+func (m MapCommand) GetDescription() string {
 	return m.description
 }
 
-// GetName returns the name of the MapsCommand.
+// GetName returns the name of the MapCommand.
 //
 // Returns:
-//   - A string containing the name of the MapsCommand.
+//   - A string containing the name of the MapCommand.
 //
 // Example usage:
 //
-// m := NewMapsCommand()
+// m := NewMapCommand()
 // name := m.GetName()
-func (m MapsCommand) GetName() string {
+func (m MapCommand) GetName() string {
 	return m.name
 }
 
-// PrintHelp prints the help message for the MapsCommand.
+// PrintHelp prints the help message for the MapCommand.
 //
 // Example usage:
 //
-//	m := NewMapsCommand()
+//	m := NewMapCommand()
 //	m.PrintHelp()
-func (m *MapsCommand) PrintHelp() {
+func (m *MapCommand) PrintHelp() {
 	c.PrintHelp(m)
 }
 
-// SetArgs sets the arguments of the MapsCommand.
+// SetArgs sets the arguments of the MapCommand.
 //
 // This is just to appease the Command interface static type checks where needed.
 // This shouldn't actually be used for anything.
-func (m *MapsCommand) SetArgs(args []string) {}
+func (m *MapCommand) SetArgs(args []string) {}
 
 // getMapsAPIEndpoint returns the URL of the next or previous set of maps
 // from the Pokemon API.
@@ -144,9 +144,9 @@ func (m *MapsCommand) SetArgs(args []string) {}
 //
 // Example usage:
 //
-// m := NewMapsCommand()
+// m := NewMapCommand()
 // url := m.getMapsAPIEndpoint()
-func (m MapsCommand) getMapsAPIEndpoint() *string {
+func (m MapCommand) getMapsAPIEndpoint() *string {
 	switch m.paginationDirection {
 	case Next:
 		return m.state.NextURL

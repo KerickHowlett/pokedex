@@ -1,16 +1,16 @@
-package maps_commands
+package map_command
 
 import (
 	"test_tools/utils"
 	"testing"
 	"time"
 
-	ms "maps/state"
+	ms "map/state"
 )
 
 func TestWithCacheTTL(t *testing.T) {
-	runWithCacheTTLTest := func() (cacheTTL time.Duration, cmd *MapsCommand) {
-		cmd = &MapsCommand{}
+	runWithCacheTTLTest := func() (cacheTTL time.Duration, cmd *MapCommand) {
+		cmd = &MapCommand{}
 		cacheTTL = 5 * time.Minute
 
 		WithCacheTTL(cacheTTL)(cmd)
@@ -26,8 +26,8 @@ func TestWithCacheTTL(t *testing.T) {
 }
 
 func TestWithCommandDescription(t *testing.T) {
-	runWithCommandDescriptionTest := func() (commandDescription string, cmd *MapsCommand) {
-		cmd = &MapsCommand{}
+	runWithCommandDescriptionTest := func() (commandDescription string, cmd *MapCommand) {
+		cmd = &MapCommand{}
 		commandDescription = "This is a test command"
 
 		WithCommandDescription(commandDescription)(cmd)
@@ -43,8 +43,8 @@ func TestWithCommandDescription(t *testing.T) {
 }
 
 func TestWithCommandName(t *testing.T) {
-	runWithCommandNameTest := func() (commandName string, cmd *MapsCommand) {
-		cmd = &MapsCommand{}
+	runWithCommandNameTest := func() (commandName string, cmd *MapCommand) {
+		cmd = &MapCommand{}
 		commandName = "test"
 
 		WithCommandName(commandName)(cmd)
@@ -60,8 +60,8 @@ func TestWithCommandName(t *testing.T) {
 }
 
 func TestWithFetchLocations(t *testing.T) {
-	runWithFetchLocationsTest := func() (fetchLocations FetchLocations, cmd *MapsCommand) {
-		cmd = &MapsCommand{}
+	runWithFetchLocationsTest := func() (fetchLocations FetchLocations, cmd *MapCommand) {
+		cmd = &MapCommand{}
 		fetchLocations = func(url string, query *ms.MapsState, ttlOption ...time.Duration) error { return nil }
 
 		WithFetchLocations(fetchLocations)(cmd)
@@ -76,8 +76,8 @@ func TestWithFetchLocations(t *testing.T) {
 }
 
 func TestWithListMarker(t *testing.T) {
-	runWithListMarkerTest := func() (listMarker string, cmd *MapsCommand) {
-		cmd = &MapsCommand{}
+	runWithListMarkerTest := func() (listMarker string, cmd *MapCommand) {
+		cmd = &MapCommand{}
 		listMarker = "-"
 
 		WithListMarker(listMarker)(cmd)
@@ -93,8 +93,8 @@ func TestWithListMarker(t *testing.T) {
 }
 
 func TestWithListTitle(t *testing.T) {
-	runWithListTitleTest := func() (listTitle string, cmd *MapsCommand) {
-		cmd = &MapsCommand{}
+	runWithListTitleTest := func() (listTitle string, cmd *MapCommand) {
+		cmd = &MapCommand{}
 		listTitle = "Pokemon Maps:"
 
 		WithListTitle(listTitle)(cmd)
@@ -110,8 +110,8 @@ func TestWithListTitle(t *testing.T) {
 }
 
 func TestWithNoMapsFoundErrorMessage(t *testing.T) {
-	runWithNoMapsFoundErrorMessageTest := func() (noMapsFoundErrorMessage string, cmd *MapsCommand) {
-		cmd = &MapsCommand{}
+	runWithNoMapsFoundErrorMessageTest := func() (noMapsFoundErrorMessage string, cmd *MapCommand) {
+		cmd = &MapCommand{}
 		noMapsFoundErrorMessage = "No maps found"
 
 		WithNoMapsFoundErrorMessage(noMapsFoundErrorMessage)(cmd)
@@ -127,8 +127,8 @@ func TestWithNoMapsFoundErrorMessage(t *testing.T) {
 }
 
 func TestWithNoMoreMapsMessage(t *testing.T) {
-	runWithNoMoreMapsMessageTest := func() (noMoreMapsMessage string, cmd *MapsCommand) {
-		cmd = &MapsCommand{}
+	runWithNoMoreMapsMessageTest := func() (noMoreMapsMessage string, cmd *MapCommand) {
+		cmd = &MapCommand{}
 		noMoreMapsMessage = "No more maps"
 
 		WithNoMoreMapsMessage(noMoreMapsMessage)(cmd)
@@ -144,8 +144,8 @@ func TestWithNoMoreMapsMessage(t *testing.T) {
 }
 
 func TestWithPaginationDirection(t *testing.T) {
-	runWithPaginationDirectionTest := func() (paginationDirection string, cmd *MapsCommand) {
-		cmd = &MapsCommand{}
+	runWithPaginationDirectionTest := func() (paginationDirection string, cmd *MapCommand) {
+		cmd = &MapCommand{}
 		paginationDirection = Next
 
 		WithPaginationDirection(paginationDirection)(cmd)
@@ -161,8 +161,8 @@ func TestWithPaginationDirection(t *testing.T) {
 }
 
 func TestWithState(t *testing.T) {
-	runWithStateTest := func() (state *ms.MapsState, cmd *MapsCommand) {
-		cmd = &MapsCommand{}
+	runWithStateTest := func() (state *ms.MapsState, cmd *MapCommand) {
+		cmd = &MapCommand{}
 		state = ms.NewMapsState()
 
 		WithState(state)(cmd)

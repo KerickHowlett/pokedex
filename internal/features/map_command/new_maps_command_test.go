@@ -1,4 +1,4 @@
-package maps_commands
+package map_command
 
 import (
 	"testing"
@@ -7,9 +7,9 @@ import (
 	f "test_tools/fixtures"
 )
 
-func TestNewMapsCommand(t *testing.T) {
-	setup := func(paginationDirection string) *MapsCommand {
-		return NewMapsCommand(WithPaginationDirection(paginationDirection))
+func TestNewMapCommand(t *testing.T) {
+	setup := func(paginationDirection string) *MapCommand {
+		return NewMapCommand(WithPaginationDirection(paginationDirection))
 	}
 
 	t.Run("Given the function was provided with either 'pagination direction' option", func(t *testing.T) {
@@ -136,7 +136,7 @@ func TestNewMapsCommand(t *testing.T) {
 				}
 			}()
 
-			NewMapsCommand(func(c *MapsCommand) {
+			NewMapCommand(func(c *MapCommand) {
 				c.fetchLocations = nil
 			})
 		})
