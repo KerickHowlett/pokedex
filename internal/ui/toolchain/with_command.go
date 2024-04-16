@@ -11,7 +11,8 @@ import c "command"
 //
 // Returns:
 //   - A ToolchainOption function that modifies the toolchain by adding the
-//     command
+//     command to it.
+//   - If the command already exists in the toolchain, a panic will occur.
 //
 // Example usage:
 //
@@ -22,6 +23,11 @@ import c "command"
 func WithCommand(command c.Command) ToolchainOption {
 	return func(t *Toolchain) {
 		commandName := command.GetName()
+
+		if _, exists := (*t.commands)[commandName]; exists {
+			panic("Command already exists in the toolchain")
+		}
+
 		(*t.commands)[commandName] = &command
 	}
 }
