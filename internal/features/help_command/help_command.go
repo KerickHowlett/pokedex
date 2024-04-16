@@ -2,8 +2,25 @@ package help_command
 
 import c "command"
 
-// HelpCommand represents the 'help' command in the CLI.
-type HelpCommand struct{}
+// HelpCommand is a struct that defines the 'help' command for the CLI.
+//
+// Properties:
+//   - name: The name of the command.
+//   - description: A brief description of the command.
+//
+// Methods:
+//   - GetName: Returns the name of the HelpCommand.
+//   - GetDescription: Returns the description of the HelpCommand.
+//   - Execute: Terminates the program with an exit status of 0.
+//   - GetArgs: Returns the arguments of the HelpCommand.
+//   - SetArgs: Sets the arguments of the HelpCommand.
+//   - PrintHelp: Prints the help message for the HelpCommand.
+type HelpCommand struct {
+	// The name of the command.
+	name string
+	// A brief description of the command.
+	description string
+}
 
 // Execute is a method of the Help struct that is responsible for
 // executing the actual 'help' command.
@@ -24,12 +41,12 @@ func (m HelpCommand) GetArgs() []string {
 
 // GetDescription returns the description of the HelpCommand.
 func (h HelpCommand) GetDescription() string {
-	return "Show help for the Pokemon CLI commands."
+	return h.description
 }
 
 // GetName returns the name of the HelpCommand.
 func (h HelpCommand) GetName() string {
-	return "help"
+	return h.name
 }
 
 // PrintHelp prints the help message for the HelpCommand.
