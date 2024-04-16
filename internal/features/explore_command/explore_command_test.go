@@ -2,6 +2,7 @@ package explore_command
 
 import (
 	"fmt"
+	"reflect"
 	"testing"
 	"time"
 
@@ -11,6 +12,26 @@ import (
 	f "test_tools/fixtures"
 	"test_tools/utils"
 )
+
+func TestExploreCommand_GetArgs(t *testing.T) {
+	t.Run("should return the arguments of the ExploreCommand.", func(t *testing.T) {
+		expected := []string{"mock", "mock2"}
+		command := &ExploreCommand{args: expected}
+		if args := command.GetArgs(); reflect.DeepEqual(args, expected) {
+			t.Error("expected args to be non-empty, but got an empty slice")
+		}
+	})
+}
+
+func TestExploreCommand_GetDescription(t *testing.T) {
+	t.Run("should return the description of the ExploreCommand.", func(t *testing.T) {
+		const expected = "mock description"
+		command := &ExploreCommand{description: expected}
+		if description := command.GetDescription(); description != expected {
+			t.Errorf("expected description to be %q, but got %q", expected, description)
+		}
+	})
+}
 
 func TestExploreCommand_Execute(t *testing.T) {
 	// Define the response types for the test cases.
@@ -122,6 +143,29 @@ func TestExploreCommand_Execute(t *testing.T) {
 				t.Errorf("expected stdout to be %q, but instead got %q", expected, output)
 			}
 		})
+	})
+}
+
+func TestExploreCommand_GetName(t *testing.T) {
+	t.Run("should return the name of the ExploreCommand.", func(t *testing.T) {
+		const expected = "explore"
+		command := &ExploreCommand{name: expected}
+		if name := command.GetName(); name != expected {
+			t.Errorf("expected name to be %q, but got %q", expected, name)
+		}
+	})
+}
+
+func TestExploreCommand_PrintHelp(t *testing.T) {
+	stdout := utils.NewPrintStorage()
+	t.Run("should call the PrintHelp function.", func(t *testing.T) {
+		command := &ExploreCommand{
+			description: "mock description",
+			name:        "mock",
+		}
+		if output := stdout.Capture(command.PrintHelp); output == "" {
+			t.Error("Expected PrintHelp to be called, but it wasn't.")
+		}
 	})
 }
 
