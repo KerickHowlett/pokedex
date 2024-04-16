@@ -2,6 +2,7 @@ package map_command
 
 import (
 	"fmt"
+	pd "map_command/pagination_direction"
 	ms "map_command/state"
 	qf "query/fetch"
 	"query/fetch/ttl"
@@ -92,9 +93,9 @@ func setDefaultCommandName(paginationDirection string) string {
 // command.noMoreMapsMessage = setDefaultNoMoreMapsMessage(Next)
 func setDefaultNoMoreMapsMessage(paginationDirection string) string {
 	switch paginationDirection {
-	case Next:
+	case pd.Next:
 		return "There are no more maps."
-	case Previous:
+	case pd.Previous:
 		return "You're already at the beginning of the maps list."
 	default:
 		panic("Invalid pagination direction")

@@ -5,6 +5,7 @@ import (
 	explore "explore_command"
 	help "help_command"
 	mc "map_command"
+	pd "map_command/pagination_direction"
 	ms "map_command/state"
 	"repl"
 	tc "toochain"
@@ -33,11 +34,11 @@ func PokedexCLIShell(config PokedexCLIConfig) {
 
 	sharedMapState := ms.NewMapsState(ms.WithNextURL(&config.StartingMapsAPIEndpoint))
 	mapCommand := mc.NewMapCommand(
-		mc.WithPaginationDirection(mc.Next),
+		mc.WithPaginationDirection(pd.Next),
 		mc.WithState(sharedMapState),
 	)
 	mapBCommand := mc.NewMapCommand(
-		mc.WithPaginationDirection(mc.Previous),
+		mc.WithPaginationDirection(pd.Previous),
 		mc.WithState(sharedMapState),
 	)
 

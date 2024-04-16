@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	pd "map_command/pagination_direction"
 	ms "map_command/state"
 )
 
@@ -146,7 +147,7 @@ func TestWithNoMoreMapsMessage(t *testing.T) {
 func TestWithPaginationDirection(t *testing.T) {
 	runWithPaginationDirectionTest := func() (paginationDirection string, cmd *MapCommand) {
 		cmd = &MapCommand{}
-		paginationDirection = Next
+		paginationDirection = pd.Next
 
 		WithPaginationDirection(paginationDirection)(cmd)
 

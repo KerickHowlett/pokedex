@@ -3,6 +3,7 @@ package map_command
 import (
 	"testing"
 
+	pd "map_command/pagination_direction"
 	"query/fetch/ttl"
 	f "test_tools/fixtures"
 )
@@ -16,7 +17,7 @@ func TestNewMapCommand(t *testing.T) {
 		t.Parallel()
 		t.Run("should have the default value for the cacheTTL.", func(t *testing.T) {
 			t.Parallel()
-			if command := setup(Next); command.cacheTTL != ttl.OneDayTTL {
+			if command := setup(pd.Next); command.cacheTTL != ttl.OneDayTTL {
 				t.Errorf("expected cacheTTL to be %v, got %v", ttl.OneDayTTL, command.cacheTTL)
 			}
 		})
@@ -24,35 +25,35 @@ func TestNewMapCommand(t *testing.T) {
 		t.Run("should have the default value for the fetchLocation.", func(t *testing.T) {
 			t.Parallel()
 			// @NOTE: There's no way to test if it's the same function given how its implemented.
-			if command := setup(Next); command.fetchLocations == nil {
+			if command := setup(pd.Next); command.fetchLocations == nil {
 				t.Error("expected fetchLocations to be a function possessing the correct call signature but instead got nil")
 			}
 		})
 
 		t.Run("should have the default value for the listMarker.", func(t *testing.T) {
 			t.Parallel()
-			if command := setup(Next); command.listMarker != "  -" {
+			if command := setup(pd.Next); command.listMarker != "  -" {
 				t.Errorf("expected listMarker to be '  -', got %v", command.listMarker)
 			}
 		})
 
 		t.Run("should have the default value for the listTitle.", func(t *testing.T) {
 			t.Parallel()
-			if command := setup(Next); command.listTitle != "Pokemon Maps:" {
+			if command := setup(pd.Next); command.listTitle != "Pokemon Maps:" {
 				t.Errorf("expected listTitle to be 'Pokemon Maps:', got %v", command.listTitle)
 			}
 		})
 
 		t.Run("should have the default value for the noMapsFoundErrorMessage.", func(t *testing.T) {
 			t.Parallel()
-			if command := setup(Next); command.noMapsFoundErrorMessage != "no maps were found" {
+			if command := setup(pd.Next); command.noMapsFoundErrorMessage != "no maps were found" {
 				t.Errorf("expected noMapsFoundErrorMessage to be 'no maps were found', got %v", command.noMapsFoundErrorMessage)
 			}
 		})
 
 		t.Run("should have the default value for the noMoreMapsMessage.", func(t *testing.T) {
 			t.Parallel()
-			if command := setup(Next); command.noMoreMapsMessage != "There are no more maps." {
+			if command := setup(pd.Next); command.noMoreMapsMessage != "There are no more maps." {
 				t.Errorf("expected noMoreMapsMessage to be 'There are no more maps.', got %v", command.noMoreMapsMessage)
 			}
 		})
@@ -60,7 +61,7 @@ func TestNewMapCommand(t *testing.T) {
 		t.Run("should have the default value for the state.", func(t *testing.T) {
 			t.Parallel()
 			// @NOTE: There's no way to test if it's the same function given how its implemented.
-			if command := setup(Next); command.state == nil {
+			if command := setup(pd.Next); command.state == nil {
 				t.Error("expected state to be defined but instead got nil")
 			}
 		})
@@ -70,21 +71,21 @@ func TestNewMapCommand(t *testing.T) {
 		t.Parallel()
 		t.Run("should have the default value for the commandName.", func(t *testing.T) {
 			t.Parallel()
-			if command := setup(Next); command.name != "map" {
+			if command := setup(pd.Next); command.name != "map" {
 				t.Errorf("expected commandName to be 'map', got %v", command.name)
 			}
 		})
 
 		t.Run("should have the default value for the commandDescription.", func(t *testing.T) {
 			t.Parallel()
-			if command := setup(Next); command.description != "Show the next 20 Pokemon world map locations." {
+			if command := setup(pd.Next); command.description != "Show the next 20 Pokemon world map locations." {
 				t.Errorf("expected commandDescription to be 'Show the next 20 Pokemon world map locations.', got %v", command.description)
 			}
 		})
 
 		t.Run("should have the default value for the noMoreMapsMessage.", func(t *testing.T) {
 			t.Parallel()
-			if command := setup(Next); command.noMoreMapsMessage != "There are no more maps." {
+			if command := setup(pd.Next); command.noMoreMapsMessage != "There are no more maps." {
 				t.Errorf("expected noMoreMapsMessage to be 'There are no more maps.', got %v", command.noMoreMapsMessage)
 			}
 		})
@@ -94,21 +95,21 @@ func TestNewMapCommand(t *testing.T) {
 		t.Parallel()
 		t.Run("should have the default value for the commandName.", func(t *testing.T) {
 			t.Parallel()
-			if command := setup(Previous); command.name != "mapb" {
+			if command := setup(pd.Previous); command.name != "mapb" {
 				t.Errorf("expected commandName to be 'mapb', got %v", command.name)
 			}
 		})
 
 		t.Run("should have the default value for the commandDescription.", func(t *testing.T) {
 			t.Parallel()
-			if command := setup(Previous); command.description != "Show the previous 20 Pokemon world map locations." {
+			if command := setup(pd.Previous); command.description != "Show the previous 20 Pokemon world map locations." {
 				t.Errorf("expected commandDescription to be 'Show the previous 20 Pokemon world map locations.', got %v", command.description)
 			}
 		})
 
 		t.Run("should have the default value for the noMoreMapsMessage.", func(t *testing.T) {
 			t.Parallel()
-			if command := setup(Previous); command.noMoreMapsMessage != "You're already at the beginning of the maps list." {
+			if command := setup(pd.Previous); command.noMoreMapsMessage != "You're already at the beginning of the maps list." {
 				t.Errorf("expected noMoreMapsMessage to be 'You're already at the beginning of the maps list.', got %v", command.noMoreMapsMessage)
 			}
 		})
@@ -147,7 +148,7 @@ func TestSetDefaultCommandName(t *testing.T) {
 	t.Run("should return 'map' for pagination direction 'next'", func(t *testing.T) {
 		t.Parallel()
 		expected := "map"
-		if actual := setDefaultCommandName(Next); actual != expected {
+		if actual := setDefaultCommandName(pd.Next); actual != expected {
 			t.Errorf("Expected %s, but got %s", expected, actual)
 		}
 	})
@@ -155,7 +156,7 @@ func TestSetDefaultCommandName(t *testing.T) {
 	t.Run("should return 'mapb' for pagination direction 'previous'", func(t *testing.T) {
 		t.Parallel()
 		expected := "mapb"
-		if actual := setDefaultCommandName(Previous); actual != expected {
+		if actual := setDefaultCommandName(pd.Previous); actual != expected {
 			t.Errorf("Expected %s, but got %s", expected, actual)
 		}
 	})
@@ -175,7 +176,7 @@ func TestSetDefaultNoMoreMapsMessage(t *testing.T) {
 	t.Run("should return 'There are no more maps.' for pagination direction 'next'", func(t *testing.T) {
 		t.Parallel()
 		expected := "There are no more maps."
-		if actual := setDefaultNoMoreMapsMessage(Next); actual != expected {
+		if actual := setDefaultNoMoreMapsMessage(pd.Next); actual != expected {
 			t.Errorf("Expected %s, but got %s", expected, actual)
 		}
 	})
@@ -183,7 +184,7 @@ func TestSetDefaultNoMoreMapsMessage(t *testing.T) {
 	t.Run("should return 'You're already at the beginning of the maps list.' for pagination direction 'previous'", func(t *testing.T) {
 		t.Parallel()
 		expected := "You're already at the beginning of the maps list."
-		if actual := setDefaultNoMoreMapsMessage(Previous); actual != expected {
+		if actual := setDefaultNoMoreMapsMessage(pd.Previous); actual != expected {
 			t.Errorf("Expected %s, but got %s", expected, actual)
 		}
 	})

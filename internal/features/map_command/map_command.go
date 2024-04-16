@@ -5,6 +5,7 @@ import (
 	"time"
 
 	c "command"
+	pd "map_command/pagination_direction"
 	ms "map_command/state"
 	qf "query/fetch"
 )
@@ -148,9 +149,9 @@ func (m *MapCommand) SetArgs(args []string) {}
 // url := m.getMapsAPIEndpoint()
 func (m MapCommand) getMapsAPIEndpoint() *string {
 	switch m.paginationDirection {
-	case Next:
+	case pd.Next:
 		return m.state.NextURL
-	case Previous:
+	case pd.Previous:
 		return m.state.PreviousURL
 	default:
 		panic("Invalid pagination direction")

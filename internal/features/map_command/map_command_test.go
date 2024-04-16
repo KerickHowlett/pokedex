@@ -6,6 +6,7 @@ import (
 	"time"
 
 	l "entities/location"
+	pd "map_command/pagination_direction"
 	ms "map_command/state"
 	f "test_tools/fixtures"
 	"test_tools/utils"
@@ -32,7 +33,7 @@ func TestMapCommand_Execute(t *testing.T) {
 			listTitle:               "Locations",
 			noMoreMapsMessage:       "No maps were found.",
 			noMapsFoundErrorMessage: "No locations were found.",
-			paginationDirection:     Next,
+			paginationDirection:     pd.Next,
 			state:                   ms.NewMapsState(ms.WithNextURL(&f.APIEndpoint)),
 		}
 
@@ -132,8 +133,8 @@ func TestMapCommand_Execute(t *testing.T) {
 
 func TestGetMapsAPIEndpoint(t *testing.T) {
 	setup := func(paginationDirection string) *MapCommand {
-		nextURL := f.APIEndpoint + "/" + Next
-		previousURL := f.APIEndpoint + "/" + Previous
+		nextURL := f.APIEndpoint + "/" + pd.Next
+		previousURL := f.APIEndpoint + "/" + pd.Previous
 
 		return &MapCommand{
 			paginationDirection: paginationDirection,
@@ -147,7 +148,7 @@ func TestGetMapsAPIEndpoint(t *testing.T) {
 	t.Run("Given a 'pagination direction' argument of 'next'", func(t *testing.T) {
 		t.Parallel()
 		t.Run("should return the field value for MapCommand.NextURL", func(t *testing.T) {
-			command := setup(Next)
+			command := setup(pd.Next)
 			if url := command.getMapsAPIEndpoint(); url != command.state.NextURL {
 				t.Errorf("expected url to be %q, got %s", f.APIEndpoint, *url)
 			}
@@ -157,7 +158,7 @@ func TestGetMapsAPIEndpoint(t *testing.T) {
 	t.Run("Given a 'pagination direction' argument of 'previous'", func(t *testing.T) {
 		t.Parallel()
 		t.Run("should return the field value for MapCommand.PreviousURL", func(t *testing.T) {
-			command := setup(Previous)
+			command := setup(pd.Previous)
 			if url := command.getMapsAPIEndpoint(); url != command.state.PreviousURL {
 				t.Errorf("expected url to be %q, got %s", f.APIEndpoint, *url)
 			}
