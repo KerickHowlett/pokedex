@@ -2,8 +2,7 @@ package pokedexclishell
 
 import (
 	e "explore/commands/explore_command"
-	mf "maps/commands/map"
-	mb "maps/commands/mapb"
+	m "maps/commands"
 	ms "maps/state"
 	r "repl"
 	ex "system/commands/exit_command"
@@ -29,12 +28,18 @@ import (
 //	}
 //	PokedexCLIShell(config)
 func PokedexCLIShell(config PokedexCLIConfig) {
-	helpCommand := h.NewHelpCommand()
 	exitCommand := ex.NewExitCommand()
+	helpCommand := h.NewHelpCommand()
 
 	sharedMapState := ms.NewMapsState(ms.WithNextURL(&config.StartingMapsAPIEndpoint))
-	mapCommand := mf.NewMapCommand(sharedMapState)
-	mapBCommand := mb.NewMapBCommand(sharedMapState)
+	mapCommand := m.NewMapsCommand(
+		m.WithPaginationDirection(m.Next),
+		m.WithState(sharedMapState),
+	)
+	mapBCommand := m.NewMapsCommand(
+		m.WithPaginationDirection(m.Previous),
+		m.WithState(sharedMapState),
+	)
 
 	exploreCommand := e.NewExploreCommand(e.WithAPIEndpoint(config.LocalAreaAPIEndpoint))
 

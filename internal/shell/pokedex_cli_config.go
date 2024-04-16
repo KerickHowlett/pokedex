@@ -7,7 +7,10 @@ package pokedexclishell
 //   - Prompt: The text displayed as the command prompt.
 //   - StartingMapsAPIEndpoint: The initial API endpoint for the Maps service.
 type PokedexCLIConfig struct {
-	LocalAreaAPIEndpoint    string
-	Prompt                  string
+	// LocalAreaAPIEndpoint is the API endpoint for the Local Area service.
+	LocalAreaAPIEndpoint string
+	// Prompt is the text displayed as the command prompt.
+	Prompt string
+	// StartingMapsAPIEndpoint is the initial API endpoint for the Maps service.
 	StartingMapsAPIEndpoint string
 }
