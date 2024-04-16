@@ -11,6 +11,8 @@ import (
 	tc "toochain"
 )
 
+// @TODO: Add means to shutdown CLI gracefully with a signal handler.
+
 // PokedexCLIShell is a function that initializes and runs the Pokedex CLI shell.
 // It takes a PokedexCLIConfig as input and sets up the necessary components for
 // the shell.
