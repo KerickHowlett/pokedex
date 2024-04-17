@@ -32,7 +32,7 @@ func TestCatchCommand_Execute(t *testing.T) {
 		command = &CatchCommand{
 			apiEndpoint:                 f.APIEndpoint,
 			args:                        []string{f.PokemonName},
-			checkYourLuck:               func() int { return 100 },
+			checkYourLuck:               func(_ int) int { return 100 },
 			escapedNotification:         "escaped!",
 			noEnteredArgsErrorMessage:   "a pokemon name is required",
 			pc:                          bills_pc.NewBillsPC(),
@@ -52,8 +52,8 @@ func TestCatchCommand_Execute(t *testing.T) {
 			}
 		case Escape:
 			expected = fmt.Sprintf("%s\n%s\n", throwMessage, escapeMessage)
+			command.battleOpponent = &p.Pokemon{Name: f.PokemonName, BaseExperience: 1_000_000}
 			command.catchPokemon = func(url string, query *p.Pokemon, cacheTTL ...time.Duration) error {
-				command.battleOpponent = &p.Pokemon{Name: f.PokemonName, BaseExperience: 1_000_000}
 				return nil
 			}
 		case NoArgs:
@@ -62,8 +62,8 @@ func TestCatchCommand_Execute(t *testing.T) {
 		case Success:
 			expected = fmt.Sprintf("%s\n%s!\n", throwMessage, successMessage)
 			pokemon := &p.Pokemon{Name: f.PokemonName, BaseExperience: 0}
+			command.battleOpponent = pokemon
 			command.catchPokemon = func(url string, query *p.Pokemon, cacheTTL ...time.Duration) error {
-				command.battleOpponent = pokemon
 				return nil
 			}
 			command.pc.Deposit(pokemon)
@@ -244,7 +244,7 @@ func TestCatchCommand_isCatchSuccessful(t *testing.T) {
 		}
 		command = &CatchCommand{
 			battleOpponent: &p.Pokemon{BaseExperience: 100},
-			checkYourLuck:  func() int { return luck },
+			checkYourLuck:  func(_ int) int { return luck },
 		}
 		return command, expected
 	}

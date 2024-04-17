@@ -70,7 +70,7 @@ func TestWithCatchPokemon(t *testing.T) {
 func TestWithCheckYourLuck(t *testing.T) {
 	runWithCheckYourLuck := func() (command *CatchCommand, checkYourLuck CheckYourLuckFunc) {
 		command = &CatchCommand{}
-		checkYourLuck = func() int { return 100 }
+		checkYourLuck = func(_ int) int { return 100 }
 		WithCheckYourLuck(checkYourLuck)(command)
 		return command, checkYourLuck
 	}

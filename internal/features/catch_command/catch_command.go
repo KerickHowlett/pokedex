@@ -14,7 +14,7 @@ import (
 type CatchPokemonFunc qf.QueryFetchFunc[p.Pokemon]
 
 // CheckYourLuckFunc is a type alias for a function that returns the chance of catching a Pokemon.
-type CheckYourLuckFunc func() int
+type CheckYourLuckFunc func(pokemonBaseExperience int) (chance int)
 
 // CatchCommand represents a command related to catching Pokemon in the pokedexcli application.
 //
@@ -72,8 +72,9 @@ func (c *CatchCommand) Execute() error {
 	if !c.hasValidArgs() {
 		return fmt.Errorf(c.noEnteredArgsErrorMessage)
 	}
-
 	pokemonName := c.args[0]
+
+	// Threw Pokeball
 	fmt.Printf("%s %s...\n", c.throwBallNotification, pokemonName)
 
 	pokemonEndpoint := c.apiEndpoint + "/" + pokemonName
@@ -82,10 +83,12 @@ func (c *CatchCommand) Execute() error {
 	}
 
 	if !c.isCatchSuccessful() {
+		// Pokemon Escaped
 		fmt.Printf("%s %s\n", pokemonName, c.escapedNotification)
 		return nil
 	}
 
+	// Caught Pokemon
 	fmt.Printf("%s %s!\n", c.successfulCatchNotification, pokemonName)
 	c.pc.Deposit(c.battleOpponent)
 
@@ -163,8 +166,9 @@ func (c *CatchCommand) SetArgs(args []string) {
 //
 //	command := NewCatchCommand()
 //	isSuccessful := command.isCatchSuccessful()
-func (c CatchCommand) isCatchSuccessful() bool {
-	return c.checkYourLuck() > c.battleOpponent.BaseExperience
+func (c *CatchCommand) isCatchSuccessful() bool {
+	baseExperience := c.battleOpponent.BaseExperience
+	return c.checkYourLuck(baseExperience) > baseExperience
 }
 
 // hasValidArgs checks if the CatchCommand has valid arguments needed to run the Execute() method properly.
