@@ -3,6 +3,7 @@ module shell
 go 1.22.1
 
 require (
+	catch_command v1.0.0
 	command v1.0.0 // indirect
 	exit_command v1.0.0
 	explore_command v1.0.0
@@ -19,6 +20,7 @@ require (
 )
 
 replace (
+	catch_command => ../features/catch_command
 	command => ../ui/command
 	exit_command => ../features/exit_command
 	explore_command => ../features/explore_command

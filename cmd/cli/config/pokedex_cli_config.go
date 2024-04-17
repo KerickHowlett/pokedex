@@ -31,6 +31,8 @@ const (
 	pokedexAPIDomain = "https://pokeapi.co/api/v2"
 	// The text displayed as the Pokedex prompt.
 	pokedexPrompt = "pokedex > "
+	// The URI for the Pokemon service.
+	pokemonURI = "/pokemon"
 	// The URI for the Pokemon Maps service.
 	pokemonMapsURI = "/location"
 	// The URI for the Pokemon Location Area service.
@@ -40,6 +42,7 @@ const (
 // PokedexCLIConfig is the configuration for the Pokedex CLI application.
 var PokedexCLIConfig = s.PokedexCLIConfig{
 	LocalAreaAPIEndpoint:    pokedexAPIDomain + pokemonLocationAreaURI,
-	StartingMapsAPIEndpoint: pokedexAPIDomain + pokemonMapsURI + "?" + offsetParam + "=" + offset + "&" + limitParam + "=" + listSize,
+	PokemonAPIEndpoint:      pokedexAPIDomain + pokemonURI,
 	Prompt:                  pokedexPrompt,
+	StartingMapsAPIEndpoint: pokedexAPIDomain + pokemonMapsURI + "?" + offsetParam + "=" + offset + "&" + limitParam + "=" + listSize,
 }

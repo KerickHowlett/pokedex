@@ -1,6 +1,8 @@
 package pokedexclishell
 
 import (
+	catch "catch_command"
+	bpc "catch_command/bills_pc"
 	exit "exit_command"
 	explore "explore_command"
 	help "help_command"
@@ -44,9 +46,18 @@ func PokedexCLIShell(config PokedexCLIConfig) {
 		mc.WithState(sharedMapState),
 	)
 
-	exploreCommand := explore.NewExploreCommand(explore.WithAPIEndpoint(config.LocalAreaAPIEndpoint))
+	exploreCommand := explore.NewExploreCommand(
+		explore.WithAPIEndpoint(config.LocalAreaAPIEndpoint),
+	)
+
+	billsPC := bpc.NewBillsPC()
+	catchCommand := catch.NewCatchCommand(
+		catch.WithAPIEndpoint(config.PokemonAPIEndpoint),
+		catch.WithPC(billsPC),
+	)
 
 	toolchain := tc.NewToolchain(
+		tc.WithCommand(catchCommand),
 		tc.WithCommand(exploreCommand),
 		tc.WithCommand(mapCommand),
 		tc.WithCommand(mapBCommand),

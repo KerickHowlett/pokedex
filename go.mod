@@ -3,6 +3,7 @@ module github.com/KerickHowlett/pokedexcli
 go 1.22.1
 
 require (
+	catch_command v1.0.0 // indirect
 	command v1.0.0 // indirect
 	exit_command v1.0.0 // indirect
 	explore_command v1.0.0 // indirect
@@ -20,6 +21,7 @@ require (
 )
 
 replace (
+	catch_command => ./internal/features/catch_command
 	command => ./internal/ui/command
 	entities => ./internal/entities
 	exit_command => ./internal/features/exit_command

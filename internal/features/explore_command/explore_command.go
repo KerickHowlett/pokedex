@@ -56,7 +56,7 @@ type ExploreCommand struct {
 	noEnteredArgsErrorMessage string
 	// noEncountersFoundErrorMessage is an error message to display when no maps are found.
 	noEncountersFoundErrorMessage string
-	// noMoreEncountersMessage is a message to display when there are no more maps to be found.
+	// state stores the fetched queried data.
 	state *la.LocationArea
 }
 
@@ -69,23 +69,23 @@ type ExploreCommand struct {
 //
 //	command := NewExploreCommand()
 //	command.Execute()
-func (m *ExploreCommand) Execute() error {
-	if !m.hasValidArgs() {
-		return fmt.Errorf(m.noEnteredArgsErrorMessage)
+func (e *ExploreCommand) Execute() error {
+	if !e.hasValidArgs() {
+		return fmt.Errorf(e.noEnteredArgsErrorMessage)
 	}
 
-	locationAreaEndpoint := m.apiEndpoint + "/" + m.args[0]
-	if err := m.fetchEncounters(locationAreaEndpoint, m.state, m.cacheTTL); err != nil {
+	locationAreaEndpoint := e.apiEndpoint + "/" + e.args[0]
+	if err := e.fetchEncounters(locationAreaEndpoint, e.state, e.cacheTTL); err != nil {
 		return err
 	}
 
-	if len(m.state.Encounters) == 0 {
-		return fmt.Errorf(m.noEncountersFoundErrorMessage)
+	if len(e.state.Encounters) == 0 {
+		return fmt.Errorf(e.noEncountersFoundErrorMessage)
 	}
 
-	fmt.Println(m.listTitle)
-	for _, encounter := range m.state.Encounters {
-		fmt.Printf("%s %s\n", m.listMarker, encounter.Pokemon.Name)
+	fmt.Println(e.listTitle)
+	for _, encounter := range e.state.Encounters {
+		fmt.Printf("%s %s\n", e.listMarker, encounter.Pokemon.Name)
 	}
 
 	return nil
@@ -102,9 +102,9 @@ func (m *ExploreCommand) Execute() error {
 //
 //	command := NewExploreCommand()
 //	args := command.GetArgs()
-func (m ExploreCommand) GetArgs() []string {
-	defer m.SetArgs([]string{}) // Reset the args field value after getting them.
-	return m.args
+func (e ExploreCommand) GetArgs() []string {
+	defer e.SetArgs([]string{}) // Reset the args field value after getting thee.
+	return e.args
 }
 
 // GetDescription returns the description of the MapCommand.
@@ -116,8 +116,8 @@ func (m ExploreCommand) GetArgs() []string {
 //
 //	command := NewExploreCommand()
 //	description := command.GetDescription()
-func (m ExploreCommand) GetDescription() string {
-	return m.description
+func (e ExploreCommand) GetDescription() string {
+	return e.description
 }
 
 // GetName returns the name of the MapCommand.
@@ -129,8 +129,8 @@ func (m ExploreCommand) GetDescription() string {
 //
 //	command := NewExploreCommand()
 //	name := command.GetName()
-func (m ExploreCommand) GetName() string {
-	return m.name
+func (e ExploreCommand) GetName() string {
+	return e.name
 }
 
 // PrintHelp prints the help message for the MapCommand.
@@ -139,13 +139,13 @@ func (m ExploreCommand) GetName() string {
 //
 //	command := NewExploreCommand()
 //	command.PrintHelp()
-func (m *ExploreCommand) PrintHelp() {
-	c.PrintHelp(m)
+func (e *ExploreCommand) PrintHelp() {
+	c.PrintHelp(e)
 }
 
 // SetArgs sets the arguments of the ExploreCommand.
-func (m *ExploreCommand) SetArgs(args []string) {
-	m.args = args
+func (e *ExploreCommand) SetArgs(args []string) {
+	e.args = args
 }
 
 // hasValidArgs checks if the ExploreCommand has valid arguments needed to run the Execute() method properly.
@@ -158,6 +158,6 @@ func (m *ExploreCommand) SetArgs(args []string) {
 //	command := NewExploreCommand()
 //	command.SetArgs([]string{"1"})
 //	hasValidArgs := command.hasValidArgs()
-func (m ExploreCommand) hasValidArgs() bool {
-	return m.args != nil && len(m.args) > 0 && m.args[0] != ""
+func (e ExploreCommand) hasValidArgs() bool {
+	return e.args != nil && len(e.args) > 0 && e.args[0] != ""
 }
