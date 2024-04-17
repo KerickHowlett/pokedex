@@ -12,20 +12,12 @@ package pokemon
 //
 // Example usage:
 //
-//	pokemon := NewPokemon(
-//		WithName("Pikachu"),
-//	)
+//	pokemon := NewPokemon()
 //	fmt.Println(pokemon.Name) // Output: Pikachu
 func NewPokemon(options ...PokemonOption) *Pokemon {
 	pokemonMap := &Pokemon{}
-
 	for _, option := range options {
 		option(pokemonMap)
 	}
-
-	if pokemonMap.Name == "" {
-		panic("name of pokemon is required")
-	}
-
 	return pokemonMap
 }
