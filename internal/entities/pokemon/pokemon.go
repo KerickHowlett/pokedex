@@ -1,6 +1,9 @@
 package pokemon
 
-import el "entity_link"
+import (
+	el "entity_link"
+	pt "pokemon_type"
+)
 
 // Pokemon houses the essential information of a given Pokemon.
 //
@@ -21,7 +24,7 @@ type Pokemon struct {
 	// Stats represents the stats of the Pokemon (e.g., HP, attack, defense).
 	Stats []Stat `json:"stats"`
 	// Types represents the types of the Pokemon (e.g., fire, grass, psychic).
-	Types []Type `json:"types"`
+	Types []pt.PokemonType `json:"types"`
 	// Weight represents the weight of the Pokemon.
 	Weight int `json:"weight"`
 }
@@ -29,8 +32,4 @@ type Pokemon struct {
 type Stat struct {
 	BaseStat int           `json:"base_stat"`
 	Stat     el.EntityLink `json:"stat"`
-}
-
-type Type struct {
-	Type el.EntityLink `json:"type"`
 }
