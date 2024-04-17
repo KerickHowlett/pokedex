@@ -1,9 +1,9 @@
 package location_area
 
 import (
+	el "entity_link"
 	"testing"
 
-	p "pokemon"
 	pe "pokemon_encounter"
 	"test_tools/fixtures"
 )
@@ -18,7 +18,7 @@ func TestNewLocationArea(t *testing.T) {
 
 	t.Run("should instantiate new struct with added options", func(t *testing.T) {
 		t.Parallel()
-		pokemon := p.NewPokemon(p.WithName(fixtures.PokemonName))
+		pokemon := el.NewEntityLink(el.WithName(fixtures.PokemonName))
 		encounter := pe.NewPokemonEncounter(pe.WithPokemon(pokemon))
 		locationArea := NewLocationArea(WithPokemonEncounter(*encounter))
 

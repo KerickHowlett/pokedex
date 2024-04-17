@@ -5,6 +5,7 @@ go 1.22.1
 require (
 	catch_command v1.0.0 // indirect
 	command v1.0.0 // indirect
+	entity_link v1.0.0 // indirect
 	exit_command v1.0.0 // indirect
 	explore_command v1.0.0 // indirect
 	help_command v1.0.0 // indirect
@@ -23,7 +24,7 @@ require (
 replace (
 	catch_command => ./internal/features/catch_command
 	command => ./internal/ui/command
-	entities => ./internal/entities
+	entity_link => ./internal/entities/entity_link
 	exit_command => ./internal/features/exit_command
 	explore_command => ./internal/features/explore_command
 	help_command => ./internal/features/help_command

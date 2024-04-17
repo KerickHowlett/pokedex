@@ -1,6 +1,6 @@
 package pokemon_encounter
 
-import p "pokemon"
+import el "entity_link"
 
 // PokemonEncounter houses the essential information of a given Pokemon encounter.
 //
@@ -8,5 +8,5 @@ import p "pokemon"
 //   - Pokemon: The Pokemon that can be encountered.
 type PokemonEncounter struct {
 	// Pokemon represents the Pokemon that can be encountered.
-	Pokemon *p.Pokemon `json:"pokemon"`
+	Pokemon *el.EntityLink `json:"pokemon"`
 }

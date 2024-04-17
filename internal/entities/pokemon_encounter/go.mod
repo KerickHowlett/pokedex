@@ -3,11 +3,11 @@ module pokemon_encounter
 go 1.22.1
 
 require (
-	pokemon v1.0.0
+	entity_link v1.0.0
 	test_tools v1.0.0
 )
 
 replace (
-	pokemon => ../pokemon
+	entity_link => ../entity_link
 	test_tools => ../../test_tools
 )

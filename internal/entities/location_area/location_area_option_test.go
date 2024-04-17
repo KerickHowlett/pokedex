@@ -3,7 +3,7 @@ package location_area
 import (
 	"testing"
 
-	p "pokemon"
+	el "entity_link"
 	pe "pokemon_encounter"
 	f "test_tools/fixtures"
 )
@@ -12,7 +12,7 @@ func TestWithPokemonEncounter(t *testing.T) {
 	runWithPokemonEncounterTest := func() (encounter *pe.PokemonEncounter, locationArea LocationArea) {
 		locationArea = LocationArea{}
 
-		pokemon := p.NewPokemon(p.WithName(f.PokemonName))
+		pokemon := el.NewEntityLink(el.WithName(f.PokemonName))
 		encounter = pe.NewPokemonEncounter(pe.WithPokemon(pokemon))
 
 		WithPokemonEncounter(*encounter)(&locationArea)

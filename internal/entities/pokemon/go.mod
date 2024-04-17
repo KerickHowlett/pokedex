@@ -2,6 +2,12 @@ module pokemon
 
 go 1.22.1
 
-require test_tools v1.0.0
+require (
+	entity_link v1.0.0
+	test_tools v1.0.0
+)
 
-replace test_tools => ../../test_tools
+replace (
+	entity_link => ../entity_link
+	test_tools => ../../test_tools
+)

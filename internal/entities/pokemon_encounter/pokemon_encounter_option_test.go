@@ -3,14 +3,14 @@ package pokemon_encounter
 import (
 	"testing"
 
-	p "pokemon"
+	el "entity_link"
 	f "test_tools/fixtures"
 )
 
 func TestWithPokemon(t *testing.T) {
-	runWithPokemonTest := func() (pe *PokemonEncounter, pokemon *p.Pokemon) {
+	runWithPokemonTest := func() (pe *PokemonEncounter, pokemon *el.EntityLink) {
 		pe = &PokemonEncounter{}
-		pokemon = p.NewPokemon(p.WithName(f.PokemonName))
+		pokemon = &el.EntityLink{Name: f.PokemonName}
 		WithPokemon(pokemon)(pe)
 		return pe, pokemon
 	}

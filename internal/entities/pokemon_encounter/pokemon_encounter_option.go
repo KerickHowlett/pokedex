@@ -1,6 +1,6 @@
 package pokemon_encounter
 
-import p "pokemon"
+import el "entity_link"
 
 type PokemonEncounterOption func(*PokemonEncounter)
 
@@ -15,8 +15,8 @@ type PokemonEncounterOption func(*PokemonEncounter)
 // Example:
 //
 //	pe := &PokemonEncounter{}
-//	WithPokemon(p.Pokemon{Name: "pikachu"})(pe)
-func WithPokemon(pokemon *p.Pokemon) PokemonEncounterOption {
+//	WithPokemon(el.EntityLink{Name: "pikachu"})(pe)
+func WithPokemon(pokemon *el.EntityLink) PokemonEncounterOption {
 	return func(pe *PokemonEncounter) {
 		pe.Pokemon = pokemon
 	}
