@@ -155,21 +155,6 @@ func TestToolchain_SelectCommand(t *testing.T) {
 	})
 }
 
-func TestToolchain_addEmptyLine(t *testing.T) {
-	runAddEmptyLineTest := func() (output string) {
-		stdout := utils.NewPrintStorage()
-		toolchain := &Toolchain{}
-		output = stdout.Capture(toolchain.addEmptyLine)
-		return output
-	}
-
-	t.Run("should add an empty line to the given string.", func(t *testing.T) {
-		if output := runAddEmptyLineTest(); output != f.EmptyLine {
-			t.Errorf("Expected output to be an empty line (\\n), but instead got %v", output)
-		}
-	})
-}
-
 func TestToolchain_printAllCommandHelps(t *testing.T) {
 	runPrintAllCommandHelpsTest := func() (output string, expectedOutput string) {
 		stdout := utils.NewPrintStorage()
@@ -214,7 +199,6 @@ func getExpectedPrintHelpMessage(toolchain *Toolchain) string {
 	expectedOutput += f.EmptyLine
 	expectedOutput += endWithNewLine(toolchain.prints.CommandsSubTitle)
 	expectedOutput += endWithNewLine(toolchain.prints.HR)
-	expectedOutput += f.EmptyLine
 
 	for _, command := range *toolchain.commands {
 		name, description := (*command).GetName(), (*command).GetDescription()
