@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"catch_command/bills_pc"
+	"bills_pc"
 	p "pokemon"
 	f "test_tools/fixtures"
 	"test_tools/utils"

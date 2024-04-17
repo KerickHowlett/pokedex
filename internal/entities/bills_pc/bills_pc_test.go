@@ -1,10 +1,11 @@
 package bills_pc
 
 import (
+	"testing"
+
 	p "pokemon"
 	f "test_tools/fixtures"
 	"test_tools/utils"
-	"testing"
 )
 
 func TestBillsPC_Deposit(t *testing.T) {

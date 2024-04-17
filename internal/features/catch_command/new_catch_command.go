@@ -3,7 +3,7 @@ package catch_command
 import (
 	"math/rand"
 
-	bpc "catch_command/bills_pc"
+	bpc "bills_pc"
 	p "pokemon"
 	"query_fetch"
 	"query_fetch/query_cache/ttl"

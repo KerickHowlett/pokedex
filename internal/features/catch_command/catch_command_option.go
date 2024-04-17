@@ -3,7 +3,7 @@ package catch_command
 import (
 	"time"
 
-	bpc "catch_command/bills_pc"
+	bpc "bills_pc"
 	p "pokemon"
 )
 

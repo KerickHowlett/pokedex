@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	bpc "catch_command/bills_pc"
+	bpc "bills_pc"
 	cmd "command"
 	p "pokemon"
 	qf "query_fetch"

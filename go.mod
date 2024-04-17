@@ -2,7 +2,10 @@ module github.com/KerickHowlett/pokedexcli
 
 go 1.22.1
 
+require shell v1.0.0
+
 require (
+	bills_pc v1.0.0 // indirect
 	catch_command v1.0.0 // indirect
 	command v1.0.0 // indirect
 	entity_link v1.0.0 // indirect
@@ -18,12 +21,12 @@ require (
 	pokemon_type v1.0.0 // indirect
 	query_fetch v1.0.0 // indirect
 	repl v1.0.0 // indirect
-	shell v1.0.0
 	test_tools v1.0.0 // indirect
 	toochain v1.0.0 // indirect
 )
 
 replace (
+	bills_pc => ./internal/entities/bills_pc
 	catch_command => ./internal/features/catch_command
 	command => ./internal/ui/command
 	entity_link => ./internal/entities/entity_link

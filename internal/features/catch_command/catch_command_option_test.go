@@ -1,7 +1,7 @@
 package catch_command
 
 import (
-	bpc "catch_command/bills_pc"
+	bpc "bills_pc"
 	p "pokemon"
 	"query_fetch/query_cache/ttl"
 	f "test_tools/fixtures"
