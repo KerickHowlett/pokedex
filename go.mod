@@ -14,6 +14,7 @@ require (
 	map_command v1.0.0 // indirect
 	pokemon v1.0.0 // indirect
 	pokemon_encounter v1.0.0 // indirect
+	pokemon_stat v1.0.0 // indirect
 	pokemon_type v1.0.0 // indirect
 	query_fetch v1.0.0 // indirect
 	repl v1.0.0 // indirect
@@ -34,6 +35,7 @@ replace (
 	map_command => ./internal/features/map_command
 	pokemon => ./internal/entities/pokemon
 	pokemon_encounter => ./internal/entities/pokemon_encounter
+	pokemon_stat => ./internal/entities/pokemon_stat
 	pokemon_type => ./internal/entities/pokemon_type
 	query_fetch => ./internal/query_fetch
 	repl => ./internal/ui/repl

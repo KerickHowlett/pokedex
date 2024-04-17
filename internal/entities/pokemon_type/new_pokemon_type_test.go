@@ -1,8 +1,6 @@
 package pokemon_type
 
-import (
-	"testing"
-)
+import "testing"
 
 func TestNewPokemonType(t *testing.T) {
 	t.Run("should create a new PokemonType.", func(t *testing.T) {
