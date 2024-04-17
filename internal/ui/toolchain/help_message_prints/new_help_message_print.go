@@ -16,7 +16,11 @@ package help_message_prints
 //	  WithTitle("Pokedex Commands"),
 //	)
 func NewHelpMessagePrints(options ...HelpMessagePrintsOption) *HelpMessagePrints {
-	hmp := &HelpMessagePrints{}
+	hmp := &HelpMessagePrints{
+		CommandsSubTitle: "Pokedex Commands:",
+		HR:               "----------------",
+		Title:            "Welcome to the Pokedex CLI!",
+	}
 	for _, option := range options {
 		option(hmp)
 	}
