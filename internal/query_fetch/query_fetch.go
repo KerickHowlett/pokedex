@@ -83,8 +83,7 @@ func QueryFetch[TQuery any](url string, query *TQuery, ttlOption ...time.Duratio
 // payload it's values.
 //
 // Generic Constraints:
-//
-//	TQuery: The schematic of the intended query payload.
+//   - TQuery: The schematic of the intended query payload.
 //
 // Parameters:
 //   - body: The HTTP Response's body.
@@ -100,7 +99,6 @@ func decode[TQuery any](body []byte, query *TQuery) error {
 	if err := json.Unmarshal(body, query); err != nil {
 		return fmt.Errorf("error with parsing payload %v", err)
 	}
-
 	return nil
 }
 
