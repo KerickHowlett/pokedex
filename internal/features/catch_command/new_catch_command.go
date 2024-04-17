@@ -22,7 +22,6 @@ import (
 //	command := NewCatchCommand()
 func NewCatchCommand(options ...CatchCommandOption) *CatchCommand {
 	command := &CatchCommand{
-		battleOpponent:              p.NewPokemon(),
 		cacheTTL:                    ttl.OneDay,
 		catchPokemon:                query_fetch.QueryFetch[p.Pokemon],
 		checkYourLuck:               defaultCheckYourLuck,
@@ -33,6 +32,7 @@ func NewCatchCommand(options ...CatchCommandOption) *CatchCommand {
 		pc:                          bpc.NewBillsPC(),
 		successfulCatchNotification: "You caught",
 		throwBallNotification:       "You threw a pokeball at",
+		wildPokemon:                 p.NewPokemon(),
 	}
 
 	for _, option := range options {

@@ -21,7 +21,6 @@ type CheckYourLuckFunc func(pokemonBaseExperience int) (chance int)
 // Fields:
 //   - args: The arguments provided to the command.
 //   - apiEndpoint: The URL of the API endpoint to fetch the location area data.
-//   - battleOpponent: The data of the Pokemon the user is attempting to catch.
 //   - cacheTTL: The time-to-live (TTL) determines how long FetchEncounters' cached responses get to exist before being discarded.
 //   - catchPokemon: A function that fetches locations/maps from the Pokemon API.
 //   - checkYourLuck: A function that returns the chance of catching a Pokemon.
@@ -30,13 +29,12 @@ type CheckYourLuckFunc func(pokemonBaseExperience int) (chance int)
 //   - noEnteredArgsErrorMessage: An error message to display when no arguments are entered.
 //   - noEncountersFoundErrorMessage: An error message to display when no maps are found.
 //   - state: The state of the location area to be explored.
+//   - wildPokemon: The data of the Pokemon the user is attempting to catch.
 type CatchCommand struct {
 	// The arguments provided to the command.
 	args []string
 	// The URL of the API endpoint to fetch the location area data.
 	apiEndpoint string
-	// battleOpponent is the data of the Pokemon the user is attempting to catch.
-	battleOpponent *p.Pokemon
 	// cacheTTL is the time-to-live (TTL) determines how long FetchEncounters' cached responses get to exist before being discarded.
 	cacheTTL time.Duration
 	// catchPokemon is a function that fetches locations/maps from the Pokemon API.
@@ -57,6 +55,8 @@ type CatchCommand struct {
 	successfulCatchNotification string
 	// throwBallNotification is a message to display when a Pokemon is thrown a ball.
 	throwBallNotification string
+	// wildPokemon is the data of the Pokemon the user is attempting to catch.
+	wildPokemon *p.Pokemon
 }
 
 // CatchCommand.Execute attempts to catch a Pokemon.
@@ -78,7 +78,7 @@ func (c *CatchCommand) Execute() error {
 	fmt.Printf("%s %s...\n", c.throwBallNotification, pokemonName)
 
 	pokemonEndpoint := c.apiEndpoint + "/" + pokemonName
-	if err := c.catchPokemon(pokemonEndpoint, c.battleOpponent); err != nil {
+	if err := c.catchPokemon(pokemonEndpoint, c.wildPokemon); err != nil {
 		return err
 	}
 
@@ -90,7 +90,7 @@ func (c *CatchCommand) Execute() error {
 
 	// Caught Pokemon
 	fmt.Printf("%s %s!\n", c.successfulCatchNotification, pokemonName)
-	c.pc.Deposit(c.battleOpponent)
+	c.pc.Deposit(c.wildPokemon)
 
 	return nil
 }
@@ -167,7 +167,7 @@ func (c *CatchCommand) SetArgs(args []string) {
 //	command := NewCatchCommand()
 //	isSuccessful := command.isCatchSuccessful()
 func (c *CatchCommand) isCatchSuccessful() bool {
-	baseExperience := c.battleOpponent.BaseExperience
+	baseExperience := c.wildPokemon.BaseExperience
 	return c.checkYourLuck(baseExperience) > baseExperience
 }
 

@@ -28,13 +28,13 @@ func TestWithBattleOpponent(t *testing.T) {
 	runWithBattleOpponent := func() (command *CatchCommand, pokemon *p.Pokemon) {
 		command = &CatchCommand{}
 		pokemon = &p.Pokemon{Name: f.PokemonName}
-		WithBattleOpponent(pokemon)(command)
+		WithWildPokemon(pokemon)(command)
 		return command, pokemon
 	}
 
-	t.Run("should set the battleOpponent field", func(t *testing.T) {
-		if command, pokemon := runWithBattleOpponent(); command.battleOpponent != pokemon {
-			t.Errorf("expected battleOpponent to be %v, got %v", pokemon, command.battleOpponent)
+	t.Run("should set the wildPokemon field", func(t *testing.T) {
+		if command, pokemon := runWithBattleOpponent(); command.wildPokemon != pokemon {
+			t.Errorf("expected wildPokemon to be %v, got %v", pokemon, command.wildPokemon)
 		}
 	})
 }

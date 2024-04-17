@@ -52,7 +52,7 @@ func TestCatchCommand_Execute(t *testing.T) {
 			}
 		case Escape:
 			expected = fmt.Sprintf("%s\n%s\n", throwMessage, escapeMessage)
-			command.battleOpponent = &p.Pokemon{Name: f.PokemonName, BaseExperience: 1_000_000}
+			command.wildPokemon = &p.Pokemon{Name: f.PokemonName, BaseExperience: 1_000_000}
 			command.catchPokemon = func(url string, query *p.Pokemon, cacheTTL ...time.Duration) error {
 				return nil
 			}
@@ -62,7 +62,7 @@ func TestCatchCommand_Execute(t *testing.T) {
 		case Success:
 			expected = fmt.Sprintf("%s\n%s!\n", throwMessage, successMessage)
 			pokemon := &p.Pokemon{Name: f.PokemonName, BaseExperience: 0}
-			command.battleOpponent = pokemon
+			command.wildPokemon = pokemon
 			command.catchPokemon = func(url string, query *p.Pokemon, cacheTTL ...time.Duration) error {
 				return nil
 			}
@@ -243,8 +243,8 @@ func TestCatchCommand_isCatchSuccessful(t *testing.T) {
 			panic("invalid luck value")
 		}
 		command = &CatchCommand{
-			battleOpponent: &p.Pokemon{BaseExperience: 100},
-			checkYourLuck:  func(_ int) int { return luck },
+			wildPokemon:   &p.Pokemon{BaseExperience: 100},
+			checkYourLuck: func(_ int) int { return luck },
 		}
 		return command, expected
 	}

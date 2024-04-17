@@ -29,25 +29,6 @@ func WithAPIEndpoint(apiEndpoint string) CatchCommandOption {
 	}
 }
 
-// WithBattleOpponent sets the battleOpponent field in the CatchCommand struct.
-//
-// Parameters:
-//   - battleOpponent: The data of the Pokemon the user is attempting to catch.
-//
-// Returns:
-//   - CatchCommandOption: A function that sets the battleOpponent field in the CatchCommand struct.
-//
-// Example usage:
-//
-//	c := catch_command.NewCatchCommand(
-//	  catch_command.WithBattleOpponent(&p.Pokemon{}),
-//	)
-func WithBattleOpponent(battleOpponent *p.Pokemon) CatchCommandOption {
-	return func(c *CatchCommand) {
-		c.battleOpponent = battleOpponent
-	}
-}
-
 // WithCacheTTL sets the cacheTTL field in the CatchCommand struct.
 //
 // Parameters:
@@ -235,5 +216,24 @@ func WithSuccessfulCatchNotification(successfulCatchNotification string) CatchCo
 func WithThrowBallNotification(throwBallNotification string) CatchCommandOption {
 	return func(c *CatchCommand) {
 		c.throwBallNotification = throwBallNotification
+	}
+}
+
+// WithWildPokemon sets the wildPokemon field in the CatchCommand struct.
+//
+// Parameters:
+//   - wildPokemon: The data of the Pokemon the user is attempting to catch.
+//
+// Returns:
+//   - CatchCommandOption: A function that sets the wildPokemon field in the CatchCommand struct.
+//
+// Example usage:
+//
+//	c := catch_command.NewCatchCommand(
+//	  catch_command.WithWildPokemon(&p.Pokemon{}),
+//	)
+func WithWildPokemon(wildPokemon *p.Pokemon) CatchCommandOption {
+	return func(c *CatchCommand) {
+		c.wildPokemon = wildPokemon
 	}
 }
