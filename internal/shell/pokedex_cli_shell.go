@@ -1,8 +1,8 @@
 package pokedexclishell
 
 import (
+	bpc "bills_pc"
 	catch "catch_command"
-	bpc "catch_command/bills_pc"
 	exit "exit_command"
 	explore "explore_command"
 	help "help_command"
