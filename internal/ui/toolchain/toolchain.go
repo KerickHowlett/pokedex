@@ -36,11 +36,10 @@ type Toolchain struct {
 //	toolchain.PrintHelpMessage()
 func (t *Toolchain) PrintHelpMessage() {
 	fmt.Println(t.prints.Title)
-	t.addEmptyLine()
+	fmt.Println()
 
 	fmt.Println(t.prints.CommandsSubTitle)
 	fmt.Println(t.prints.HR)
-	t.addEmptyLine()
 
 	t.printAllCommandHelps()
 }
@@ -106,15 +105,6 @@ func (t *Toolchain) RunCommand(selection string, args []string) error {
 func (t *Toolchain) SelectCommand(commandName string) (foundCommand *c.Command, commandExists bool) {
 	foundCommand, commandExists = (*t.commands)[commandName]
 	return foundCommand, commandExists
-}
-
-// addEmptyLine prints an empty line to the console for spacing for better readability.
-//
-// Example usage:
-//
-//	toolchain.addEmptyLine()
-func (t *Toolchain) addEmptyLine() {
-	fmt.Println()
 }
 
 // printAllCommandHelps prints the help info for all toolchain CLI commands.
