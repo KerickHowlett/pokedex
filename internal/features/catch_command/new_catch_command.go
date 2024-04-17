@@ -11,6 +11,7 @@ import (
 
 func NewCatchCommand(options ...CatchCommandOption) *CatchCommand {
 	command := &CatchCommand{
+		battleOpponent:              p.NewPokemon(),
 		cacheTTL:                    ttl.OneDay,
 		catchPokemon:                query_fetch.QueryFetch[p.Pokemon],
 		checkYourLuck:               func() int { return rand.Int() },
