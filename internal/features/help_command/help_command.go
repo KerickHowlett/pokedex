@@ -35,24 +35,56 @@ func (h HelpCommand) Execute() error {
 }
 
 // GetArgs returns the arguments of the HelpCommand.
-func (m HelpCommand) GetArgs() []string {
+//
+// This method is not used by the HelpCommand.
+// Its just here to appease the Command static
+// type requirements.
+//
+// Returns:
+//   - The arguments of the HelpCommand.
+func (h HelpCommand) GetArgs() []string {
 	return []string{}
 }
 
 // GetDescription returns the description of the HelpCommand.
+//
+// Returns:
+//   - The description of the HelpCommand.
+//
+// Example usage:
+//
+//	command := NewHelpCommand()
+//	description := command.GetDescription()
 func (h HelpCommand) GetDescription() string {
 	return h.description
 }
 
 // GetName returns the name of the HelpCommand.
+//
+// Returns:
+//   - The name of the HelpCommand.
+//
+// Example usage:
+//
+//	command := NewHelpCommand()
+//	name := command.GetName()
 func (h HelpCommand) GetName() string {
 	return h.name
 }
 
 // PrintHelp prints the help message for the HelpCommand.
+//
+// Example usage:
+//
+//	command := NewHelpCommand()
+//	command.PrintHelp()
 func (h *HelpCommand) PrintHelp() {
 	c.PrintHelp(h)
 }
 
 // SetArgs sets the arguments of the HelpCommand.
-func (m *HelpCommand) SetArgs(args []string) {}
+//
+// This method is not used by the HelpCommand.
+// Its just here to appease the Command static
+// type requirements.
+func (h *HelpCommand) SetArgs(args []string) {}
