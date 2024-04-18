@@ -2,11 +2,11 @@ package help_command
 
 import "testing"
 
-func TestNewExitCommand(t *testing.T) {
-	t.Run("should return an instance of ExitCommand.", func(t *testing.T) {
+func TestNewHelpCommand(t *testing.T) {
+	t.Run("should return an instance of HelpCommand.", func(t *testing.T) {
 		t.Parallel()
 		if command := NewHelpCommand(); command == nil {
-			t.Error("Expected command to be an instance of ExitCommand, but got nil.")
+			t.Error("Expected command to be an instance of HelpCommand, but got nil.")
 		}
 	})
 
