@@ -62,6 +62,24 @@ func TestBillsPC_Inspect(t *testing.T) {
 	})
 }
 
+func TestBillsPC_TotalCaughtPokemon(t *testing.T) {
+	runTotalCaughtPokemonTests := func() (billsPC *BillsPC, expectedTotalCaughtPokemon int) {
+		expectedTotalCaughtPokemon = 1
+		billsPC = &BillsPC{caughtPokemon: &CaughtPokemon{
+			f.PokemonName: &p.Pokemon{Name: f.PokemonName},
+		}}
+		return billsPC, expectedTotalCaughtPokemon
+	}
+
+	t.Run("should return the total number of Pokemon caught by the user.", func(t *testing.T) {
+		t.Parallel()
+		billsPC, expectedTotalCaughtPokemon := runTotalCaughtPokemonTests()
+		if actualTotalCaughtPokemon := billsPC.TotalCaughtPokemon(); actualTotalCaughtPokemon != expectedTotalCaughtPokemon {
+			t.Errorf("Expected to find the caught Pokemon in the BillsPC state, but it was not found.")
+		}
+	})
+}
+
 func TestBillsPC_Withdraw(t *testing.T) {
 	runWithdrawTests := func(pokemonName string) (actualPokemon *p.Pokemon, expectedPokemon *p.Pokemon, expectedErrorMessage string, err error) {
 		expectedPokemon = &p.Pokemon{Name: f.PokemonName}

@@ -58,6 +58,19 @@ func (b BillsPC) Inspect(pokemonName string) (pokemon *p.Pokemon, found bool) {
 	return pokemon, found
 }
 
+// TotalCaughtPokemon returns the total number of Pokemon caught by the user.
+//
+// Returns:
+//   - the total number of Pokemon caught by the user.
+//
+// Example usage:
+//
+//	billsPC := NewBillsPC()
+//	totalCaughtPokemon := billsPC.TotalCaughtPokemon()
+func (b BillsPC) TotalCaughtPokemon() int {
+	return len(*b.caughtPokemon)
+}
+
 // Withdraw removes a Pokemon from the BillsPC if it has been caught.
 //
 // Parameters:
