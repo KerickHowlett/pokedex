@@ -1,4 +1,4 @@
-package pokedexclishell
+package pokedex_cli_shell
 
 import (
 	bpc "bills_pc"
@@ -10,6 +10,7 @@ import (
 	mc "map_command"
 	pd "map_command/pagination_direction"
 	ms "map_command/state"
+	dex "pokedex_command"
 	"repl"
 	tc "toochain"
 )
@@ -59,12 +60,15 @@ func PokedexCLIShell(config PokedexCLIConfig) {
 
 	inspectCommand := ic.NewInspectCommand(ic.WithPC(billsPC))
 
+	pokedexCommand := dex.NewPokedexCommand(dex.WithPC(billsPC))
+
 	toolchain := tc.NewToolchain(
 		tc.WithCommand(mapCommand),
 		tc.WithCommand(mapBCommand),
 		tc.WithCommand(catchCommand),
 		tc.WithCommand(exploreCommand),
 		tc.WithCommand(inspectCommand),
+		tc.WithCommand(pokedexCommand),
 		tc.WithCommand(helpCommand),
 		tc.WithCommand(exitCommand),
 	)

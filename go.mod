@@ -16,6 +16,7 @@ require (
 	location v1.0.0 // indirect
 	location_area v1.0.0 // indirect
 	map_command v1.0.0 // indirect
+	pokedex_command v1.0.0 // indirect
 	pokemon v1.0.0 // indirect
 	pokemon_encounter v1.0.0 // indirect
 	pokemon_stat v1.0.0 // indirect
@@ -38,6 +39,7 @@ replace (
 	location => ./internal/entities/location
 	location_area => ./internal/entities/location_area
 	map_command => ./internal/features/map_command
+	pokedex_command => ./internal/features/pokedex_command
 	pokemon => ./internal/entities/pokemon
 	pokemon_encounter => ./internal/entities/pokemon_encounter
 	pokemon_stat => ./internal/entities/pokemon_stat

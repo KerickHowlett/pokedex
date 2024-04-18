@@ -1,4 +1,4 @@
-package pokedexclishell
+package pokedex_cli_shell
 
 // PokedexCLIConfig represents the configuration for the Pokedex CLI.
 //

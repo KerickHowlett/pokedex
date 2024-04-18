@@ -10,6 +10,7 @@ require (
 	help_command v1.0.0
 	inspect_command v1.0.0
 	map_command v1.0.0
+	pokedex_command v1.0.0
 	repl v1.0.0
 	toochain v1.0.0
 )
@@ -39,6 +40,7 @@ replace (
 	location => ../entities/location
 	location_area => ../entities/location_area
 	map_command => ../features/map_command
+	pokedex_command => ../features/pokedex_command
 	pokemon => ../entities/pokemon
 	pokemon_encounter => ../entities/pokemon_encounter
 	pokemon_stat => ../entities/pokemon_stat
