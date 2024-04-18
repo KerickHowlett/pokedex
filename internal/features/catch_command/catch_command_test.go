@@ -33,11 +33,13 @@ func TestCatchCommand_Execute(t *testing.T) {
 			apiEndpoint:                 f.APIEndpoint,
 			args:                        []string{f.PokemonName},
 			checkYourLuck:               func(_ int) int { return 100 },
+			difficulty:                  100,
 			escapedNotification:         "escaped!",
 			noEnteredArgsErrorMessage:   "a pokemon name is required",
 			pc:                          bills_pc.NewBillsPC(),
 			successfulCatchNotification: "You caught",
 			throwBallNotification:       "You threw a pokeball at",
+			wildPokemon:                 &p.Pokemon{Name: f.PokemonName, BaseExperience: 100},
 		}
 
 		throwMessage := fmt.Sprintf("%s %s...", command.throwBallNotification, f.PokemonName)
@@ -52,7 +54,7 @@ func TestCatchCommand_Execute(t *testing.T) {
 			}
 		case Escape:
 			expected = fmt.Sprintf("%s\n%s\n", throwMessage, escapeMessage)
-			command.wildPokemon = &p.Pokemon{Name: f.PokemonName, BaseExperience: 1_000_000}
+			command.difficulty = 1_000_000
 			command.catchPokemon = func(url string, query *p.Pokemon, cacheTTL ...time.Duration) error {
 				return nil
 			}
@@ -62,6 +64,7 @@ func TestCatchCommand_Execute(t *testing.T) {
 		case Success:
 			expected = fmt.Sprintf("%s\n%s!\n", throwMessage, successMessage)
 			pokemon := &p.Pokemon{Name: f.PokemonName, BaseExperience: 0}
+			command.difficulty = 0
 			command.wildPokemon = pokemon
 			command.catchPokemon = func(url string, query *p.Pokemon, cacheTTL ...time.Duration) error {
 				return nil
@@ -243,8 +246,9 @@ func TestCatchCommand_isCatchSuccessful(t *testing.T) {
 			panic("invalid luck value")
 		}
 		command = &CatchCommand{
-			wildPokemon:   &p.Pokemon{BaseExperience: 100},
+			difficulty:    100,
 			checkYourLuck: func(_ int) int { return luck },
+			wildPokemon:   &p.Pokemon{BaseExperience: 100},
 		}
 		return command, expected
 	}

@@ -26,6 +26,7 @@ func NewCatchCommand(options ...CatchCommandOption) *CatchCommand {
 		catchPokemon:                query_fetch.QueryFetch[p.Pokemon],
 		checkYourLuck:               defaultCheckYourLuck,
 		description:                 "Catch That Pokemon! Usage: catch <pokemon-name>",
+		difficulty:                  50,
 		escapedNotification:         "escaped!",
 		name:                        "catch",
 		noEnteredArgsErrorMessage:   "a pokemon name is required",
@@ -58,6 +59,6 @@ func NewCatchCommand(options ...CatchCommandOption) *CatchCommand {
 //
 //	chance := defaultCheckYourLuck(100)
 func defaultCheckYourLuck(pokemonBaseExperience int) (chance int) {
-	chance = rand.Intn(100)
+	chance = rand.Intn(pokemonBaseExperience)
 	return chance
 }

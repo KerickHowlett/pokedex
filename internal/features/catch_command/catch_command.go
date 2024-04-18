@@ -43,6 +43,8 @@ type CatchCommand struct {
 	checkYourLuck CheckYourLuckFunc
 	// description describes the purpose of the ExploreCommand.
 	description string
+	// difficulty effects the challenge level at catching any given Pokemon.
+	difficulty int
 	// escapedNotification is a message to display when a Pokemon escapes.
 	escapedNotification string
 	// name is the name of the ExploreCommand.
@@ -167,8 +169,7 @@ func (c *CatchCommand) SetArgs(args []string) {
 //	command := NewCatchCommand()
 //	isSuccessful := command.isCatchSuccessful()
 func (c *CatchCommand) isCatchSuccessful() bool {
-	baseExperience := c.wildPokemon.BaseExperience
-	return c.checkYourLuck(baseExperience) > baseExperience
+	return c.checkYourLuck(c.wildPokemon.BaseExperience) > c.difficulty
 }
 
 // hasValidArgs checks if the CatchCommand has valid arguments needed to run the Execute() method properly.

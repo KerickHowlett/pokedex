@@ -96,6 +96,22 @@ func TestWithDescription(t *testing.T) {
 	})
 }
 
+func TestWithDifficulty(t *testing.T) {
+	runWithDifficulty := func() (actual int, expected int) {
+		expected = 100
+		command := &CatchCommand{}
+		WithDifficulty(expected)(command)
+		actual = command.difficulty
+		return actual, expected
+	}
+
+	t.Run("should set the difficulty field", func(t *testing.T) {
+		if actual, expected := runWithDifficulty(); actual != expected {
+			t.Errorf("expected difficulty to be '%d', got %d", expected, actual)
+		}
+	})
+}
+
 func TestWithEscapedNotification(t *testing.T) {
 	runWithEscapedNotification := func() (command *CatchCommand, escapedNotification string) {
 		command = &CatchCommand{}

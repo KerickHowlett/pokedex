@@ -86,6 +86,25 @@ func WithCheckYourLuck(checkYourLuck CheckYourLuckFunc) CatchCommandOption {
 	}
 }
 
+// WithDifficulty sets the difficulty field in the CatchCommand struct.
+//
+// Parameters:
+//   - difficulty: The challenge level at catching any given Pokemon.
+//
+// Returns:
+//   - CatchCommandOption: A function that sets the difficulty field in the CatchCommand struct.
+//
+// Example usage:
+//
+//	c := catch_command.NewCatchCommand(
+//	  catch_command.WithDifficulty(100),
+//	)
+func WithDifficulty(difficulty int) CatchCommandOption {
+	return func(c *CatchCommand) {
+		c.difficulty = difficulty
+	}
+}
+
 // WithDescription sets the description field in the CatchCommand struct.
 //
 // Parameters:
