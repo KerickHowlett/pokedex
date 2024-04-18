@@ -1,6 +1,7 @@
 package bills_pc
 
 import (
+	"reflect"
 	"testing"
 
 	p "pokemon"
@@ -60,6 +61,22 @@ func TestBillsPC_Inspect(t *testing.T) {
 			t.Errorf("Expected to find the caught Pokemon in the BillsPC state, but it was not found.")
 		}
 	})
+}
+
+func TestBillsPC_GetCaughtPokemon(t *testing.T) {
+	runGetCaughtPokemonTests := func() (actual CaughtPokemon, expected CaughtPokemon) {
+		expected = CaughtPokemon{f.PokemonName: &p.Pokemon{Name: f.PokemonName}}
+		billsPC := &BillsPC{caughtPokemon: &expected}
+		actual = billsPC.GetCaughtPokemon()
+		return actual, expected
+	}
+
+	t.Run("should return a map of all the caught Pokemon indexed by their respective names.", func(t *testing.T) {
+		if actual, expected := runGetCaughtPokemonTests(); !reflect.DeepEqual(actual, expected) {
+			t.Errorf("Expected to find the caught Pokemon in the BillsPC state, but it was not found.")
+		}
+	})
+
 }
 
 func TestBillsPC_TotalCaughtPokemon(t *testing.T) {

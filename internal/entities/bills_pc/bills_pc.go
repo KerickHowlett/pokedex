@@ -17,6 +17,7 @@ type CaughtPokemon map[string]*p.Pokemon
 // Methods:
 //   - Deposit: adds a Pokemon to the BillsPC if it has not already been caught.
 //   - Inspect: returns the Pokemon with the provided name if it has been caught.
+//   - GetCaughtPokemon: returns a map of all the caught Pokemon indexed by their respective names.
 //   - Withdraw: removes a Pokemon from the BillsPC if it has been caught.
 type BillsPC struct {
 	// caughtPokemon is a map of all the caught Pokemon indexed by their respective names.
@@ -56,6 +57,19 @@ func (b BillsPC) Deposit(pokemon *p.Pokemon) {
 func (b BillsPC) Inspect(pokemonName string) (pokemon *p.Pokemon, found bool) {
 	pokemon, found = (*b.caughtPokemon)[pokemonName]
 	return pokemon, found
+}
+
+// GetCaughtPokemon returns a map of all the caught Pokemon indexed by their respective names.
+//
+// Returns:
+//   - a map of all the caught Pokemon indexed by their respective names.
+//
+// Example usage:
+//
+//	billsPC := NewBillsPC()
+//	caughtPokemon := billsPC.GetCaughtPokemon()
+func (b BillsPC) GetCaughtPokemon() CaughtPokemon {
+	return *b.caughtPokemon
 }
 
 // TotalCaughtPokemon returns the total number of Pokemon caught by the user.
