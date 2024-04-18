@@ -8,6 +8,7 @@ require (
 	exit_command v1.0.0
 	explore_command v1.0.0
 	help_command v1.0.0
+	inspect_command v1.0.0
 	map_command v1.0.0
 	repl v1.0.0
 	toochain v1.0.0
@@ -34,6 +35,7 @@ replace (
 	exit_command => ../features/exit_command
 	explore_command => ../features/explore_command
 	help_command => ../features/help_command
+	inspect_command => ../features/inspect_command
 	location => ../entities/location
 	location_area => ../entities/location_area
 	map_command => ../features/map_command

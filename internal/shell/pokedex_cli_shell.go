@@ -6,6 +6,7 @@ import (
 	exit "exit_command"
 	explore "explore_command"
 	help "help_command"
+	ic "inspect_command"
 	mc "map_command"
 	pd "map_command/pagination_direction"
 	ms "map_command/state"
@@ -56,11 +57,14 @@ func PokedexCLIShell(config PokedexCLIConfig) {
 		catch.WithPC(billsPC),
 	)
 
+	inspectCommand := ic.NewInspectCommand(ic.WithPC(billsPC))
+
 	toolchain := tc.NewToolchain(
-		tc.WithCommand(catchCommand),
-		tc.WithCommand(exploreCommand),
 		tc.WithCommand(mapCommand),
 		tc.WithCommand(mapBCommand),
+		tc.WithCommand(catchCommand),
+		tc.WithCommand(exploreCommand),
+		tc.WithCommand(inspectCommand),
 		tc.WithCommand(helpCommand),
 		tc.WithCommand(exitCommand),
 	)
