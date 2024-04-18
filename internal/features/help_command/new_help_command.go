@@ -13,8 +13,8 @@ package help_command
 //	command := NewHelpCommand()
 func NewHelpCommand(options ...HelpCommandOption) *HelpCommand {
 	command := &HelpCommand{
-		name:        "help",
 		description: "Show help for the Pokemon CLI commands.",
+		name:        "help",
 	}
 	for _, option := range options {
 		option(command)
