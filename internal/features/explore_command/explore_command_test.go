@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
+	el "entity_link"
 	la "location_area"
-	p "pokemon"
 	pe "pokemon_encounter"
 	f "test_tools/fixtures"
 	"test_tools/utils"
@@ -76,7 +76,7 @@ func TestExploreCommand_Execute(t *testing.T) {
 			expected = fmt.Sprintf("%s\n - %s\n", command.listTitle, f.PokemonName)
 			command.fetchEncounters = func(url string, state *la.LocationArea, cacheTTL ...time.Duration) error {
 				command.state.Encounters = []pe.PokemonEncounter{
-					{Pokemon: &p.Pokemon{Name: f.PokemonName}},
+					{Pokemon: &el.EntityLink{Name: f.PokemonName}},
 				}
 				return nil
 			}
@@ -170,7 +170,6 @@ func TestExploreCommand_PrintHelp(t *testing.T) {
 }
 
 func TestHasValidArgs(t *testing.T) {
-	// Options for the setup function.
 	const (
 		// emptyArgs setups a scenario where the ExploreCommand.args[0] field contains an empty string.
 		emptyArgs = ""
