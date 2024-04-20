@@ -19,7 +19,6 @@ import (
 //
 // Parameters:
 //   - url: The URL to fetch the query from.
-//   - query: A pointer to the query struct to be populated with the fetched HTTP Response.
 //   - ttlOption: An optional time.Duration parameter that sets the time-to-live for the query cache. The default value is 24 Hours. If TTL is set to zero (0), the cache will not be used.
 //
 // Returns:
@@ -43,7 +42,7 @@ type QueryFetchFunc[TQuery any] func(url string, ttlOption ...time.Duration) (qu
 //
 // Example:
 //
-//	err := QueryFetch("https://example.com/query", query)
+//	query, err := QueryFetch("https://example.com/query", query)
 func QueryFetch[TQuery any](url string, ttlOption ...time.Duration) (query *TQuery, err error) {
 	// @TODO: Refactor to replace with a struct possessing both 'now' and 'ttl' fields.
 	cacheTTL := ttl.OneDay
@@ -88,14 +87,14 @@ func QueryFetch[TQuery any](url string, ttlOption ...time.Duration) (query *TQue
 //
 // Parameters:
 //   - body: The HTTP Response's body.
-//   - payload: The payload struct to populate with the response body's values.
 //
 // Returns:
+//   - A pointer to the query struct populated with the fetched HTTP Response.
 //   - An error if the response body cannot be parsed.
 //
 // Example usage:
 //
-//	err := decode(body, state)
+//	decodedQuery, err := decode(body, query)
 func decode[TQuery any](body []byte) (query *TQuery, err error) {
 	if err := json.Unmarshal(body, &query); err != nil {
 		return query, fmt.Errorf("error with parsing payload %v", err)
