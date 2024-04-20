@@ -2,7 +2,7 @@ package explore_command
 
 import (
 	"fmt"
-	"time"
+	qec "query_fetch/query_cache/cache_eviction_config"
 
 	c "command"
 	la "location_area"
@@ -17,8 +17,8 @@ type FetchEncounters qf.QueryFetchFunc[la.LocationArea]
 // Fields:
 //   - args: The arguments provided to the command.
 //   - apiEndpoint: The URL of the API endpoint to fetch the location area data.
-//   - cacheTTL: The time-to-live (TTL) determines how long fetchEncounters' cached responses get to exist before being discarded.
 //   - description: Describes the purpose of the ExploreCommand.
+//   - ec: The eviction configuration for the query cache.
 //   - fetchEncounters: A function that fetches locations/maps from the Pokemon API.
 //   - listMarker: A string marker to display before each map name for nicer formatting.
 //   - listTitle: A string title to display before the list of maps.
@@ -40,10 +40,10 @@ type ExploreCommand struct {
 	args []string
 	// The URL of the API endpoint to fetch the location area data.
 	apiEndpoint string
-	// cacheTTL is the time-to-live (TTL) determines how long FetchEncounters' cached responses get to exist before being discarded.
-	cacheTTL time.Duration
 	// description describes the purpose of the ExploreCommand.
 	description string
+	// ec is the eviction configuration for the query cache.
+	ec *qec.QueryEvictionConfig
 	// fetchEncounters is a function that fetches locations/maps from the Pokemon API.
 	fetchEncounters FetchEncounters
 	// listMarker is a string marker to display before each map name for nicer formatting.
@@ -73,7 +73,7 @@ func (e *ExploreCommand) Execute() error {
 	}
 
 	locationAreaEndpoint := e.apiEndpoint + "/" + e.args[0]
-	locationArea, err := e.fetchEncounters(locationAreaEndpoint, e.cacheTTL)
+	locationArea, err := e.fetchEncounters(locationAreaEndpoint, e.ec)
 	if err != nil {
 		return err
 	}

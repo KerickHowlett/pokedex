@@ -2,7 +2,7 @@ package map_command
 
 import (
 	"fmt"
-	"time"
+	qec "query_fetch/query_cache/cache_eviction_config"
 
 	c "command"
 	pd "map_command/pagination_direction"
@@ -16,9 +16,8 @@ type FetchLocations qf.QueryFetchFunc[ms.MapsState]
 // MapCommand represents a command related to maps in the pokedexcli application.
 //
 // Fields:
-//   - cacheTTL: The time-to-live (TTL) determines how long fetchLocations' cached responses get to exist before being discarded.
 //   - description: Describes the purpose of the MapCommand.
-//   - config: A pointer to a MapCommandsConfig struct instance.
+//   - ec: The eviction configuration for the query cache.
 //   - fetchLocations: A function that fetches locations/maps from the Pokemon API.
 //   - listMarker: A string marker to display before each map name for nicer formatting.
 //   - listTitle: A string title to display before the list of maps.
@@ -27,11 +26,20 @@ type FetchLocations qf.QueryFetchFunc[ms.MapsState]
 //   - noMoreMapsMessage: A message to display when there are no more maps to be found.
 //   - paginationDirection: Sets which direction of the maps pagination flows: "next" or "previous".
 //   - state: A pointer to a MapsState struct instance.
+//
+// Methods:
+//   - Execute: Executes the MapCommand and fetches locations using the provided state and query.
+//   - GetArgs: Returns the arguments of the MapCommand.
+//   - GetDescription: Returns the description of the MapCommand.
+//   - GetName: Returns the name of the MapCommand.
+//   - PrintHelp: Prints the help message for the MapCommand.
+//   - SetArgs: Sets the arguments of the MapCommand.
+//   - getMapsAPIEndpoint: Returns the URL of the next or previous set of maps from the Pokemon API.
 type MapCommand struct {
-	// cacheTTL is the time-to-live (TTL) determines how long fetchLocations' cached responses get to exist before being discarded.
-	cacheTTL time.Duration
 	// description describes the purpose of the MapCommand.
 	description string
+	// ec is the Eviction Configuration for the query cache.
+	ec *qec.QueryEvictionConfig
 	// fetchLocations is a function that fetches locations/maps from the Pokemon API.
 	fetchLocations FetchLocations
 	// listMarker is a string marker to display before each map name for nicer formatting.
@@ -67,7 +75,7 @@ func (m *MapCommand) Execute() error {
 		return nil
 	}
 
-	state, err := m.fetchLocations(*url, m.cacheTTL)
+	state, err := m.fetchLocations(*url, m.ec)
 	if err != nil {
 		return err
 	}
@@ -156,6 +164,6 @@ func (m MapCommand) getMapsAPIEndpoint() *string {
 	case pd.Previous:
 		return m.state.PreviousURL
 	default:
-		panic("Invalid pagination direction")
+		panic("invalid pagination direction")
 	}
 }

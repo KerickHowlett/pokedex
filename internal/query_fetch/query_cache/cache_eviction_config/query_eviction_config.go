@@ -1,4 +1,4 @@
-package query_cache_config
+package query_eviction_config
 
 import "time"
 

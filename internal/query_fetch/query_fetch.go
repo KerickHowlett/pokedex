@@ -5,10 +5,9 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"time"
 
 	qc "query_fetch/query_cache"
-	"query_fetch/query_cache/ttl"
+	qec "query_fetch/query_cache/cache_eviction_config"
 )
 
 // QueryFetchFunc is used to type function parameters that requires a function
@@ -23,7 +22,7 @@ import (
 //
 // Returns:
 //   - An error if the query fetch operation fails.
-type QueryFetchFunc[TQuery any] func(url string, ttlOption ...time.Duration) (query *TQuery, err error)
+type QueryFetchFunc[TQuery any] func(url string, config ...*qec.QueryEvictionConfig) (query *TQuery, err error)
 
 // QueryFetch sends an HTTP GET request to the specified URL and fetches the
 // query result into the provided query state.
@@ -34,7 +33,7 @@ type QueryFetchFunc[TQuery any] func(url string, ttlOption ...time.Duration) (qu
 // Parameters:
 //   - url: The URL to fetch the query from.
 //   - query: A pointer to the query struct to be populated with the fetched HTTP Response.
-//   - ttlOption: An optional time.Duration parameter that sets the time-to-live for the query cache. The default value is 24 Hours. If TTL is set to zero (0), the cache will not be used.
+//   - config: An optional QueryEvictionConfig parameter that sets the eviction configuration for the query cache.
 //
 // Returns:
 //   - A pointer to the query struct populated with the fetched HTTP Response.
@@ -43,14 +42,13 @@ type QueryFetchFunc[TQuery any] func(url string, ttlOption ...time.Duration) (qu
 // Example:
 //
 //	query, err := QueryFetch("https://example.com/query", query)
-func QueryFetch[TQuery any](url string, ttlOption ...time.Duration) (query *TQuery, err error) {
-	// @TODO: Refactor to replace with a struct possessing both 'now' and 'ttl' fields.
-	cacheTTL := ttl.OneDay
-	if len(ttlOption) > 0 {
-		cacheTTL = ttlOption[0]
+func QueryFetch[TQuery any](url string, config ...*qec.QueryEvictionConfig) (query *TQuery, err error) {
+	evictionConfig := qec.NewQueryEvictionConfig()
+	if len(config) > 0 {
+		evictionConfig = config[0]
 	}
 
-	cache := qc.NewQueryCache(qc.WithTTL(cacheTTL))
+	cache := qc.NewQueryCache(qc.WithEvictionConfig(evictionConfig))
 	if cachedResponse, cacheHit := cache.Find(url); cacheHit {
 		return decode[TQuery](cachedResponse)
 	}

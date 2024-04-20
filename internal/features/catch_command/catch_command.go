@@ -2,7 +2,7 @@ package catch_command
 
 import (
 	"fmt"
-	"time"
+	qec "query_fetch/query_cache/cache_eviction_config"
 
 	bpc "bills_pc"
 	cmd "command"
@@ -21,20 +21,32 @@ type CheckYourLuckFunc func(pokemonBaseExperience int) (chance int)
 // Fields:
 //   - args: The arguments provided to the command.
 //   - apiEndpoint: The URL of the API endpoint to fetch the location area data.
-//   - cacheTTL: The time-to-live (TTL) determines how long FetchEncounters' cached responses get to exist before being discarded.
 //   - catchPokemon: A function that fetches locations/maps from the Pokemon API.
 //   - checkYourLuck: A function that returns the chance of catching a Pokemon.
 //   - description: Describes the purpose of the ExploreCommand.
+//   - difficulty: Effects the challenge level at catching any given Pokemon.
+//   - ec: The eviction configuration for the query cache.
 //   - name: The name of the ExploreCommand.
 //   - noEnteredArgsErrorMessage: An error message to display when no arguments are entered.
 //   - noEncountersFoundErrorMessage: An error message to display when no maps are found.
+//   - pc: Records all the Pokemon the user has caught.
+//   - successfulCatchNotification: A message to display when a Pokemon is caught.
+//   - throwBallNotification: A message to display when a Pokemon is thrown a ball.
+//
+// Methods:
+//   - Execute: Attempts to catch a Pokemon.
+//   - GetArgs: Returns the arguments provided to the CatchCommand.
+//   - GetDescription: Returns the description of the CatchCommand.
+//   - GetName: Returns the name of the CatchCommand.
+//   - PrintHelp: Prints the help message for the CatchCommand.
+//   - SetArgs: Sets the arguments for the CatchCommand.
+//   - isCatchSuccessful: Checks if the CatchCommand is successful in catching a Pokemon.
+//   - hasValidArgs: Checks if the CatchCommand has valid arguments needed to run the Execute() method properly.
 type CatchCommand struct {
 	// The arguments provided to the command.
 	args []string
 	// The URL of the API endpoint to fetch the location area data.
 	apiEndpoint string
-	// cacheTTL is the time-to-live (TTL) determines how long FetchEncounters' cached responses get to exist before being discarded.
-	cacheTTL time.Duration
 	// catchPokemon is a function that fetches locations/maps from the Pokemon API.
 	catchPokemon CatchPokemonFunc
 	// checkYourLuck is a function that returns the chance of catching a Pokemon.
@@ -43,6 +55,8 @@ type CatchCommand struct {
 	description string
 	// difficulty effects the challenge level at catching any given Pokemon.
 	difficulty int
+	// ec is the eviction configuration for the query cache.
+	ec *qec.QueryEvictionConfig
 	// escapedNotification is a message to display when a Pokemon escapes.
 	escapedNotification string
 	// name is the name of the ExploreCommand.
@@ -74,7 +88,7 @@ func (c *CatchCommand) Execute() error {
 
 	// Threw Pokeball
 	fmt.Printf("%s %s...\n", c.throwBallNotification, pokemonName)
-	wildPokemon, err := c.catchPokemon(c.apiEndpoint+"/"+pokemonName, c.cacheTTL)
+	wildPokemon, err := c.catchPokemon(c.apiEndpoint+"/"+pokemonName, c.ec)
 	if err != nil {
 		return err
 	}

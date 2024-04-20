@@ -1,8 +1,6 @@
 package explore_command
 
-import (
-	"time"
-)
+import qec "query_fetch/query_cache/cache_eviction_config"
 
 type ExploreCommandOption func(*ExploreCommand)
 
@@ -17,26 +15,9 @@ type ExploreCommandOption func(*ExploreCommand)
 // Example usage:
 //
 //	command := NewExploreCommand(WithAPIEndpoint("http://localhost:8080"))
-func WithAPIEndpoint(apiEndpoint string) func(*ExploreCommand) {
+func WithAPIEndpoint(apiEndpoint string) ExploreCommandOption {
 	return func(e *ExploreCommand) {
 		e.apiEndpoint = apiEndpoint
-	}
-}
-
-// WithCacheTTL sets the cache time-to-live (TTL) for the ExploreCommand instance.
-//
-// Parameters:
-//   - cacheTTL: A time.Duration representing the cache time-to-live.
-//
-// Returns:
-//   - A new ExploreCommandOption instance.
-//
-// Example usage:
-//
-//	command := NewExploreCommand(WithCacheTTL(time.Hour))
-func WithCacheTTL(cacheTTL time.Duration) func(*ExploreCommand) {
-	return func(e *ExploreCommand) {
-		e.cacheTTL = cacheTTL
 	}
 }
 
@@ -51,9 +32,26 @@ func WithCacheTTL(cacheTTL time.Duration) func(*ExploreCommand) {
 // Example usage:
 //
 //	command := NewExploreCommand(WithDescription("Command Description"))
-func WithDescription(description string) func(*ExploreCommand) {
+func WithDescription(description string) ExploreCommandOption {
 	return func(e *ExploreCommand) {
 		e.description = description
+	}
+}
+
+// WithEvictionConfig sets the eviction configuration for the ExploreCommand instance.
+//
+// Parameters:
+//   - ec: A pointer to a QueryEvictionConfig instance.
+//
+// Returns:
+//   - A new ExploreCommandOption instance.
+//
+// Example usage:
+//
+//	command := NewExploreCommand(WithEvictionConfig(qec.NewQueryEvictionConfig()))
+func WithEvictionConfig(ec *qec.QueryEvictionConfig) ExploreCommandOption {
+	return func(e *ExploreCommand) {
+		e.ec = ec
 	}
 }
 
@@ -68,7 +66,7 @@ func WithDescription(description string) func(*ExploreCommand) {
 // Example usage:
 //
 //	command := NewExploreCommand(WithFetchEncounters(fetchEncounters))
-func WithFetchEncounters(fetchEncounters FetchEncounters) func(*ExploreCommand) {
+func WithFetchEncounters(fetchEncounters FetchEncounters) ExploreCommandOption {
 	return func(e *ExploreCommand) {
 		e.fetchEncounters = fetchEncounters
 	}
@@ -85,7 +83,7 @@ func WithFetchEncounters(fetchEncounters FetchEncounters) func(*ExploreCommand) 
 // Example usage:
 //
 //	command := NewExploreCommand(WithListMarker(" -"))
-func WithListMarker(listMarker string) func(*ExploreCommand) {
+func WithListMarker(listMarker string) ExploreCommandOption {
 	return func(e *ExploreCommand) {
 		e.listMarker = listMarker
 	}
@@ -102,7 +100,7 @@ func WithListMarker(listMarker string) func(*ExploreCommand) {
 // Example usage:
 //
 //	command := NewExploreCommand(WithListTitle("List Title"))
-func WithListTitle(listTitle string) func(*ExploreCommand) {
+func WithListTitle(listTitle string) ExploreCommandOption {
 	return func(e *ExploreCommand) {
 		e.listTitle = listTitle
 	}
@@ -119,7 +117,7 @@ func WithListTitle(listTitle string) func(*ExploreCommand) {
 // Example usage:
 //
 //	command := NewExploreCommand(WithName("Command Name"))
-func WithName(name string) func(*ExploreCommand) {
+func WithName(name string) ExploreCommandOption {
 	return func(e *ExploreCommand) {
 		e.name = name
 	}
@@ -136,7 +134,7 @@ func WithName(name string) func(*ExploreCommand) {
 // Example usage:
 //
 //	command := NewExploreCommand(WithNoEncountersFoundErrorMessage("No encounters found error message"))
-func WithNoEncountersFoundErrorMessage(noEncountersFoundErrorMessage string) func(*ExploreCommand) {
+func WithNoEncountersFoundErrorMessage(noEncountersFoundErrorMessage string) ExploreCommandOption {
 	return func(e *ExploreCommand) {
 		e.noEncountersFoundErrorMessage = noEncountersFoundErrorMessage
 	}
@@ -153,7 +151,7 @@ func WithNoEncountersFoundErrorMessage(noEncountersFoundErrorMessage string) fun
 // Example usage:
 //
 //	command := NewExploreCommand(WithNoEnteredArgsErrorMessage("No entered arguments error message"))
-func WithNoEnteredArgsErrorMessage(noEnteredArgsErrorMessage string) func(*ExploreCommand) {
+func WithNoEnteredArgsErrorMessage(noEnteredArgsErrorMessage string) ExploreCommandOption {
 	return func(e *ExploreCommand) {
 		e.noEnteredArgsErrorMessage = noEnteredArgsErrorMessage
 	}

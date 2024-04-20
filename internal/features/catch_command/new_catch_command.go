@@ -5,8 +5,8 @@ import (
 
 	bpc "bills_pc"
 	p "pokemon"
-	"query_fetch"
-	"query_fetch/query_cache/ttl"
+	qf "query_fetch"
+	ec "query_fetch/query_cache/cache_eviction_config"
 )
 
 // NewCatchCommand returns a new instance of the CatchCommand struct.
@@ -22,11 +22,11 @@ import (
 //	command := NewCatchCommand()
 func NewCatchCommand(options ...CatchCommandOption) *CatchCommand {
 	command := &CatchCommand{
-		cacheTTL:                    ttl.OneDay,
-		catchPokemon:                query_fetch.QueryFetch[p.Pokemon],
+		catchPokemon:                qf.QueryFetch[p.Pokemon],
 		checkYourLuck:               defaultCheckYourLuck,
 		description:                 "Catch That Pokemon! Usage: catch <pokemon-name>",
 		difficulty:                  50,
+		ec:                          ec.NewQueryEvictionConfig(),
 		escapedNotification:         "escaped!",
 		name:                        "catch",
 		noEnteredArgsErrorMessage:   "a pokemon name is required",

@@ -1,29 +1,11 @@
 package map_command
 
 import (
-	"time"
-
 	ms "map_command/state"
+	qec "query_fetch/query_cache/cache_eviction_config"
 )
 
 type MapCommandOption func(*MapCommand)
-
-// WithCacheTTL sets the time-to-live (TTL) for the cache.
-//
-// Parameters:
-//   - cacheTTL: A time.Duration containing the time-to-live (TTL) for the cache.
-//
-// Returns:
-//   - A MapCommandOption function that sets the time-to-live (TTL) for the cache.
-//
-// Example usage:
-//
-//	command := NewMapCommand(WithCacheTTL(ttl.OneDay))
-func WithCacheTTL(cacheTTL time.Duration) MapCommandOption {
-	return func(c *MapCommand) {
-		c.cacheTTL = cacheTTL
-	}
-}
 
 // WithCommandDescription sets the description of the command.
 //
@@ -56,6 +38,23 @@ func WithCommandDescription(commandDescription string) MapCommandOption {
 func WithCommandName(commandName string) MapCommandOption {
 	return func(c *MapCommand) {
 		c.name = commandName
+	}
+}
+
+// WithEvictionConfig sets the eviction configuration for the command.
+//
+// Parameters:
+//   - ec: A pointer to a QueryEvictionConfig instance.
+//
+// Returns:
+//   - A MapCommandOption function that sets the eviction configuration for the command.
+//
+// Example usage:
+//
+//	command := NewMapCommand(WithEvictionConfig(qec.NewQueryEvictionConfig()))
+func WithEvictionConfig(ec *qec.QueryEvictionConfig) MapCommandOption {
+	return func(c *MapCommand) {
+		c.ec = ec
 	}
 }
 

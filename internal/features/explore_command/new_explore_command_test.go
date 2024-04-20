@@ -16,7 +16,6 @@ func TestNewExploreCommand(t *testing.T) {
 	})
 
 	t.Run("should panic if API endpoint is not provided.", func(t *testing.T) {
-		t.Parallel()
 		utils.ExpectPanic(t, NewExploreCommand)
 	})
 }

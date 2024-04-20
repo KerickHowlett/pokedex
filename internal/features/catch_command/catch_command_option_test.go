@@ -3,11 +3,10 @@ package catch_command
 import (
 	bpc "bills_pc"
 	p "pokemon"
-	"query_fetch/query_cache/ttl"
+	qec "query_fetch/query_cache/cache_eviction_config"
 	f "test_tools/fixtures"
 	"test_tools/utils"
 	"testing"
-	"time"
 )
 
 func TestWithApiEndpoint(t *testing.T) {
@@ -24,24 +23,10 @@ func TestWithApiEndpoint(t *testing.T) {
 	})
 }
 
-func TestWithCacheTTL(t *testing.T) {
-	runWithCacheTTL := func() (command *CatchCommand) {
-		command = &CatchCommand{}
-		WithCacheTTL(ttl.OneDay)(command)
-		return command
-	}
-
-	t.Run("should set the cacheTTL field", func(t *testing.T) {
-		if command := runWithCacheTTL(); command.cacheTTL != ttl.OneDay {
-			t.Errorf("expected cacheTTL to be %s, got %s", ttl.OneDay, command.cacheTTL)
-		}
-	})
-}
-
 func TestWithCatchPokemon(t *testing.T) {
 	runWithCatchPokemon := func() (command *CatchCommand, catchPokemon CatchPokemonFunc) {
 		command = &CatchCommand{}
-		catchPokemon = func(url string, ttl ...time.Duration) (query *p.Pokemon, err error) {
+		catchPokemon = func(url string, ec ...*qec.QueryEvictionConfig) (query *p.Pokemon, err error) {
 			return &p.Pokemon{}, nil
 		}
 		WithCatchPokemon(catchPokemon)(command)
@@ -112,6 +97,22 @@ func TestWithEscapedNotification(t *testing.T) {
 			t.Errorf("expected escapedNotification to be %s, got %s", escapedNotification, command.escapedNotification)
 		}
 	})
+}
+
+func TestWithEvictionConfig(t *testing.T) {
+	runWithEvictionConfig := func() (command *CatchCommand, evictionConfig *qec.QueryEvictionConfig) {
+		command = &CatchCommand{}
+		evictionConfig = &qec.QueryEvictionConfig{}
+		WithEvictionConfig(evictionConfig)(command)
+		return command, evictionConfig
+	}
+
+	t.Run("should set the evictionConfig field", func(t *testing.T) {
+		if command, evictionConfig := runWithEvictionConfig(); command.ec != evictionConfig {
+			t.Errorf("expected evictionConfig to be %v, got %v", evictionConfig, command.ec)
+		}
+	})
+
 }
 
 func TestWithName(t *testing.T) {

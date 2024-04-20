@@ -3,6 +3,8 @@ package query_cache
 import (
 	"sync"
 	"time"
+
+	qec "query_fetch/query_cache/cache_eviction_config"
 )
 
 // cacheEntry represents a single entry in the cache.
@@ -30,10 +32,8 @@ type QueryCache struct {
 	entry map[string]cacheEntry
 	// mutex synchronizes access to the cache and makes the struct thread-safe.
 	mutex *sync.Mutex
-	// now is the current time to be used as the reference time for the cache.
-	now func() time.Time
-	// ttl is the Time-to-Live (TTL) duration that determines how long each entry will be kept in the cache before being evicted.
-	ttl time.Duration
+	// Eviction Config settings for the cache.
+	ec *qec.QueryEvictionConfig
 }
 
 // Find retrieves the value associated with the given key from the query cache.
@@ -79,7 +79,7 @@ func (qc *QueryCache) Save(key string, value []byte) {
 	defer qc.mutex.Unlock()
 
 	qc.entry[key] = cacheEntry{
-		createdAt: qc.now(),
+		createdAt: qc.ec.Now(),
 		value:     value,
 	}
 }
@@ -89,7 +89,7 @@ func (qc *QueryCache) Save(key string, value []byte) {
 // The function acquires a lock on the query cache, iterates over all entries,
 // and deletes any entry that has expired based on the TTL and current time.
 //
-// Example:
+// Example usage:
 //
 // cache := NewQueryCache()
 // go cache.evictionLoop()
@@ -112,9 +112,9 @@ func (qc *QueryCache) evictionLoop() {
 // Returns:
 //   - A boolean value indicating whether the cache entry is expired.
 //
-// Example:
+// Example usage:
 //
 //	isExpired := cache.isEntryExpired(entry, 5 * time.Minute)
 func (qc *QueryCache) isEntryExpired(entry *cacheEntry) bool {
-	return entry.createdAt.Add(-qc.ttl).Before(qc.now())
+	return entry.createdAt.Add(-qc.ec.TTL).Before(qc.ec.Now())
 }

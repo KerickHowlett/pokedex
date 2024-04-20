@@ -5,7 +5,7 @@ import (
 	pd "map_command/pagination_direction"
 	ms "map_command/state"
 	qf "query_fetch"
-	"query_fetch/query_cache/ttl"
+	qec "query_fetch/query_cache/cache_eviction_config"
 )
 
 // NewMapCommand creates a new instance of the Map struct.
@@ -21,7 +21,7 @@ import (
 //	command := NewMapCommand()
 func NewMapCommand(options ...MapCommandOption) (command *MapCommand) {
 	command = &MapCommand{
-		cacheTTL:                ttl.OneDay,
+		ec:                      qec.NewQueryEvictionConfig(),
 		fetchLocations:          qf.QueryFetch[ms.MapsState],
 		listMarker:              "  -",
 		listTitle:               "Pokemon Maps:",

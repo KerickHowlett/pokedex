@@ -1,38 +1,19 @@
 package map_command
 
 import (
-	"test_tools/utils"
 	"testing"
-	"time"
 
 	pd "map_command/pagination_direction"
 	ms "map_command/state"
+	qec "query_fetch/query_cache/cache_eviction_config"
+	"test_tools/utils"
 )
-
-func TestWithCacheTTL(t *testing.T) {
-	runWithCacheTTLTest := func() (cacheTTL time.Duration, cmd *MapCommand) {
-		cmd = &MapCommand{}
-		cacheTTL = 5 * time.Minute
-
-		WithCacheTTL(cacheTTL)(cmd)
-
-		return cacheTTL, cmd
-	}
-
-	t.Run("should set the cache TTL", func(t *testing.T) {
-		if cacheTTL, cmd := runWithCacheTTLTest(); cmd.cacheTTL != cacheTTL {
-			t.Errorf("Expected cache TTL to be %v, got %v", cacheTTL, cmd.cacheTTL)
-		}
-	})
-}
 
 func TestWithCommandDescription(t *testing.T) {
 	runWithCommandDescriptionTest := func() (commandDescription string, cmd *MapCommand) {
 		cmd = &MapCommand{}
 		commandDescription = "This is a test command"
-
 		WithCommandDescription(commandDescription)(cmd)
-
 		return commandDescription, cmd
 	}
 
@@ -47,9 +28,7 @@ func TestWithCommandName(t *testing.T) {
 	runWithCommandNameTest := func() (commandName string, cmd *MapCommand) {
 		cmd = &MapCommand{}
 		commandName = "test"
-
 		WithCommandName(commandName)(cmd)
-
 		return commandName, cmd
 	}
 
@@ -60,15 +39,28 @@ func TestWithCommandName(t *testing.T) {
 	})
 }
 
+func TestWithEvictionConfig(t *testing.T) {
+	runWithEvictionConfigTest := func() (ec *qec.QueryEvictionConfig, cmd *MapCommand) {
+		cmd = &MapCommand{}
+		ec = qec.NewQueryEvictionConfig()
+		WithEvictionConfig(ec)(cmd)
+		return ec, cmd
+	}
+
+	t.Run("should set the eviction configuration", func(t *testing.T) {
+		if ec, cmd := runWithEvictionConfigTest(); ec != cmd.ec {
+			t.Errorf("Expected eviction configuration to be %v, got %v", ec, cmd.ec)
+		}
+	})
+}
+
 func TestWithFetchLocations(t *testing.T) {
 	runWithFetchLocationsTest := func() (fetchLocations FetchLocations, cmd *MapCommand) {
 		cmd = &MapCommand{}
-		fetchLocations = func(url string, ttlOption ...time.Duration) (state *ms.MapsState, err error) {
+		fetchLocations = func(url string, config ...*qec.QueryEvictionConfig) (state *ms.MapsState, err error) {
 			return state, err
 		}
-
 		WithFetchLocations(fetchLocations)(cmd)
-
 		return fetchLocations, cmd
 	}
 

@@ -3,11 +3,11 @@ package map_command
 import (
 	"fmt"
 	"testing"
-	"time"
 
 	l "location"
 	pd "map_command/pagination_direction"
 	ms "map_command/state"
+	qec "query_fetch/query_cache/cache_eviction_config"
 	f "test_tools/fixtures"
 	"test_tools/utils"
 )
@@ -40,13 +40,13 @@ func TestMapCommand_Execute(t *testing.T) {
 		switch responseType {
 		case Empty:
 			expected = command.noMapsFoundErrorMessage
-			command.fetchLocations = func(url string, cacheTTL ...time.Duration) (state *ms.MapsState, err error) {
+			command.fetchLocations = func(url string, config ...*qec.QueryEvictionConfig) (state *ms.MapsState, err error) {
 				state = ms.NewMapsState(ms.WithNextURL(&f.APIEndpoint))
 				return state, nil
 			}
 		case Error:
 			expected = "error fetching locations"
-			command.fetchLocations = func(url string, cacheTTL ...time.Duration) (state *ms.MapsState, err error) {
+			command.fetchLocations = func(url string, config ...*qec.QueryEvictionConfig) (state *ms.MapsState, err error) {
 				return state, fmt.Errorf(expected)
 			}
 		case NilURL:
@@ -54,7 +54,7 @@ func TestMapCommand_Execute(t *testing.T) {
 			command.state.NextURL = nil
 		case Success:
 			expected = fmt.Sprintf("%s\n - %s\n", command.listTitle, f.StarterTown)
-			command.fetchLocations = func(url string, cacheTTL ...time.Duration) (state *ms.MapsState, err error) {
+			command.fetchLocations = func(url string, config ...*qec.QueryEvictionConfig) (state *ms.MapsState, err error) {
 				location := l.Location{Name: f.StarterTown}
 				state = ms.NewMapsState(
 					ms.WithNextURL(&f.APIEndpoint),

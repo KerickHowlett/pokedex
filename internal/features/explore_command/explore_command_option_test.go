@@ -1,9 +1,9 @@
 package explore_command
 
 import (
+	qec "query_fetch/query_cache/cache_eviction_config"
 	"testing"
 
-	"query_fetch/query_cache/ttl"
 	f "test_tools/fixtures"
 )
 
@@ -21,16 +21,17 @@ func TestWithAPIEndpoint(t *testing.T) {
 	})
 }
 
-func TestWithCacheTTL(t *testing.T) {
-	runWithCacheTTLTests := func() *ExploreCommand {
+func TestWithEvictionConfig(t *testing.T) {
+	runWithEvictionConfigTests := func() (actual *qec.QueryEvictionConfig, expected *qec.QueryEvictionConfig) {
 		command := &ExploreCommand{}
-		WithCacheTTL(ttl.OneDay)(command)
-		return command
+		ec := qec.NewQueryEvictionConfig()
+		WithEvictionConfig(ec)(command)
+		return command.ec, ec
 	}
 
-	t.Run("should set the cache time-to-live (TTL) for the ExploreCommand instance.", func(t *testing.T) {
-		if command := runWithCacheTTLTests(); command.cacheTTL != ttl.OneDay {
-			t.Errorf("Expected cacheTTL to be %v, but got %v", ttl.OneDay, command.cacheTTL)
+	t.Run("should set the eviction configuration for the ExploreCommand instance.", func(t *testing.T) {
+		if actual, expected := runWithEvictionConfigTests(); actual != expected {
+			t.Errorf("Expected ec to be %v, but got %v", expected, actual)
 		}
 	})
 }

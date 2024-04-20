@@ -1,40 +1,25 @@
 package query_cache
 
-import "time"
+import qec "query_fetch/query_cache/cache_eviction_config"
 
 // QueryCacheOption is a function that sets an option on a QueryCache instance.
 type QueryCacheOption func(*QueryCache)
 
-// WithNow sets the current time to be used as the reference time for the cache.
+// WithEvictionConfig sets the eviction configuration for the cache.
 //
 // Parameters:
-//   - now: The current time to be used as the reference time for the cache.
+//   - ec: The eviction configuration to set.
 //
 // Returns:
-//   - A QueryCacheOption function that sets the current time to be used as the reference time for the cache.
+//   - A QueryCacheOption function that sets the eviction configuration for the cache.
 //
 // Example usage:
 //
-//	cache := NewQueryCache(WithNow(time.Now()))
-func WithNow(now func() time.Time) QueryCacheOption {
+//	cache := NewQueryCache(WithEvictionConfig(&qec.QueryEvictionConfig{
+//		TTL: 24 * time.Hour,
+//	}))
+func WithEvictionConfig(ec *qec.QueryEvictionConfig) QueryCacheOption {
 	return func(qc *QueryCache) {
-		qc.now = now
-	}
-}
-
-// WithTTL sets the Time-to-Live (TTL) duration that determines how long each entry will be kept in the cache before being evicted.
-//
-// Parameters:
-//   - ttl: The Time-to-Live (TTL) duration.
-//
-// Returns:
-//   - A QueryCacheOption function that sets the Time-to-Live (TTL) duration.
-//
-// Example usage:
-//
-//	cache := NewQueryCache(WithTTL(ttl.OneDay))
-func WithTTL(ttl time.Duration) QueryCacheOption {
-	return func(qc *QueryCache) {
-		qc.ttl = ttl
+		qc.ec = ec
 	}
 }

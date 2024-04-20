@@ -1,10 +1,8 @@
 package query_cache
 
 import (
+	qec "query_fetch/query_cache/cache_eviction_config"
 	"sync"
-	"time"
-
-	"query_fetch/query_cache/ttl"
 )
 
 // NewQueryCache creates a new instance of QueryCache with the specified Time-to-Live (TTL) duration.
@@ -22,8 +20,7 @@ func NewQueryCache(options ...QueryCacheOption) *QueryCache {
 	qc := &QueryCache{
 		entry: make(map[string]cacheEntry),
 		mutex: &sync.Mutex{},
-		now:   func() time.Time { return time.Now() },
-		ttl:   ttl.OneDay,
+		ec:    qec.NewQueryEvictionConfig(),
 	}
 
 	for _, option := range options {

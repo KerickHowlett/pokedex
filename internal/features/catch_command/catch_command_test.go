@@ -2,10 +2,10 @@ package catch_command
 
 import (
 	"fmt"
+	qec "query_fetch/query_cache/cache_eviction_config"
 	"reflect"
 	"strings"
 	"testing"
-	"time"
 
 	"bills_pc"
 	p "pokemon"
@@ -50,13 +50,13 @@ func TestCatchCommand_Execute(t *testing.T) {
 		switch responseType {
 		case Error:
 			expected = "error fetching pokemon"
-			command.catchPokemon = func(url string, cacheTTL ...time.Duration) (query *p.Pokemon, err error) {
+			command.catchPokemon = func(url string, config ...*qec.QueryEvictionConfig) (query *p.Pokemon, err error) {
 				return &p.Pokemon{}, fmt.Errorf(expected)
 			}
 		case Escape:
 			expected = fmt.Sprintf("%s\n%s\n", throwMessage, escapeMessage)
 			command.difficulty = 1_000_000
-			command.catchPokemon = func(url string, cacheTTL ...time.Duration) (query *p.Pokemon, err error) {
+			command.catchPokemon = func(url string, config ...*qec.QueryEvictionConfig) (query *p.Pokemon, err error) {
 				return wildPokemon, nil
 			}
 		case NoArgs:
@@ -66,7 +66,7 @@ func TestCatchCommand_Execute(t *testing.T) {
 			expected = fmt.Sprintf("%s\n%s!\n", throwMessage, successMessage)
 			pokemon := &p.Pokemon{Name: f.PokemonName, BaseExperience: 0}
 			command.difficulty = 0
-			command.catchPokemon = func(url string, cacheTTL ...time.Duration) (query *p.Pokemon, err error) {
+			command.catchPokemon = func(url string, config ...*qec.QueryEvictionConfig) (query *p.Pokemon, err error) {
 				return wildPokemon, nil
 			}
 			command.pc.Deposit(pokemon)

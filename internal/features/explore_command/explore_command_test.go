@@ -2,9 +2,9 @@ package explore_command
 
 import (
 	"fmt"
+	qec "query_fetch/query_cache/cache_eviction_config"
 	"reflect"
 	"testing"
-	"time"
 
 	el "entity_link"
 	la "location_area"
@@ -17,7 +17,7 @@ func TestExploreCommand_GetArgs(t *testing.T) {
 	t.Run("should return the arguments of the ExploreCommand.", func(t *testing.T) {
 		expected := []string{"mock", "mock2"}
 		command := &ExploreCommand{args: expected}
-		if args := command.GetArgs(); reflect.DeepEqual(args, expected) {
+		if args := command.GetArgs(); !reflect.DeepEqual(args, expected) {
 			t.Error("expected args to be non-empty, but got an empty slice")
 		}
 	})
@@ -47,8 +47,6 @@ func TestExploreCommand_Execute(t *testing.T) {
 	)
 
 	runMapsExecuteTest := func(responseType string) (command *ExploreCommand, output string, expected string, err error) {
-		expected = ""
-
 		command = &ExploreCommand{
 			apiEndpoint: f.APIEndpoint,
 			args:        []string{"mock"},
@@ -59,13 +57,13 @@ func TestExploreCommand_Execute(t *testing.T) {
 		switch responseType {
 		case Empty:
 			expected = command.noEncountersFoundErrorMessage
-			command.fetchEncounters = func(url string, cacheTTL ...time.Duration) (state *la.LocationArea, err error) {
+			command.fetchEncounters = func(url string, config ...*qec.QueryEvictionConfig) (state *la.LocationArea, err error) {
 				state = &la.LocationArea{Encounters: []pe.PokemonEncounter{}}
 				return state, nil
 			}
 		case Error:
 			expected = "error fetching location area encounters"
-			command.fetchEncounters = func(url string, cacheTTL ...time.Duration) (state *la.LocationArea, err error) {
+			command.fetchEncounters = func(url string, config ...*qec.QueryEvictionConfig) (state *la.LocationArea, err error) {
 				return state, fmt.Errorf(expected)
 			}
 		case NoArgs:
@@ -73,7 +71,7 @@ func TestExploreCommand_Execute(t *testing.T) {
 			command.args = []string{}
 		case Success:
 			expected = fmt.Sprintf("%s\n - %s\n", command.listTitle, f.PokemonName)
-			command.fetchEncounters = func(url string, cacheTTL ...time.Duration) (state *la.LocationArea, err error) {
+			command.fetchEncounters = func(url string, config ...*qec.QueryEvictionConfig) (state *la.LocationArea, err error) {
 				state = &la.LocationArea{Encounters: []pe.PokemonEncounter{
 					{Pokemon: &el.EntityLink{Name: f.PokemonName}},
 				}}

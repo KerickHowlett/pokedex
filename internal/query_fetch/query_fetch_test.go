@@ -10,6 +10,8 @@ import (
 	"time"
 
 	qc "query_fetch/query_cache"
+	qec "query_fetch/query_cache/cache_eviction_config"
+	"query_fetch/query_cache/ttl"
 	f "test_tools/fixtures"
 	"test_tools/utils"
 )
@@ -58,7 +60,12 @@ func TestFetchQuery(t *testing.T) {
 		var httpHandler http.HandlerFunc
 		var useInvalidAPIEndpoint bool = false
 
-		queryCache = qc.NewQueryCache(qc.WithTTL(time.Hour))
+		queryCache = qc.NewQueryCache(qc.WithEvictionConfig(
+			qec.NewQueryEvictionConfig(
+				qec.WithTTL(ttl.Disable),
+				qec.WithNow(func() time.Time { return f.FrozenTime }),
+			),
+		))
 		httpGetFuncWasCalled = false
 
 		switch responseType {
@@ -115,7 +122,6 @@ func TestFetchQuery(t *testing.T) {
 			endpointCalled = "INVALID"
 		}
 
-		queryCache = qc.NewQueryCache(qc.WithTTL(time.Hour))
 		if cachedResponsePayload != "" {
 			queryCache.Save(endpointCalled, []byte(cachedResponsePayload))
 		}

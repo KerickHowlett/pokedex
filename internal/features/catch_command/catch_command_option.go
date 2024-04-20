@@ -1,9 +1,8 @@
 package catch_command
 
 import (
-	"time"
-
 	bpc "bills_pc"
+	qec "query_fetch/query_cache/cache_eviction_config"
 )
 
 // CatchCommandOption is a type alias for a function that sets a field in the CatchCommand struct.
@@ -25,25 +24,6 @@ type CatchCommandOption func(*CatchCommand)
 func WithAPIEndpoint(apiEndpoint string) CatchCommandOption {
 	return func(c *CatchCommand) {
 		c.apiEndpoint = apiEndpoint
-	}
-}
-
-// WithCacheTTL sets the cacheTTL field in the CatchCommand struct.
-//
-// Parameters:
-//   - cacheTTL: The time-to-live (TTL) determines how long FetchEncounters' cached responses get to exist before being discarded.
-//
-// Returns:
-//   - CatchCommandOption: A function that sets the cacheTTL field in the CatchCommand struct.
-//
-// Example usage:
-//
-//	c := catch_command.NewCatchCommand(
-//	  catch_command.WithCacheTTL(time.Minute * 5),
-//	)
-func WithCacheTTL(cacheTTL time.Duration) CatchCommandOption {
-	return func(c *CatchCommand) {
-		c.cacheTTL = cacheTTL
 	}
 }
 
@@ -139,6 +119,25 @@ func WithDescription(description string) CatchCommandOption {
 func WithEscapedNotification(escapedNotification string) CatchCommandOption {
 	return func(c *CatchCommand) {
 		c.escapedNotification = escapedNotification
+	}
+}
+
+// WithEvictionConfig sets the ec field in the CatchCommand struct.
+//
+// Parameters:
+//   - evictionConfig: The eviction configuration for the query cache.
+//
+// Returns:
+//   - CatchCommandOption: A function that sets the ec field in the CatchCommand struct.
+//
+// Example usage:
+//
+//	c := catch_command.NewCatchCommand(
+//	  catch_command.WithEvictionConfig(&qec.QueryEvictionConfig{}),
+//	)
+func WithEvictionConfig(evictionConfig *qec.QueryEvictionConfig) CatchCommandOption {
+	return func(c *CatchCommand) {
+		c.ec = evictionConfig
 	}
 }
 
