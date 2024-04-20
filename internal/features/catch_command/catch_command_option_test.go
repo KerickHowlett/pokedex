@@ -24,21 +24,6 @@ func TestWithApiEndpoint(t *testing.T) {
 	})
 }
 
-func TestWithBattleOpponent(t *testing.T) {
-	runWithBattleOpponent := func() (command *CatchCommand, pokemon *p.Pokemon) {
-		command = &CatchCommand{}
-		pokemon = &p.Pokemon{Name: f.PokemonName}
-		WithWildPokemon(pokemon)(command)
-		return command, pokemon
-	}
-
-	t.Run("should set the wildPokemon field", func(t *testing.T) {
-		if command, pokemon := runWithBattleOpponent(); command.wildPokemon != pokemon {
-			t.Errorf("expected wildPokemon to be %v, got %v", pokemon, command.wildPokemon)
-		}
-	})
-}
-
 func TestWithCacheTTL(t *testing.T) {
 	runWithCacheTTL := func() (command *CatchCommand) {
 		command = &CatchCommand{}
@@ -56,7 +41,9 @@ func TestWithCacheTTL(t *testing.T) {
 func TestWithCatchPokemon(t *testing.T) {
 	runWithCatchPokemon := func() (command *CatchCommand, catchPokemon CatchPokemonFunc) {
 		command = &CatchCommand{}
-		catchPokemon = func(url string, query *p.Pokemon, ttl ...time.Duration) error { return nil }
+		catchPokemon = func(url string, ttl ...time.Duration) (query *p.Pokemon, err error) {
+			return &p.Pokemon{}, nil
+		}
 		WithCatchPokemon(catchPokemon)(command)
 		return command, catchPokemon
 	}

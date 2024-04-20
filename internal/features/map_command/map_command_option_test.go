@@ -63,7 +63,9 @@ func TestWithCommandName(t *testing.T) {
 func TestWithFetchLocations(t *testing.T) {
 	runWithFetchLocationsTest := func() (fetchLocations FetchLocations, cmd *MapCommand) {
 		cmd = &MapCommand{}
-		fetchLocations = func(url string, query *ms.MapsState, ttlOption ...time.Duration) error { return nil }
+		fetchLocations = func(url string, ttlOption ...time.Duration) (state *ms.MapsState, err error) {
+			return state, err
+		}
 
 		WithFetchLocations(fetchLocations)(cmd)
 

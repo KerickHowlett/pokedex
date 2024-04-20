@@ -56,8 +56,6 @@ type ExploreCommand struct {
 	noEnteredArgsErrorMessage string
 	// noEncountersFoundErrorMessage is an error message to display when no maps are found.
 	noEncountersFoundErrorMessage string
-	// state stores the fetched queried data.
-	state *la.LocationArea
 }
 
 // Execute executes the MapCommand and fetches locations using the provided state and query.
@@ -75,16 +73,17 @@ func (e *ExploreCommand) Execute() error {
 	}
 
 	locationAreaEndpoint := e.apiEndpoint + "/" + e.args[0]
-	if err := e.fetchEncounters(locationAreaEndpoint, e.state, e.cacheTTL); err != nil {
+	locationArea, err := e.fetchEncounters(locationAreaEndpoint, e.cacheTTL)
+	if err != nil {
 		return err
 	}
 
-	if len(e.state.Encounters) == 0 {
+	if len(locationArea.Encounters) == 0 {
 		return fmt.Errorf(e.noEncountersFoundErrorMessage)
 	}
 
 	fmt.Println(e.listTitle)
-	for _, encounter := range e.state.Encounters {
+	for _, encounter := range locationArea.Encounters {
 		fmt.Printf("%s %s\n", e.listMarker, encounter.Pokemon.Name)
 	}
 

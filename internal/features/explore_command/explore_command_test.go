@@ -54,31 +54,30 @@ func TestExploreCommand_Execute(t *testing.T) {
 			args:        []string{"mock"},
 			listMarker:  " -",
 			listTitle:   "Pokemon Encounters",
-			state:       la.NewLocationArea(),
 		}
 
 		switch responseType {
 		case Empty:
 			expected = command.noEncountersFoundErrorMessage
-			command.fetchEncounters = func(url string, state *la.LocationArea, cacheTTL ...time.Duration) error {
-				command.state.Encounters = []pe.PokemonEncounter{}
-				return nil
+			command.fetchEncounters = func(url string, cacheTTL ...time.Duration) (state *la.LocationArea, err error) {
+				state = &la.LocationArea{Encounters: []pe.PokemonEncounter{}}
+				return state, nil
 			}
 		case Error:
 			expected = "error fetching location area encounters"
-			command.fetchEncounters = func(url string, state *la.LocationArea, cacheTTL ...time.Duration) error {
-				return fmt.Errorf(expected)
+			command.fetchEncounters = func(url string, cacheTTL ...time.Duration) (state *la.LocationArea, err error) {
+				return state, fmt.Errorf(expected)
 			}
 		case NoArgs:
 			expected = command.noEnteredArgsErrorMessage
 			command.args = []string{}
 		case Success:
 			expected = fmt.Sprintf("%s\n - %s\n", command.listTitle, f.PokemonName)
-			command.fetchEncounters = func(url string, state *la.LocationArea, cacheTTL ...time.Duration) error {
-				command.state.Encounters = []pe.PokemonEncounter{
+			command.fetchEncounters = func(url string, cacheTTL ...time.Duration) (state *la.LocationArea, err error) {
+				state = &la.LocationArea{Encounters: []pe.PokemonEncounter{
 					{Pokemon: &el.EntityLink{Name: f.PokemonName}},
-				}
-				return nil
+				}}
+				return state, nil
 			}
 		default:
 			panic("invalid response type")
@@ -91,7 +90,6 @@ func TestExploreCommand_Execute(t *testing.T) {
 	}
 
 	t.Run("Given no arguments are provided", func(t *testing.T) {
-		t.Parallel()
 		t.Run("should return the correct error message.", func(t *testing.T) {
 			_, _, expected, err := runMapsExecuteTest(NoArgs)
 			if errorMessage := err.Error(); errorMessage != expected {
@@ -101,16 +99,13 @@ func TestExploreCommand_Execute(t *testing.T) {
 	})
 
 	t.Run("Given the fetchEncounters function returns with a non-nil error", func(t *testing.T) {
-		t.Parallel()
 		t.Run("should return a non-nil error value.", func(t *testing.T) {
-			t.Parallel()
 			if _, _, _, err := runMapsExecuteTest(Error); err == nil {
 				t.Error("expected err to be non-nil")
 			}
 		})
 
 		t.Run("should return the correct error message.", func(t *testing.T) {
-			t.Parallel()
 			_, _, expected, err := runMapsExecuteTest(Error)
 			if errorMessage := err.Error(); errorMessage != expected {
 				t.Errorf("expected error to be %q, got %q", expected, errorMessage)
@@ -119,7 +114,6 @@ func TestExploreCommand_Execute(t *testing.T) {
 	})
 
 	t.Run("Given the post-fetched state has no locations", func(t *testing.T) {
-		t.Parallel()
 		t.Run("should return the correct error message.", func(t *testing.T) {
 			_, _, expected, err := runMapsExecuteTest(Empty)
 			if errorMessage := err.Error(); errorMessage != expected {
@@ -129,16 +123,13 @@ func TestExploreCommand_Execute(t *testing.T) {
 	})
 
 	t.Run("Given the function executes successfully", func(t *testing.T) {
-		t.Parallel()
 		t.Run("should return nil error value", func(t *testing.T) {
-			t.Parallel()
 			if _, _, _, err := runMapsExecuteTest(Success); err != nil {
 				t.Errorf("expected err to be a non-nil value, but instead got %v", err)
 			}
 		})
 
 		t.Run("should print the Pokemon maps/locations results to stdout.", func(t *testing.T) {
-			t.Parallel()
 			if _, output, expected, _ := runMapsExecuteTest(Success); output != expected {
 				t.Errorf("expected stdout to be %q, but instead got %q", expected, output)
 			}
@@ -169,7 +160,7 @@ func TestExploreCommand_PrintHelp(t *testing.T) {
 	})
 }
 
-func TestHasValidArgs(t *testing.T) {
+func TestExploreCommand_hasValidArgs(t *testing.T) {
 	const (
 		// emptyArgs setups a scenario where the ExploreCommand.args[0] field contains an empty string.
 		emptyArgs = ""

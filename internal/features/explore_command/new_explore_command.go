@@ -27,7 +27,6 @@ func NewExploreCommand(options ...ExploreCommandOption) *ExploreCommand {
 		name:                          "explore",
 		noEnteredArgsErrorMessage:     "a location area name is required",
 		noEncountersFoundErrorMessage: "no pokemon encounters can be found",
-		state:                         la.NewLocationArea(),
 	}
 
 	for _, option := range options {

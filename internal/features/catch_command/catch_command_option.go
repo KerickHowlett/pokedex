@@ -4,7 +4,6 @@ import (
 	"time"
 
 	bpc "bills_pc"
-	p "pokemon"
 )
 
 // CatchCommandOption is a type alias for a function that sets a field in the CatchCommand struct.
@@ -235,24 +234,5 @@ func WithSuccessfulCatchNotification(successfulCatchNotification string) CatchCo
 func WithThrowBallNotification(throwBallNotification string) CatchCommandOption {
 	return func(c *CatchCommand) {
 		c.throwBallNotification = throwBallNotification
-	}
-}
-
-// WithWildPokemon sets the wildPokemon field in the CatchCommand struct.
-//
-// Parameters:
-//   - wildPokemon: The data of the Pokemon the user is attempting to catch.
-//
-// Returns:
-//   - CatchCommandOption: A function that sets the wildPokemon field in the CatchCommand struct.
-//
-// Example usage:
-//
-//	c := catch_command.NewCatchCommand(
-//	  catch_command.WithWildPokemon(&p.Pokemon{}),
-//	)
-func WithWildPokemon(wildPokemon *p.Pokemon) CatchCommandOption {
-	return func(c *CatchCommand) {
-		c.wildPokemon = wildPokemon
 	}
 }

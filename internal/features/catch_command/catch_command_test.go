@@ -29,6 +29,8 @@ func TestCatchCommand_Execute(t *testing.T) {
 	runMapsExecuteTest := func(responseType string) (command *CatchCommand, output string, expected string, err error) {
 		expected = ""
 
+		wildPokemon := &p.Pokemon{Name: f.PokemonName, BaseExperience: 100}
+
 		command = &CatchCommand{
 			apiEndpoint:                 f.APIEndpoint,
 			args:                        []string{f.PokemonName},
@@ -39,7 +41,6 @@ func TestCatchCommand_Execute(t *testing.T) {
 			pc:                          bills_pc.NewBillsPC(),
 			successfulCatchNotification: "You caught",
 			throwBallNotification:       "You threw a pokeball at",
-			wildPokemon:                 &p.Pokemon{Name: f.PokemonName, BaseExperience: 100},
 		}
 
 		throwMessage := fmt.Sprintf("%s %s...", command.throwBallNotification, f.PokemonName)
@@ -49,14 +50,14 @@ func TestCatchCommand_Execute(t *testing.T) {
 		switch responseType {
 		case Error:
 			expected = "error fetching pokemon"
-			command.catchPokemon = func(url string, query *p.Pokemon, cacheTTL ...time.Duration) error {
-				return fmt.Errorf(expected)
+			command.catchPokemon = func(url string, cacheTTL ...time.Duration) (query *p.Pokemon, err error) {
+				return &p.Pokemon{}, fmt.Errorf(expected)
 			}
 		case Escape:
 			expected = fmt.Sprintf("%s\n%s\n", throwMessage, escapeMessage)
 			command.difficulty = 1_000_000
-			command.catchPokemon = func(url string, query *p.Pokemon, cacheTTL ...time.Duration) error {
-				return nil
+			command.catchPokemon = func(url string, cacheTTL ...time.Duration) (query *p.Pokemon, err error) {
+				return wildPokemon, nil
 			}
 		case NoArgs:
 			expected = command.noEnteredArgsErrorMessage
@@ -65,9 +66,8 @@ func TestCatchCommand_Execute(t *testing.T) {
 			expected = fmt.Sprintf("%s\n%s!\n", throwMessage, successMessage)
 			pokemon := &p.Pokemon{Name: f.PokemonName, BaseExperience: 0}
 			command.difficulty = 0
-			command.wildPokemon = pokemon
-			command.catchPokemon = func(url string, query *p.Pokemon, cacheTTL ...time.Duration) error {
-				return nil
+			command.catchPokemon = func(url string, cacheTTL ...time.Duration) (query *p.Pokemon, err error) {
+				return wildPokemon, nil
 			}
 			command.pc.Deposit(pokemon)
 		default:
@@ -81,7 +81,6 @@ func TestCatchCommand_Execute(t *testing.T) {
 	}
 
 	t.Run("Given no arguments are provided", func(t *testing.T) {
-		t.Parallel()
 		t.Run("should return the correct error message.", func(t *testing.T) {
 			_, _, expected, err := runMapsExecuteTest(NoArgs)
 			if errorMessage := err.Error(); errorMessage != expected {
@@ -91,16 +90,13 @@ func TestCatchCommand_Execute(t *testing.T) {
 	})
 
 	t.Run("Given the fetchEncounters function returns with a non-nil error", func(t *testing.T) {
-		t.Parallel()
 		t.Run("should return a non-nil error value.", func(t *testing.T) {
-			t.Parallel()
 			if _, _, _, err := runMapsExecuteTest(Error); err == nil {
 				t.Error("expected err to be non-nil")
 			}
 		})
 
 		t.Run("should display throw ball message to stdout.", func(t *testing.T) {
-			t.Parallel()
 			command, output, _, _ := runMapsExecuteTest(Error)
 			if expected := fmt.Sprintf("%s %s...\n", command.throwBallNotification, f.PokemonName); !strings.Contains(output, expected) {
 				t.Errorf("expected stdout to be %q, but instead got %q", expected, output)
@@ -108,7 +104,6 @@ func TestCatchCommand_Execute(t *testing.T) {
 		})
 
 		t.Run("should return the correct error message.", func(t *testing.T) {
-			t.Parallel()
 			_, _, expected, err := runMapsExecuteTest(Error)
 			if errorMessage := err.Error(); errorMessage != expected {
 				t.Errorf("expected error to be %q, got %q", expected, errorMessage)
@@ -117,16 +112,13 @@ func TestCatchCommand_Execute(t *testing.T) {
 	})
 
 	t.Run("Given the Pokemon escapes", func(t *testing.T) {
-		t.Parallel()
 		t.Run("should return a nil error value", func(t *testing.T) {
-			t.Parallel()
 			if _, _, _, err := runMapsExecuteTest(Escape); err != nil {
 				t.Errorf("expected err to be a non-nil value, but instead got %v", err)
 			}
 		})
 
 		t.Run("should print the Pokemon escape message to stdout.", func(t *testing.T) {
-			t.Parallel()
 			if _, output, expected, _ := runMapsExecuteTest(Escape); output != expected {
 				t.Errorf("expected stdout to be %q, but instead got %q", expected, output)
 			}
@@ -134,16 +126,13 @@ func TestCatchCommand_Execute(t *testing.T) {
 	})
 
 	t.Run("Given a successful catch", func(t *testing.T) {
-		t.Parallel()
 		t.Run("should return a nil error value", func(t *testing.T) {
-			t.Parallel()
 			if _, _, _, err := runMapsExecuteTest(Success); err != nil {
 				t.Errorf("expected err to be a non-nil value, but instead got %v", err)
 			}
 		})
 
 		t.Run("should print the Pokemon maps/locations results to stdout.", func(t *testing.T) {
-			t.Parallel()
 			if _, output, expected, _ := runMapsExecuteTest(Success); output != expected {
 				t.Errorf("expected stdout to be %q, but instead got %q", expected, output)
 			}
@@ -236,7 +225,7 @@ func TestCatchCommand_isCatchSuccessful(t *testing.T) {
 		Botched  = 0
 		Critical = 1_000
 	)
-	runCatchCommand_isCatchSuccessfulTest := func(luck int) (command *CatchCommand, expected bool) {
+	runCatchCommand_isCatchSuccessfulTest := func(luck int) (actual bool, expected bool) {
 		switch luck {
 		case Botched:
 			expected = false
@@ -245,24 +234,25 @@ func TestCatchCommand_isCatchSuccessful(t *testing.T) {
 		default:
 			panic("invalid luck value")
 		}
-		command = &CatchCommand{
+
+		wildPokemon := &p.Pokemon{BaseExperience: 100}
+		command := &CatchCommand{
 			difficulty:    100,
 			checkYourLuck: func(_ int) int { return luck },
-			wildPokemon:   &p.Pokemon{BaseExperience: 100},
 		}
-		return command, expected
+
+		actual = command.isCatchSuccessful(wildPokemon)
+		return actual, expected
 	}
 
 	t.Run("should return TRUE if the CatchCommand is successful in catching a Pokemon.", func(t *testing.T) {
-		t.Parallel()
-		if command, expected := runCatchCommand_isCatchSuccessfulTest(Critical); command.isCatchSuccessful() != expected {
+		if actual, expected := runCatchCommand_isCatchSuccessfulTest(Critical); actual != expected {
 			t.Errorf("expected isCatchSuccessful to return %t, got %t", expected, !expected)
 		}
 	})
 
 	t.Run("should return FALSE if the CatchCommand is unsuccessful in catching a Pokemon.", func(t *testing.T) {
-		t.Parallel()
-		if command, expected := runCatchCommand_isCatchSuccessfulTest(Botched); command.isCatchSuccessful() != expected {
+		if actual, expected := runCatchCommand_isCatchSuccessfulTest(Botched); actual != expected {
 			t.Errorf("expected isCatchSuccessful to return %t, got %t", expected, !expected)
 		}
 	})

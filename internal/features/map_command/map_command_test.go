@@ -40,23 +40,27 @@ func TestMapCommand_Execute(t *testing.T) {
 		switch responseType {
 		case Empty:
 			expected = command.noMapsFoundErrorMessage
-			command.fetchLocations = func(url string, state *ms.MapsState, cacheTTL ...time.Duration) error {
-				command.state.Locations = []l.Location{}
-				return nil
+			command.fetchLocations = func(url string, cacheTTL ...time.Duration) (state *ms.MapsState, err error) {
+				state = ms.NewMapsState(ms.WithNextURL(&f.APIEndpoint))
+				return state, nil
 			}
 		case Error:
 			expected = "error fetching locations"
-			command.fetchLocations = func(url string, state *ms.MapsState, cacheTTL ...time.Duration) error {
-				return fmt.Errorf(expected)
+			command.fetchLocations = func(url string, cacheTTL ...time.Duration) (state *ms.MapsState, err error) {
+				return state, fmt.Errorf(expected)
 			}
 		case NilURL:
 			expected = fmt.Sprintf("%s\n", command.noMoreMapsMessage)
 			command.state.NextURL = nil
 		case Success:
 			expected = fmt.Sprintf("%s\n - %s\n", command.listTitle, f.StarterTown)
-			command.fetchLocations = func(url string, state *ms.MapsState, cacheTTL ...time.Duration) error {
-				state.Locations = append(state.Locations, l.Location{Name: f.StarterTown})
-				return nil
+			command.fetchLocations = func(url string, cacheTTL ...time.Duration) (state *ms.MapsState, err error) {
+				location := l.Location{Name: f.StarterTown}
+				state = ms.NewMapsState(
+					ms.WithNextURL(&f.APIEndpoint),
+					ms.WithLocation(location),
+				)
+				return state, nil
 			}
 		default:
 			panic("invalid response type")

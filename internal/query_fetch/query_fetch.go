@@ -24,7 +24,7 @@ import (
 //
 // Returns:
 //   - An error if the query fetch operation fails.
-type QueryFetchFunc[TQuery any] func(url string, query *TQuery, ttlOption ...time.Duration) error
+type QueryFetchFunc[TQuery any] func(url string, ttlOption ...time.Duration) (query *TQuery, err error)
 
 // QueryFetch sends an HTTP GET request to the specified URL and fetches the
 // query result into the provided query state.
@@ -38,12 +38,13 @@ type QueryFetchFunc[TQuery any] func(url string, query *TQuery, ttlOption ...tim
 //   - ttlOption: An optional time.Duration parameter that sets the time-to-live for the query cache. The default value is 24 Hours. If TTL is set to zero (0), the cache will not be used.
 //
 // Returns:
+//   - A pointer to the query struct populated with the fetched HTTP Response.
 //   - An error if the query fetch operation fails.
 //
 // Example:
 //
 //	err := QueryFetch("https://example.com/query", query)
-func QueryFetch[TQuery any](url string, query *TQuery, ttlOption ...time.Duration) error {
+func QueryFetch[TQuery any](url string, ttlOption ...time.Duration) (query *TQuery, err error) {
 	// @TODO: Refactor to replace with a struct possessing both 'now' and 'ttl' fields.
 	cacheTTL := ttl.OneDay
 	if len(ttlOption) > 0 {
@@ -52,31 +53,31 @@ func QueryFetch[TQuery any](url string, query *TQuery, ttlOption ...time.Duratio
 
 	cache := qc.NewQueryCache(qc.WithTTL(cacheTTL))
 	if cachedResponse, cacheHit := cache.Find(url); cacheHit {
-		return decode(cachedResponse, query)
+		return decode[TQuery](cachedResponse)
 	}
 
 	response, err := http.Get(url)
 	if err != nil {
-		return fmt.Errorf("error while attempting to fetch query: %v", err)
+		return query, fmt.Errorf("error while attempting to fetch query: %v", err)
 	}
 
 	body, err := io.ReadAll(response.Body)
 	response.Body.Close()
 	if err != nil {
-		return fmt.Errorf("error from reading response body: %v", err)
+		return query, fmt.Errorf("error from reading response body: %v", err)
 	}
 
 	if !isSuccessfulResponse(response.StatusCode) {
-		return fmt.Errorf("error with response: %s", body)
+		return query, fmt.Errorf("error with response: %s", body)
 	}
 
-	if err = decode(body, query); err != nil {
-		return err
+	if _, err = decode[TQuery](body); err != nil {
+		return query, err
 	}
 
 	cache.Save(url, body)
 
-	return nil
+	return query, nil
 }
 
 // decode parses the HTTP Response's JSON body and populates the
@@ -95,11 +96,11 @@ func QueryFetch[TQuery any](url string, query *TQuery, ttlOption ...time.Duratio
 // Example usage:
 //
 //	err := decode(body, state)
-func decode[TQuery any](body []byte, query *TQuery) error {
-	if err := json.Unmarshal(body, query); err != nil {
-		return fmt.Errorf("error with parsing payload %v", err)
+func decode[TQuery any](body []byte) (query *TQuery, err error) {
+	if err := json.Unmarshal(body, &query); err != nil {
+		return query, fmt.Errorf("error with parsing payload %v", err)
 	}
-	return nil
+	return query, nil
 }
 
 // isSuccessfulResponse checks if the given HTTP status code indicates a successful response.

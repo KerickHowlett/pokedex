@@ -28,8 +28,6 @@ type CheckYourLuckFunc func(pokemonBaseExperience int) (chance int)
 //   - name: The name of the ExploreCommand.
 //   - noEnteredArgsErrorMessage: An error message to display when no arguments are entered.
 //   - noEncountersFoundErrorMessage: An error message to display when no maps are found.
-//   - state: The state of the location area to be explored.
-//   - wildPokemon: The data of the Pokemon the user is attempting to catch.
 type CatchCommand struct {
 	// The arguments provided to the command.
 	args []string
@@ -57,8 +55,6 @@ type CatchCommand struct {
 	successfulCatchNotification string
 	// throwBallNotification is a message to display when a Pokemon is thrown a ball.
 	throwBallNotification string
-	// wildPokemon is the data of the Pokemon the user is attempting to catch.
-	wildPokemon *p.Pokemon
 }
 
 // CatchCommand.Execute attempts to catch a Pokemon.
@@ -78,13 +74,12 @@ func (c *CatchCommand) Execute() error {
 
 	// Threw Pokeball
 	fmt.Printf("%s %s...\n", c.throwBallNotification, pokemonName)
-
-	pokemonEndpoint := c.apiEndpoint + "/" + pokemonName
-	if err := c.catchPokemon(pokemonEndpoint, c.wildPokemon); err != nil {
+	wildPokemon, err := c.catchPokemon(c.apiEndpoint+"/"+pokemonName, c.cacheTTL)
+	if err != nil {
 		return err
 	}
 
-	if !c.isCatchSuccessful() {
+	if !c.isCatchSuccessful(wildPokemon) {
 		// Pokemon Escaped
 		fmt.Printf("%s %s\n", pokemonName, c.escapedNotification)
 		return nil
@@ -92,7 +87,7 @@ func (c *CatchCommand) Execute() error {
 
 	// Caught Pokemon
 	fmt.Printf("%s %s!\n", c.successfulCatchNotification, pokemonName)
-	c.pc.Deposit(c.wildPokemon)
+	c.pc.Deposit(wildPokemon)
 
 	return nil
 }
@@ -168,8 +163,8 @@ func (c *CatchCommand) SetArgs(args []string) {
 //
 //	command := NewCatchCommand()
 //	isSuccessful := command.isCatchSuccessful()
-func (c *CatchCommand) isCatchSuccessful() bool {
-	return c.checkYourLuck(c.wildPokemon.BaseExperience) > c.difficulty
+func (c *CatchCommand) isCatchSuccessful(wildPokemon *p.Pokemon) bool {
+	return c.checkYourLuck(wildPokemon.BaseExperience) > c.difficulty
 }
 
 // hasValidArgs checks if the CatchCommand has valid arguments needed to run the Execute() method properly.

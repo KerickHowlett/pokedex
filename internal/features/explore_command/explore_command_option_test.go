@@ -3,7 +3,6 @@ package explore_command
 import (
 	"testing"
 
-	la "location_area"
 	"query_fetch/query_cache/ttl"
 	f "test_tools/fixtures"
 )
@@ -122,21 +121,6 @@ func TestWithNoEnteredArgsErrorMessage(t *testing.T) {
 	t.Run("should set the no entered arguments error message for the ExploreCommand instance.", func(t *testing.T) {
 		if command, message := runWithNoEnteredArgsErrorMessageTests(); command.noEnteredArgsErrorMessage != message {
 			t.Errorf("Expected noEnteredArgsErrorMessage to be %s, but got %s", message, command.noEnteredArgsErrorMessage)
-		}
-	})
-}
-
-func TestWithState(t *testing.T) {
-	runWithStateTest := func() (state *la.LocationArea, command *ExploreCommand) {
-		state, command = &la.LocationArea{}, &ExploreCommand{}
-		WithState(state)(command)
-		return state, command
-	}
-
-	t.Run("should set the state for the ExploreCommand instance.", func(t *testing.T) {
-		state, command := runWithStateTest()
-		if command.state != state {
-			t.Errorf("Expected state to be %v, but got %v", state, command.state)
 		}
 	})
 }

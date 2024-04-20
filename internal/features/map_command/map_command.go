@@ -67,10 +67,12 @@ func (m *MapCommand) Execute() error {
 		return nil
 	}
 
-	if err := m.fetchLocations(*url, m.state, m.cacheTTL); err != nil {
+	state, err := m.fetchLocations(*url, m.cacheTTL)
+	if err != nil {
 		return err
 	}
 
+	m.state = state // Save the updated state.
 	if len(m.state.Locations) == 0 {
 		return fmt.Errorf(m.noMapsFoundErrorMessage)
 	}

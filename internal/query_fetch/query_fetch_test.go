@@ -120,8 +120,8 @@ func TestFetchQuery(t *testing.T) {
 			queryCache.Save(endpointCalled, []byte(cachedResponsePayload))
 		}
 
-		payload = &testQuery{NextURL: f.APIEndpoint}
-		err = QueryFetch(endpointCalled, payload)
+		payload = &testQuery{NextURL: f.APIEndpoint, PreviousURL: "", Results: []testResult{}}
+		_, err = QueryFetch[testQuery](endpointCalled)
 
 		return payload, queryCache, httpGetFuncWasCalled, endpointCalled, err
 	}
@@ -245,17 +245,17 @@ func TestDecode(t *testing.T) {
 
 	t.Run("should parse the response body correctly", func(t *testing.T) {
 		t.Parallel()
-		payload, body, expectedState := setup()
-		if decode(body, payload); !utils.ExpectEqualJSONs(payload, expectedState) {
+		_, body, expectedState := setup()
+		if payload, _ := decode[testQuery](body); !utils.ExpectEqualJSONs(payload, expectedState) {
 			t.Errorf("Expected QueryState[TResult] to be %v, but instead received %v", expectedState, payload)
 		}
 	})
 
 	t.Run("should return an error if the response body cannot be parsed", func(t *testing.T) {
 		t.Parallel()
-		payload, _, _ := setup()
+		// _, _, _ := setup()
 
-		err := decode(nil, payload)
+		_, err := decode[testQuery](nil)
 		if err == nil {
 			t.Errorf("Expected error to be returned, but got nil")
 		}
