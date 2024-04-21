@@ -68,7 +68,8 @@ func QueryFetch[TQuery any](url string, config ...*qec.QueryEvictionConfig) (que
 		return query, fmt.Errorf("error with response: %s", body)
 	}
 
-	if _, err = decode[TQuery](body); err != nil {
+	query, err = decode[TQuery](body)
+	if err != nil {
 		return query, err
 	}
 
