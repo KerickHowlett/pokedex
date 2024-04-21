@@ -70,6 +70,7 @@ type MapCommand struct {
 // err := m.Execute()
 func (m *MapCommand) Execute() error {
 	url := m.getMapsAPIEndpoint()
+	debugPreviousURL(url)
 	if url == nil {
 		fmt.Println(m.noMoreMapsMessage)
 		return nil
@@ -80,7 +81,7 @@ func (m *MapCommand) Execute() error {
 		return err
 	}
 
-	m.state = state // Save the updated state.
+	*m.state = *state // Update State
 	if len(m.state.Locations) == 0 {
 		return fmt.Errorf(m.noMapsFoundErrorMessage)
 	}
@@ -91,6 +92,14 @@ func (m *MapCommand) Execute() error {
 	}
 
 	return nil
+}
+
+func debugPreviousURL(url *string) {
+	if url == nil {
+		fmt.Println("\"\"")
+	} else {
+		fmt.Println(*url)
+	}
 }
 
 // GetArgs returns the arguments of the MapCommand.
