@@ -1,0 +1,26 @@
+go 1.22.1
+
+use (
+	./cmd/cli
+	./internal/entities/bills_pc
+	./internal/entities/entity_link
+	./internal/entities/location
+	./internal/entities/location_area
+	./internal/entities/pokemon
+	./internal/entities/pokemon_encounter
+	./internal/entities/pokemon_stat
+	./internal/entities/pokemon_type
+	./internal/features/catch_command
+	./internal/features/exit_command
+	./internal/features/explore_command
+	./internal/features/help_command
+	./internal/features/inspect_command
+	./internal/features/map_command
+	./internal/features/pokedex_command
+	./internal/query_fetch
+	./internal/shell
+	./internal/test_tools
+	./internal/ui/command
+	./internal/ui/repl
+	./internal/ui/toolchain
+)

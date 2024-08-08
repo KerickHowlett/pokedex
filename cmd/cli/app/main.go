@@ -1,10 +1,6 @@
 package main
 
-import (
-	s "shell"
-
-	"github.com/KerickHowlett/pokedexcli/cmd/cli/config"
-)
+import s "shell"
 
 // main is the entry point for the Pokedex CLI application.
 //
@@ -12,5 +8,5 @@ import (
 //
 //	main()
 func main() {
-	s.PokedexCLIShell(config.PokedexCLIConfig)
+	s.PokedexCLIShell(PokedexCLIConfig)
 }
